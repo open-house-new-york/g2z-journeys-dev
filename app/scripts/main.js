@@ -28,13 +28,13 @@ $(document).ready(function() {
     'padding-top': topVisPadding
   });
 
-  visContainerEl.css({
-    height: panelHeight
-  });
-
-  panelsContainerEl.css({
-    height: panelHeight
-  });
+  // visContainerEl.css({
+  //   height: panelHeight
+  // });
+  //
+  // panelsContainerEl.css({
+  //   height: panelHeight
+  // });
 
   panelsWrapperEl.css({
     height: panelHeight,
@@ -77,8 +77,9 @@ $(document).ready(function() {
   }
 
   var lastScrollLeft = 0;
-  $(window).scroll(function() {
-      var documentScrollLeft = $(document).scrollLeft();
+  $('#vis').scroll(function() {
+      var documentScrollLeft = $('#vis').scrollLeft();
+      // console.log(documentScrollLeft)
       if (lastScrollLeft != documentScrollLeft) {
           // console.log('scroll ' + lastScrollLeft);
           lastScrollLeft = documentScrollLeft;
@@ -98,5 +99,11 @@ $(document).ready(function() {
           });
       }
   });
+
+   $("body").mousewheel(function(event) {
+      var currentScroll = $('#vis').scrollLeft();
+      $('#vis').scrollLeft(currentScroll - (event.deltaY * event.deltaFactor));
+      event.preventDefault(); //prevents horizontal scroll on trackpad
+   });
 
 });
