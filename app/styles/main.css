@@ -1,0 +1,74 @@
+body {
+  /*background: #fafafa;*/
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333;
+  margin: 0;
+}
+
+.browserupgrade {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+.masthead {
+  margin: 0;
+  padding: 5px;
+  height: 40px;
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 1;
+}
+.masthead img {
+  height: 100%;
+}
+.container {
+  width: auto;
+  position: relative;
+}
+.vis-container {
+  margin-top: 15%;
+}
+#vis {
+  max-width: 100%;
+  /*overflow-x: hidden;*/
+  /*overflow-y: hidden;*/
+  position: relative;
+}
+.panels-container {
+  position: relative;
+  display: block;
+  z-index: 1;
+  max-height: 100%;
+}
+.panels-wrapper {
+  /*overflow: hidden;*/
+  position: absolute;
+}
+.panels-group {
+  position: relative;
+  display: block;
+}
+.panel {
+  position: relative;
+  float: left;
+}
+.panel-text {
+  height: 500px;
+  position: absolute;
+  z-index: 1;
+}
+.panel-text-wrapper {
+    margin: 25% auto 0 auto;
+    width: 80%;
+    position: relative;
+}
+.panel-image {
+  background: url("images/transparent.gif") no-repeat bottom center;
+  background-size: cover;
+  margin-left: 100px;
+}
