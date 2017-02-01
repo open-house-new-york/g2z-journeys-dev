@@ -1,4 +1,5 @@
-var visEl,
+var containerEl,
+    visEl,
     visContainerEl,
     panelsContainerEl,
     panelsWrapperEl,
@@ -7,6 +8,8 @@ var visEl,
 var totalWidth;
 
 $(document).ready(function() {
+  var throttleSpeed = 50;
+
   var viewportWidth = document.documentElement.clientWidth;
   var viewportHeight = document.documentElement.clientHeight;
   var panelHeightPercent = 0.9;
@@ -16,12 +19,17 @@ $(document).ready(function() {
   var textPanelWidth = viewportWidth * panelWidthPercent > 400 ? 400 : viewportWidth * panelWidthPercent;
   console.log(viewportHeight, viewportWidth);
 
+  containerEl = $('.container');
   visEl = $('#vis');
   visContainerEl = $('.vis-container');
   panelsContainerEl = $('.panels-container');
   panelsWrapperEl = $('.panels-wrapper');
   panelsGroupEl = $('.panels-group', visEl);
   panelsEl = $('.panel', panelsGroupEl);
+
+  containerEl.css({
+    height: viewportHeight
+  });
 
   visEl.css({
     height: panelHeight,
@@ -76,29 +84,34 @@ $(document).ready(function() {
       return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
   }
 
-  var lastScrollLeft = 0;
-  $('#vis').scroll(function() {
-      var documentScrollLeft = $('#vis').scrollLeft();
-      // console.log(documentScrollLeft)
-      if (lastScrollLeft != documentScrollLeft) {
-          // console.log('scroll ' + lastScrollLeft);
-          lastScrollLeft = documentScrollLeft;
-          // console.log(mapRange(lastScrollLeft, 0, viewportWidth / 2, 0, 1));
-          var mappedScrollOpacity = mapRange(lastScrollLeft, 0, viewportWidth / 2, 0, 1);
-          var opacity;
-          if (mappedScrollOpacity > 1) {
-            opacity = 1;
-          } else {
-            opacity = mappedScrollOpacity;
-          }
-          $('#panel-1-3b').css({
-            opacity: opacity
-          });
-          $('#panel-1-2b').css({
-            opacity: 1 - opacity
-          });
+  function followScroll() {
+    var documentScrollLeft = $('#vis').scrollLeft();
+    if (lastScrollLeft != documentScrollLeft) {
+      lastScrollLeft = documentScrollLeft;
+      var mappedScrollOpacity = mapRange(lastScrollLeft, 0, viewportWidth / 2, 0, 1);
+      var opacity;
+      if (mappedScrollOpacity > 1) {
+        opacity = 1;
+      } else {
+        opacity = mappedScrollOpacity;
       }
-  });
+      $('#panel-1-3b').css({
+        opacity: opacity
+      });
+      $('#panel-1-2b').css({
+        opacity: 1 - opacity
+      });
+      var opacityPct = Math.round(opacity * 100);
+      var linearGradient = 'linear-gradient(90deg, #333 0%, #333 ' + opacityPct + '%, #9d9d9d ' + opacityPct + '%)';
+      $('#step-line-1').css({
+        background: linearGradient
+      });
+    }
+  }
+  var followScrollThrottle = _.throttle(followScroll, throttleSpeed);
+
+  var lastScrollLeft = 0;
+  $('#vis').scroll(followScrollThrottle);
 
    $("body").mousewheel(function(event) {
       var currentScroll = $('#vis').scrollLeft();

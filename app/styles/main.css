@@ -26,6 +26,45 @@ body {
 .masthead img {
   height: 100%;
 }
+.footer {
+  margin: 0;
+  padding: 5px;
+  height: 30px;
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 1;
+}
+.footer img {
+  height: 100%;
+}
+.steps-container {
+  display: flex;
+  margin: 0 10%;
+  justify-content: space-around;
+}
+.steps-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  /*font-size: 50px;*/
+  color: #fff;
+  line-height: 16px;
+  text-align: center;
+  background: #9d9d9d;
+}
+.steps-line {
+  width: 25%;
+  height: 3px;
+  margin-top: 7px;
+  background: #9d9d9d;
+  /*background: -webkit-linear-gradient(90deg, #333 0%, #333 50%, #9d9d9d 50%); */
+  /*background: -o-linear-gradient(90deg, #333 0%, #333 50%, #9d9d9d 50%); */
+  /*background: -moz-linear-gradient(90deg, #333 0%, #333 50%, #9d9d9d 50%); */
+  /*background: linear-gradient(90deg, #333 0%, #333 50%, #9d9d9d 50%);*/
+}
 .container {
   width: auto;
   position: relative;
