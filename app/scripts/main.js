@@ -113,7 +113,7 @@ $(document).ready(function() {
   var lastScrollLeft = 0;
   $('#vis').scroll(followScrollThrottle);
 
-   $("body").mousewheel(function(event) {
+   $('body').mousewheel(function(event) {
       var currentScroll = $('#vis').scrollLeft();
       $('#vis').scrollLeft(currentScroll - (event.deltaY * event.deltaFactor));
       event.preventDefault(); //prevents horizontal scroll on trackpad
