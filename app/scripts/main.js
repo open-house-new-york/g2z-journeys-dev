@@ -32,8 +32,8 @@ $(document).ready(function() {
   });
 
   visEl.css({
-    height: panelHeight,
-    'padding-top': topVisPadding
+    height: panelHeight/*,
+    'padding-top': topVisPadding*/
   });
 
   // visContainerEl.css({
@@ -49,6 +49,9 @@ $(document).ready(function() {
     width: viewportWidth
   });
 
+
+  var panelWidths = [];
+  var panelImageWidths = [];
   panelsEl.each(function(){
     var panel = $(this);
     var data = panel.data();
@@ -56,29 +59,42 @@ $(document).ready(function() {
 
     if (data.type == 'image') {
       width = panelHeight * (data.ratio);
+      panelImageWidths.push(width);
     } else if (data.type == 'text') {
       width = textPanelWidth;
     }
+
+    // keep an array of widths
+    panelWidths.push(width);
+
     panel.css({
       height: panelHeight,
       width: width
     });
   });
 
+  var totalWidth = panelWidths.reduce(function(a, b) {
+    return a + b;
+  });
+  var totalImageWidth = panelImageWidths.reduce(function(a, b) {
+    return a + b;
+  });
+  var marginPercentage = 0.1;
+  var finalWidth = totalImageWidth + (viewportHeight * marginPercentage)
   panelsGroupEl.css({
     height: panelHeight,
-    width: '5000px'
+    width: finalWidth
   });
 
-  $('#panel-1-2b').css({
-    position: 'absolute',
-    'mix-blend-mode': 'multiply',
-    'z-index': 2
-  });
-
-  $('#panel-1-3b').css({
-    opacity: 0
-  });
+  // $('#panel-1-2b').css({
+  //   position: 'absolute',
+  //   'mix-blend-mode': 'multiply',
+  //   'z-index': 2
+  // });
+  //
+  // $('#panel-1-3b').css({
+  //   opacity: 0
+  // });
 
   function mapRange(value, low1, high1, low2, high2) {
       return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
@@ -88,6 +104,7 @@ $(document).ready(function() {
     var documentScrollLeft = $('#vis').scrollLeft();
     if (lastScrollLeft != documentScrollLeft) {
       lastScrollLeft = documentScrollLeft;
+
       var mappedScrollOpacity = mapRange(lastScrollLeft, 0, viewportWidth / 2, 0, 1);
       var opacity;
       if (mappedScrollOpacity > 1) {
@@ -95,12 +112,12 @@ $(document).ready(function() {
       } else {
         opacity = mappedScrollOpacity;
       }
-      $('#panel-1-3b').css({
-        opacity: opacity
-      });
-      $('#panel-1-2b').css({
-        opacity: 1 - opacity
-      });
+      // $('#panel-1-3b').css({
+      //   opacity: opacity
+      // });
+      // $('#panel-1-2b').css({
+      //   opacity: 1 - opacity
+      // });
       var opacityPct = Math.round(opacity * 100);
       var linearGradient = 'linear-gradient(90deg, #333 0%, #333 ' + opacityPct + '%, #9d9d9d ' + opacityPct + '%)';
       $('#step-line-1').css({

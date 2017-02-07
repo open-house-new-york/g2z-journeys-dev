@@ -87,6 +87,7 @@ body {
 .panels-wrapper {
   /*overflow: hidden;*/
   position: absolute;
+  margin-left: 10%;
 }
 .panels-group {
   position: relative;
@@ -102,14 +103,14 @@ body {
   z-index: 1;
 }
 .panel-text-wrapper {
-    margin: 25% auto 0 auto;
+    margin: 25% 0;
     width: 80%;
     position: relative;
 }
 .panel-image {
   background: url("images/transparent.gif") no-repeat bottom center;
   background-size: cover;
-  margin-left: 100px;
+  /*margin-left: 100px;*/
 }
 body ::-webkit-scrollbar {
     display: none;
