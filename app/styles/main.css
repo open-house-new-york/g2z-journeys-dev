@@ -27,7 +27,7 @@ body {
   height: 100%;
 }
 .footer {
-  margin: 0;
+  /*margin: 0;*/
   padding: 5px;
   height: 30px;
   position: absolute;
@@ -42,8 +42,9 @@ body {
 }
 .steps-container {
   display: flex;
-  margin: 0 10%;
+  margin: 0 auto;
   justify-content: space-around;
+  max-width: 500px;
 }
 .steps-dot {
   width: 16px;
@@ -87,7 +88,7 @@ body {
 .panels-wrapper {
   /*overflow: hidden;*/
   position: absolute;
-  margin-left: 10%;
+  /*margin-left: 10%;*/
 }
 .panels-group {
   position: relative;

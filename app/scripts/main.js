@@ -18,6 +18,7 @@ $(document).ready(function() {
   var panelHeight = viewportHeight * panelHeightPercent;
   var textPanelWidth = viewportWidth * panelWidthPercent > 400 ? 400 : viewportWidth * panelWidthPercent;
   console.log(viewportHeight, viewportWidth);
+  var panelWrapperMargin = 40;
 
   containerEl = $('.container');
   visEl = $('#vis');
@@ -46,9 +47,13 @@ $(document).ready(function() {
 
   panelsWrapperEl.css({
     height: panelHeight,
-    width: viewportWidth
+    width: viewportWidth,
+    "margin-left": panelWrapperMargin
   });
 
+  $("#footer").css({
+    margin: "0 " + panelWrapperMargin + "px"
+  })
 
   var panelWidths = [];
   var panelImageWidths = [];
@@ -73,14 +78,23 @@ $(document).ready(function() {
     });
   });
 
+  var firstPanel = $('#panel-1-1');
+  var firstPanelWidth = panelWidths[0];
+  var firstPanelMarginRight = viewportWidth - firstPanelWidth;
+  firstPanel.css({
+    "margin-right": firstPanelMarginRight
+  });
+
   var totalWidth = panelWidths.reduce(function(a, b) {
     return a + b;
   });
-  var totalImageWidth = panelImageWidths.reduce(function(a, b) {
+  var totalImagesWidth = panelImageWidths.reduce(function(a, b) {
     return a + b;
   });
-  var marginPercentage = 0.1;
-  var finalWidth = totalImageWidth + (viewportHeight * marginPercentage)
+  // var marginPercentage = 0.1;
+  // var finalWidth = totalImagesWidth + (viewportHeight * marginPercentage);
+  var finalWidth = totalImagesWidth + panelWrapperMargin;
+  finalWidth += firstPanelMarginRight;
   panelsGroupEl.css({
     height: panelHeight,
     width: finalWidth
