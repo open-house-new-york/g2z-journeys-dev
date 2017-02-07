@@ -37,6 +37,8 @@ $(document).ready(function() {
     'padding-top': topVisPadding*/
   });
 
+  Ps.initialize(document.getElementById('vis'));
+
   // visContainerEl.css({
   //   height: panelHeight
   // });
@@ -82,7 +84,7 @@ $(document).ready(function() {
   var firstPanelWidth = panelWidths[0];
   var firstPanelMarginRight = viewportWidth - firstPanelWidth;
   firstPanel.css({
-    "margin-right": firstPanelMarginRight
+    "margin-left": firstPanelMarginRight
   });
 
   var totalWidth = panelWidths.reduce(function(a, b) {

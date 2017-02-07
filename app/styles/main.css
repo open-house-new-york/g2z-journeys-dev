@@ -76,7 +76,7 @@ body {
 #vis {
   max-width: 100%;
   /*overflow-x: hidden;*/
-  overflow-y: hidden;
+  /*overflow-y: hidden;*/
   position: relative;
 }
 .panels-container {
@@ -113,6 +113,6 @@ body {
   background-size: cover;
   /*margin-left: 100px;*/
 }
-body ::-webkit-scrollbar {
-    display: none;
+.ps-scrollbar-x, .ps-scrollbar-x-rail {
+  display: none !important;
 }
