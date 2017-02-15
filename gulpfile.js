@@ -8,6 +8,13 @@ const wiredep = require('wiredep').stream;
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 
+const spawn = require('child_process').spawn;
+
+gulp.task('sizeImages', () => {
+  spawn('node', ['size-images.js'], { stdio: 'inherit' });
+});
+
+
 gulp.task('styles', () => {
   return gulp.src('app/styles/*.css')
     .pipe($.sourcemaps.init())
@@ -90,7 +97,7 @@ gulp.task('extras', () => {
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('serve', ['styles', 'scripts', 'fonts'], () => {
+gulp.task('serve', ['styles', 'scripts', 'fonts', 'sizeImages'], () => {
   browserSync({
     notify: false,
     port: 9000,
@@ -114,6 +121,8 @@ gulp.task('serve', ['styles', 'scripts', 'fonts'], () => {
   gulp.watch('app/scripts/**/*.js', ['scripts']);
   gulp.watch('app/fonts/**/*', ['fonts']);
   gulp.watch('bower.json', ['wiredep', 'fonts']);
+
+  gulp.watch('app/images/**/*', ['sizeImages']);
 });
 
 gulp.task('serve:dist', () => {

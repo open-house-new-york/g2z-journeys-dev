@@ -1,0 +1,21 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "_uid_": "1", "disposal": "Action Stanley", "j_tot_rec": 117960.879219 }, "geometry": { "type": "Point", "coordinates": [ -73.875001347199984, 40.663213120599984 ] } },
+{ "type": "Feature", "properties": { "_uid_": "2", "disposal": "BT Thames", "j_tot_rec": 156026.598438 }, "geometry": { "type": "Point", "coordinates": [ -73.928325262199991, 40.704952273 ] } },
+{ "type": "Feature", "properties": { "_uid_": "3", "disposal": "Covanta - Essex", "j_tot_rec": 287340.000000 }, "geometry": { "type": "Point", "coordinates": [ -74.127586, 40.736068 ] } },
+{ "type": "Feature", "properties": { "_uid_": "4", "disposal": "IESI - 50 St", "j_tot_rec": 252750.703125 }, "geometry": { "type": "Point", "coordinates": [ -74.019046527299992, 40.650140142999987 ] } },
+{ "type": "Feature", "properties": { "_uid_": "5", "disposal": "IESI - Court", "j_tot_rec": 180949.796875 }, "geometry": { "type": "Point", "coordinates": [ -74.000710493599982, 40.672531337199992 ] } },
+{ "type": "Feature", "properties": { "_uid_": "6", "disposal": "IWS Jersey City", "j_tot_rec": 15496.000000 }, "geometry": { "type": "Point", "coordinates": [ -74.079601, 40.737931 ] } },
+{ "type": "Feature", "properties": { "_uid_": "7", "disposal": "North Shore MTS", "j_tot_rec": 384165.000000 }, "geometry": { "type": "Point", "coordinates": [ -73.848423957824693, 40.770170264547176 ] } },
+{ "type": "Feature", "properties": { "_uid_": "8", "disposal": "Regal Recycling", "j_tot_rec": 74654.101562 }, "geometry": { "type": "Point", "coordinates": [ -73.788504794499985, 40.704136992699993 ] } },
+{ "type": "Feature", "properties": { "_uid_": "9", "disposal": "SITS", "j_tot_rec": 206073.186875 }, "geometry": { "type": "Point", "coordinates": [ -74.183257026799993, 40.60609576249999 ] } },
+{ "type": "Feature", "properties": { "_uid_": "10", "disposal": "WM - A1 Compaction", "j_tot_rec": 64395.000000 }, "geometry": { "type": "Point", "coordinates": [ -73.875584268699981, 40.93275609799999 ] } },
+{ "type": "Feature", "properties": { "_uid_": "11", "disposal": "WM - Fairview", "j_tot_rec": 60859.000000 }, "geometry": { "type": "Point", "coordinates": [ -74.008841, 40.817272 ] } },
+{ "type": "Feature", "properties": { "_uid_": "12", "disposal": "WM - Harlem River", "j_tot_rec": 666295.218750 }, "geometry": { "type": "Point", "coordinates": [ -73.92933427829999, 40.80740499849999 ] } },
+{ "type": "Feature", "properties": { "_uid_": "13", "disposal": "WM - Review", "j_tot_rec": 280489.000000 }, "geometry": { "type": "Point", "coordinates": [ -73.936234319699992, 40.732366062499992 ] } },
+{ "type": "Feature", "properties": { "_uid_": "14", "disposal": "WM - Varick", "j_tot_rec": 381936.406250 }, "geometry": { "type": "Point", "coordinates": [ -73.928813989799991, 40.712866234599993 ] } }
+]
+}

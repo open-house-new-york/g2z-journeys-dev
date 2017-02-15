@@ -39,5 +39,9 @@
         "single"
       ]
     }
+  },
+  "dependencies": {
+    "image-size": "^0.5.1",
+    "junk": "^2.0.0"
   }
 }

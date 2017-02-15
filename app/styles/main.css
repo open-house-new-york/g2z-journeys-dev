@@ -4,7 +4,6 @@ body {
   color: #333;
   margin: 0;
 }
-
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
@@ -47,19 +46,19 @@ body {
   max-width: 500px;
 }
 .steps-dot {
-  width: 16px;
-  height: 16px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   /*font-size: 50px;*/
   color: #fff;
-  line-height: 16px;
+  line-height: 10px;
   text-align: center;
   background: #9d9d9d;
 }
 .steps-line {
   width: 25%;
   height: 3px;
-  margin-top: 7px;
+  margin-top: 4px;
   background: #9d9d9d;
   /*background: -webkit-linear-gradient(90deg, #333 0%, #333 50%, #9d9d9d 50%); */
   /*background: -o-linear-gradient(90deg, #333 0%, #333 50%, #9d9d9d 50%); */
@@ -105,7 +104,7 @@ body {
 }
 .panel-text-wrapper {
     /*margin: 25% 0;*/
-    margin-top: 10%;
+    /*margin-top: 10%;*/
     width: 80%;
     position: relative;
 }
@@ -116,4 +115,18 @@ body {
 }
 .ps-scrollbar-x, .ps-scrollbar-x-rail {
   display: none !important;
+}
+
+@media (min-width: 738px) {
+  .panel-text-wrapper {
+    margin-top: 10%;
+  }
+}
+@media (max-width: 738px) {
+  p {
+    font-size: 0.8em;
+  }
+  h3 {
+    font-size: 1em;
+  }
 }
