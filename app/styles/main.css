@@ -98,7 +98,9 @@ body {
   float: left;
 }
 .panel-text {
-  height: 500px;
+  /*position: relative;*/
+}
+.overlay {
   position: absolute;
   z-index: 1;
 }
@@ -109,7 +111,7 @@ body {
     position: relative;
 }
 .panel-image {
-  background: url("images/transparent.gif") no-repeat bottom center;
+  background: url("../images/transparent.gif") no-repeat bottom center;
   background-size: cover;
   /*margin-left: 100px;*/
 }
@@ -122,11 +124,11 @@ body {
     margin-top: 10%;
   }
 }
-@media (max-width: 738px) {
+@media (max-width: 768px) {
   p {
-    font-size: 0.8em;
+    font-size: 1em;
   }
   h3 {
-    font-size: 1em;
+    font-size: 1.2em;
   }
 }
