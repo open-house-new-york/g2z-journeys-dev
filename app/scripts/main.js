@@ -10,6 +10,7 @@ var containerEl,
 var totalWidth;
 
 var panelWidths = [];
+var panelIds = [];
 var panelImageWidths = [];
 var panelTextBlockWidths = [];
 
@@ -17,9 +18,13 @@ var mapEl = {};
 
 var topVisPadding,
   viewportHeight,
+  viewportWidth,
   isMobile;
 
 var vizImageSizes;
+
+var panelWrapperMargin,
+    totalImagesWidthRight;
 
 // $.getJSON( "scripts/sizes.json", function( data ) {
 // vizImageSizes = data;
@@ -36,13 +41,13 @@ function initViz() {
     var panelHeightPercent = 0.9;
     // var topVisPadding = (1 - panelHeightPercent - 0.05) * 100 + '\%';
     // var topVisPadding = viewportWidth > 738 ? 100 : 50;
-    topVisPadding = viewportWidth > 738 ? 100 : 50
+    topVisPadding = viewportWidth > 738 ? 100 : 100
     var panelWidthPercent = 0.9;
     // var panelHeight = viewportHeight * panelHeightPercent;
     var panelHeight = viewportHeight - topVisPadding - 50;
     var textPanelWidth = viewportWidth * panelWidthPercent > 400 ? 400 : viewportWidth * panelWidthPercent;
     console.log(viewportHeight, viewportWidth);
-    var panelWrapperMargin = 40;
+    panelWrapperMargin = 40;
 
     containerEl = $('.container');
     visEl = $('#vis');
@@ -86,6 +91,8 @@ function initViz() {
     // var panelWidths = [];
     // var panelImageWidths = [];
     // console.log(panelsEl)
+    var firstPanelWidth;
+
     panelsEl.each(function() {
       var panel = $(this);
       var data = panel.data();
@@ -96,7 +103,6 @@ function initViz() {
         bgUrl = bgUrl.split('\/');
         bgUrl = bgUrl[bgUrl.length - 1];
         bgUrl = bgUrl.replace(/[\)\"\']/g, '');
-        console.log(bgUrl)
 
         for (var i = 0; i < vizImageSizes.length; i++) {
           if (bgUrl === vizImageSizes[i].filename) {
@@ -118,7 +124,13 @@ function initViz() {
       }
 
       // keep an array of widths
-      panelWidths.push(width);
+      if (data.type !== 'text-overlay') {
+        panelWidths.push(width);
+        panelIds.push(panel.attr("id"));
+      }
+      if (panel.attr("id") == 'text-1-1') {
+        firstPanelWidth = width;
+      }
 
       if (data.type == 'map') {
         panel.css({
@@ -135,8 +147,9 @@ function initViz() {
     });
 
     var firstPanel = $('#panel-1-1');
-    var firstPanelWidth = panelWidths[0];
-    var totalImagesWidthRight = viewportWidth - firstPanelWidth + panelWrapperMargin;
+    // var firstPanelWidth = panelWidths[0];
+    console.log(firstPanelWidth)
+    totalImagesWidthRight = viewportWidth - firstPanelWidth + panelWrapperMargin;
     firstPanel.css({
       "margin-left": totalImagesWidthRight
     });
@@ -166,9 +179,8 @@ function initViz() {
     var totalTextBlocksWidth = panelTextBlockWidths.reduce(function(a, b) {
       return a + b;
     });
-    // var marginPercentage = 0.1;
-    // var finalWidth = totalImagesWidth + (viewportHeight * marginPercentage);
-    var finalWidth = totalImagesWidth + panelWrapperMargin + totalTextBlocksWidth;
+    // var finalWidth = totalImagesWidth + panelWrapperMargin + totalTextBlocksWidth;
+    var finalWidth = totalWidth + panelWrapperMargin;
     finalWidth += totalImagesWidthRight;
     panelsGroupEl.css({
       height: panelHeight,
@@ -193,6 +205,8 @@ function initViz() {
       var documentScrollLeft = $('#vis').scrollLeft();
       if (lastScrollLeft != documentScrollLeft) {
         lastScrollLeft = documentScrollLeft;
+
+        console.log(lastScrollLeft)
 
         var mappedScrollOpacity = mapRange(lastScrollLeft, 0, viewportWidth / 2, 0, 1);
         var opacity;
@@ -643,3 +657,20 @@ function initViz() {
   }
 
 }
+
+    // helpers
+    function findPanelPositionById(id, idArray, widthArray) {
+      function matchId(el) {
+        return el === id;
+      }
+      var index = idArray.findIndex(matchId);
+      // var widthArrayLeft = widthArray;
+      // widthArrayLeft.length = index;
+      var position = widthArray.slice(0, index).reduce(function(a, b) {
+        return a + b;
+      });
+      position += panelWrapperMargin + totalImagesWidthRight - viewportWidth;
+      return position;
+    }
+    // example use
+    // findPanelPositionById("panel-2-3", panelIds, panelWidths)
