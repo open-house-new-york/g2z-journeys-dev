@@ -1,59 +1,59 @@
-var containerEl,
-  visEl,
-  visContainerEl,
-  panelsContainerEl,
-  panelsWrapperEl,
-  panelsGroupEl,
-  imagePanelsEl,
-  textPanelsEl,
-  panelsEl;
-var totalWidth;
-
-var panelWidths = [];
-var panelIds = [];
-var panelPositions= [];
-var panelImageWidths = [];
-var panelTextBlockWidths = [];
-
-var mapEl = {};
-
-var topVisPadding,
-  viewportHeight,
-  viewportWidth,
-  isMobile;
-
-var vizImageSizes;
-
-var panelWrapperMargin,
-    totalImagesWidthRight;
+  var vizImageSizes;
 
 // $.getJSON( "scripts/sizes.json", function( data ) {
 // vizImageSizes = data;
 initViz();
 // });
 
+// recalculate on window resize
+$(window).on('resize', _.debounce(function () {
+  initViz();
+}, 500));
+
 function initViz() {
+
+  var containerEl,
+      visEl,
+      panelsWrapperEl,
+      panelsGroupEl,
+      imagePanelsEl,
+      textPanelsEl,
+      panelsEl;
+  var totalPanelsWidth;
+
+  var panelWidths = [];
+  var panelIds = [];
+  var panelPositions= [];
+  var panelImageWidths = [];
+  var panelTextBlockWidths = [];
+
+  var mapEl = {};
+
+  var topVisPadding,
+    viewportHeight,
+    viewportWidth,
+    isMobile;
+
+  var panelWrapperMargin,
+      firstPanelMargin;
+
   $(document).ready(function() {
     var throttleSpeed = 50;
 
     viewportWidth = document.documentElement.clientWidth;
     viewportHeight = document.documentElement.clientHeight;
+    console.log('vsz', viewportHeight, viewportWidth);
+
     isMobile = viewportWidth < 768 ? true : false;
-    var panelHeightPercent = 0.9;
-    // var topVisPadding = (1 - panelHeightPercent - 0.05) * 100 + '\%';
-    // var topVisPadding = viewportWidth > 738 ? 100 : 50;
-    topVisPadding = viewportWidth > 738 ? 100 : 100
     var panelWidthPercent = 0.9;
-    // var panelHeight = viewportHeight * panelHeightPercent;
+    var panelHeightPercent = 0.9;
+    topVisPadding = isMobile ? 50 : 100;
     var panelHeight = viewportHeight - topVisPadding - 50;
     var textPanelWidth = viewportWidth * panelWidthPercent > 400 ? 400 : viewportWidth * panelWidthPercent;
-    console.log(viewportHeight, viewportWidth);
     panelWrapperMargin = 40;
 
     containerEl = $('.container');
     visEl = $('#vis');
-    visContainerEl = $('.vis-container');
-    panelsContainerEl = $('.panels-container');
     panelsWrapperEl = $('.panels-wrapper');
     panelsGroupEl = $('.panels-group', visEl);
     panelsEl = $('.panel', panelsGroupEl);
@@ -69,15 +69,8 @@ function initViz() {
       'padding-top': topVisPadding
     });
 
+    // initialize perfect-scrollbar (hidden)
     Ps.initialize(document.getElementById('vis'));
-
-    // visContainerEl.css({
-    //   height: panelHeight
-    // });
-    //
-    // panelsContainerEl.css({
-    //   height: panelHeight
-    // });
 
     panelsWrapperEl.css({
       height: panelHeight,
@@ -87,13 +80,10 @@ function initViz() {
 
     $("#footer").css({
       margin: "0 " + panelWrapperMargin + "px"
-    })
+    });
 
-    // var panelWidths = [];
-    // var panelImageWidths = [];
-    // console.log(panelsEl)
+    // set the widths of panels and push their widths, ids, and positions to arrays
     var firstPanelWidth;
-
     panelsEl.each(function() {
       var panel = $(this);
       var data = panel.data();
@@ -108,9 +98,10 @@ function initViz() {
 
         for (var i = 0; i < vizImageSizes.length; i++) {
           if (bgUrl === vizImageSizes[i].filename) {
+            // calculate panel size based on image file ratio
             var ratio = vizImageSizes[i].width / vizImageSizes[i].height;
             width = panelHeight * ratio;
-            // break;
+            break;
           }
         }
         panelImageWidths.push(width);
@@ -125,13 +116,13 @@ function initViz() {
         panelTextBlockWidths.push(width);
       }
 
-      if (panelId == 'text-1-1') {
+      if (panelId == 'panel-1-1') {
         firstPanelWidth = width;
-        totalImagesWidthRight = viewportWidth - firstPanelWidth + panelWrapperMargin;
+        firstPanelMargin = viewportWidth - firstPanelWidth;
       }
       // keep an array of widths
       if (data.type !== 'text-overlay') {
-        var initialPosition = panelWrapperMargin + totalImagesWidthRight;
+        var initialPosition = panelWrapperMargin + firstPanelMargin;
         if (panelWidths.length === 0) {
           panelPositions.push(Math.round(initialPosition));
         }
@@ -145,63 +136,32 @@ function initViz() {
         panelPositions.push(position);
       }
 
-
-      if (data.type == 'map') {
-        panel.css({
-          height: panelHeight,
-          width: width
-        });
-      } else {
-        panel.css({
-          height: panelHeight,
-          width: width
-        });
-      }
+      // set panel css
+      panel.css({
+        height: panelHeight,
+        width: width
+      });
 
     });
 
     var firstPanel = $('#panel-1-1');
     firstPanel.css({
-      "margin-left": totalImagesWidthRight
+      "margin-left": firstPanelMargin
     });
 
-    // set overlaid text position based on order
-    // for (var i = 0; i < textPanelsEl.length; i++) {
-    //   var textPanel = $(textPanelsEl[i]);
-    //   if (textPanel.data().type == 'text-overlay') {
-    //     var marginLeft = 0;
-    //     for (var j = 0; j < i; j++) {
-    //       marginLeft += $(imagePanelsEl[j]).width();
-    //     }
-    //     if (i > 0) {
-    //       marginLeft += totalImagesWidthRight
-    //     }
-    //     textPanel.css({
-    //       "margin-left": marginLeft
-    //     });
-    //   }
-    // }
-
     // set overlaid text based on id
+    var matchId = function (el) {
+      return el.substring(el.length - 3) === textPanelNum;
+    };
     for (var i = 0; i < textPanelsEl.length; i++) {
       var textPanel = $(textPanelsEl[i]);
       var textPanelId = textPanel.attr("id");
       var textPanelNum = textPanelId.substring(textPanelId.length - 3);
       if (textPanel.data().type == 'text-overlay') {
-        function matchId(el) {
-          return el.substring(el.length - 3) === textPanelNum;
-        }
         var index = panelIds.findIndex(matchId);
-        // var marginLeft = 0;
-        // for (var j = 0; j < i; j++) {
-        //   marginLeft += $(imagePanelsEl[j]).width();
-        // }
-        // if (i > 0) {
-        //   marginLeft += totalImagesWidthRight
-        // }
         var marginLeft = panelPositions[index] - panelWrapperMargin;
         if (i === 0) {
-          marginLeft -= totalImagesWidthRight;
+          marginLeft -= firstPanelMargin;
         }
         textPanel.css({
           "margin-left": marginLeft
@@ -209,72 +169,55 @@ function initViz() {
       }
     }
 
-    var totalWidth = panelWidths.reduce(function(a, b) {
+    var totalPanelsWidth = panelWidths.reduce(function(a, b) {
       return a + b;
     });
-    var finalWidth = totalWidth + panelWrapperMargin;
-    finalWidth += totalImagesWidthRight;
+    var vizWidth = totalPanelsWidth + panelWrapperMargin + firstPanelMargin;
     panelsGroupEl.css({
       height: panelHeight,
-      width: finalWidth
+      width: vizWidth
     });
 
-    // $('#panel-1-2b').css({
-    //   position: 'absolute',
-    //   'mix-blend-mode': 'multiply',
-    //   'z-index': 2
-    // });
-    //
-    // $('#panel-1-3b').css({
-    //   opacity: 0
-    // });
-
-    function mapRange(value, low1, high1, low2, high2) {
-      return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
-    }
-
-    function followScroll() {
+    // fill progress bar based on scrolling
+    var lastScrollLeft = 0;
+    function progressBar() {
       var documentScrollLeft = $('#vis').scrollLeft();
       if (lastScrollLeft != documentScrollLeft) {
         lastScrollLeft = documentScrollLeft;
 
-        // console.log(lastScrollLeft)
+        var mapOpacity = function (initialPosition, finalPosition) {
+          function mapRange(value, low1, high1, low2, high2) {
+            return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+          }
+          var mappedOpacity = mapRange(lastScrollLeft, initialPosition, finalPosition, 0, 1);
+          var opacity = mappedOpacity > 1 ? 1 : mappedOpacity;
+          var opacityPct = Math.round(opacity * 100);
+          var linearGradient = 'linear-gradient(90deg, #333 0%, #333 ' + opacityPct + '%, #9d9d9d ' + opacityPct + '%)';
+          return linearGradient;
+        };
 
-        var mappedScrollOpacity = mapRange(lastScrollLeft, 0, viewportWidth / 2, 0, 1);
-        var opacity;
-        if (mappedScrollOpacity > 1) {
-          opacity = 1;
-        } else {
-          opacity = mappedScrollOpacity;
-        }
-        // $('#panel-1-3b').css({
-        //   opacity: opacity
-        // });
-        // $('#panel-1-2b').css({
-        //   opacity: 1 - opacity
-        // });
-        var opacityPct = Math.round(opacity * 100);
-        var linearGradient = 'linear-gradient(90deg, #333 0%, #333 ' + opacityPct + '%, #9d9d9d ' + opacityPct + '%)';
         $('#step-line-1').css({
-          background: linearGradient
+          background: mapOpacity(panelPositions[1], panelPositions[2])
+        });
+        $('#step-line-2').css({
+          background: mapOpacity(panelPositions[2], panelPositions[8])
         });
       }
     }
-    var followScrollThrottle = _.throttle(followScroll, throttleSpeed);
+    var progressBarThrottle = _.throttle(progressBar, throttleSpeed);
+    $('#vis').scroll(progressBarThrottle);
 
-    var lastScrollLeft = 0;
-    $('#vis').scroll(followScrollThrottle);
-
+    // use mousewheel to scroll horizontally
     $('body').mousewheel(function(event) {
       var currentScroll = $('#vis').scrollLeft();
       $('#vis').scrollLeft(currentScroll - (event.deltaY * event.deltaFactor));
       event.preventDefault(); //prevents horizontal scroll on trackpad
     });
 
+    // follow links in progress bar
     $(".steps-link").click(function() {
-      var link = $(this)
+      var link = $(this);
       var numToScroll = link.data().scroll;
-      console.log(numToScroll);
       scrollToPanel(numToScroll);
     });
 
@@ -298,7 +241,7 @@ function initViz() {
       lineWidth: function (value) {
         return mapEl.scales.circleRadius(value) / 2;
       }
-    }
+    };
 
     //Load in GeoJSON data
     d3.json("data/od_lines_refuse.geojson", function(odLines) {
@@ -328,16 +271,16 @@ function initViz() {
         .projection(projection);
 
       // remove non landfill lines from dataset
-      var i = exportLines.features.length;
-      while (i--) {
-        if (exportLines.features[i].properties.sent_fac_t !== 'Landfill') {
-          exportLines.features.splice(i, 1);
+      var exportLinesLength = exportLines.features.length;
+      while (exportLinesLength--) {
+        if (exportLines.features[exportLinesLength].properties.sent_fac_t !== 'Landfill') {
+          exportLines.features.splice(exportLinesLength, 1);
         }
       }
-      var i = exportPoints.features.length;
-      while (i--) {
-        if (exportPoints.features[i].geometry.coordinates === null) {
-          exportPoints.features.splice(i, 1);
+      var exportPointsLength = exportPoints.features.length;
+      while (exportPointsLength--) {
+        if (exportPoints.features[exportPointsLength].geometry.coordinates === null) {
+          exportPoints.features.splice(exportPointsLength, 1);
         }
       }
 
@@ -348,6 +291,11 @@ function initViz() {
       projection
         .scale(s)
         .translate(t);
+
+      // Clear SVG if there is one (on resize)
+      if (d3.select("#map-export-3-0-svg")) {
+        d3.select("#map-export-3-0-svg").remove();
+      }
 
       //Create SVG element
       var svg = d3.select("#map-export-3-0")
@@ -371,14 +319,14 @@ function initViz() {
         .attr("cy", height / 2)
         .attr("r", width / 2)
         .attr("fill", mapEl.colors.background)
-        .attr("stroke-width", 0)
+        .attr("stroke-width", 0);
 
       var clip = svg.append("clipPath")
         .attr("id", "mapClip")
         .append("circle")
         .attr("cx", width / 2)
         .attr("cy", height / 2)
-        .attr("r", width / 2)
+        .attr("r", width / 2);
 
       var mapGroup = svg.append("g")
         .attr("class", "mapGroup")
@@ -396,7 +344,7 @@ function initViz() {
         })
         .style("stroke", "#fff")
         .style("stroke-width", 1)
-        .style("fill", mapEl.colors.land)
+        .style("fill", mapEl.colors.land);
 
       linePaths.selectAll(".lineConnect")
         .data(exportLines.features)
@@ -411,15 +359,15 @@ function initViz() {
           if (d.properties.sent_fac_t === 'Landfill') {
             return mapEl.scales.lineWidth(d.properties.sent_tons_);
           } else {
-            return 0
+            return 0;
           }
         })
         .style("fill", "none")
         .attr("stroke-dasharray", function(d) {
-          return (this.getTotalLength() + ' ' + this.getTotalLength())
+          return (this.getTotalLength() + ' ' + this.getTotalLength());
         })
         .attr("stroke-dashoffset", function(d) {
-          return -this.getTotalLength()
+          return -this.getTotalLength();
         })
         .attr("class", "lineConnect")
         // .on("mouseover", function(d) {
@@ -439,7 +387,7 @@ function initViz() {
         // })
         .transition()
         .duration(3000)
-        .attr('stroke-dashoffset', 0)
+        .attr('stroke-dashoffset', 0);
 
       pointPaths.selectAll(".exportPoints")
         .data(exportPoints.features)
@@ -459,32 +407,32 @@ function initViz() {
         .style("fill", mapEl.colors.wasteCircles)
         .attr("opacity", function(d) {
           if (d.properties.sent_fac_t === 'Landfill') {
-            return 1
+            return 1;
           } else {
-            return 0
+            return 0;
           }
         })
-        .attr("class", "exportPoints")
+        .attr("class", "exportPoints");
 
       mapEl.transitionLines = function() {
         linePaths.selectAll(".lineConnect")
           .each(function(d, i) {
             d3.select(this)
               .attr("stroke-dasharray", function(d) {
-                return (this.getTotalLength() + ' ' + this.getTotalLength())
+                return (this.getTotalLength() + ' ' + this.getTotalLength());
               })
               .attr("stroke-dashoffset", function(d) {
-                return -this.getTotalLength()
+                return -this.getTotalLength();
               })
               .attr("class", "lineConnect")
               .transition()
               .duration(3000)
-              .attr('stroke-dashoffset', 0)
+              .attr('stroke-dashoffset', 0);
             // .each("end", function() {
             //   transitionLines();// infinite loop
             // });
-          })
-      }
+          });
+      };
     }
 
     function initNycMap(odLines, destPointsRefuseData, nycd, states) {
@@ -506,6 +454,10 @@ function initViz() {
         .scale(s)
         .translate(t);
 
+      // Clear SVG if there is one (on resize)
+      if (d3.select("#map-nyc-2-0-svg")) {
+        d3.select("#map-nyc-2-0-svg").remove();
+      }
       //Create SVG element
       var svg = d3.select("#map-nyc-2-0")
         .append("svg")
@@ -528,14 +480,14 @@ function initViz() {
         .attr("cy", height / 2)
         .attr("r", width / 2)
         .attr("fill", mapEl.colors.background)
-        .attr("stroke-width", 0)
+        .attr("stroke-width", 0);
 
       var clip = svg.append("clipPath")
         .attr("id", "mapClip")
         .append("circle")
         .attr("cx", width / 2)
         .attr("cy", height / 2)
-        .attr("r", width / 2)
+        .attr("r", width / 2);
 
       var mapGroup = svg.append("g")
         .attr("class", "mapGroup")
@@ -555,7 +507,7 @@ function initViz() {
         .style("stroke", "black")
         .style("stroke-width", 0)
         .style("fill", mapEl.colors.land)
-        .attr("class", "usStates")
+        .attr("class", "usStates");
 
       commDist.selectAll(".nycd")
         .data(nycd.features)
@@ -582,10 +534,10 @@ function initViz() {
         })
         .style("fill", "none")
         .attr("stroke-dasharray", function(d) {
-          return (this.getTotalLength() + ' ' + this.getTotalLength())
+          return (this.getTotalLength() + ' ' + this.getTotalLength());
         })
         .attr("stroke-dashoffset", function(d) {
-          return this.getTotalLength()
+          return this.getTotalLength();
         })
         .attr("class", "lineConnect")
         // .on("mouseover", function(d) {
@@ -626,7 +578,7 @@ function initViz() {
           .duration(3000)
           .attr("r", function(d) {
             return mapEl.scales.circleRadius(d.properties.j_tot_rec);
-          })
+          });
 
       mapEl.nyc = {};
 
@@ -642,20 +594,20 @@ function initViz() {
           .each(function(d, i) {
             d3.select(this)
               .attr("stroke-dasharray", function(d) {
-                return (this.getTotalLength() + ' ' + this.getTotalLength())
+                return (this.getTotalLength() + ' ' + this.getTotalLength());
               })
               .attr("stroke-dashoffset", function(d) {
-                return this.getTotalLength()
+                return this.getTotalLength();
               })
               .attr("class", "lineConnect")
               .transition()
               .duration(1500)
               .attr('stroke-dashoffset', 0)
             .each("end", function() {
-              mapEl.nyc.transitionCircles()
+              mapEl.nyc.transitionCircles();
             });
           });
-      }
+      };
 
       mapEl.nyc.transitionCircles = function() {
         destPointsRefuse.selectAll(".destPointsRefuse")
@@ -668,70 +620,67 @@ function initViz() {
               return mapEl.scales.circleRadius(d.properties.j_tot_rec);
             })
             .each("end", function() {
-              mapEl.nyc.linesOut()
+              mapEl.nyc.linesOut();
             });
           });
-      }
+      };
 
       mapEl.nyc.linesOut = function() {
         linePaths.selectAll(".lineConnect")
           .each(function(d, i) {
             d3.select(this)
               .attr("stroke-dasharray", function(d) {
-                return (this.getTotalLength() + ' ' + this.getTotalLength())
+                return (this.getTotalLength() + ' ' + this.getTotalLength());
               })
               .attr('stroke-dashoffset', 0)
               .attr("class", "lineConnect")
               .transition()
               .duration(1500)
               .attr("stroke-dashoffset", function(d) {
-                return -this.getTotalLength()
-              })
+                return -this.getTotalLength();
+              });
             // .each("end", function() {
             //   mapEl.nyc.transitionCircles()
             // });
           });
-      }
+      };
     }
   }
 
-}
-
-    // helpers
-    function findPanelPositionById(id, idArray, widthArray) {
-      function matchId(el) {
-        return el === id;
-      }
-      var index = idArray.findIndex(matchId);
-      // var widthArrayLeft = widthArray;
-      // widthArrayLeft.length = index;
-      console.log(index)
-      var pos = widthArray.slice(0, index).reduce(function(a, b) {
-        return a + b;
-      });
-      console.log(panelWrapperMargin, totalImagesWidthRight, viewportWidth)
-      pos += panelWrapperMargin + totalImagesWidthRight - viewportWidth;
-      return pos;
-    }
-    // example use
-    // findPanelPositionById("panel-2-3", panelIds, panelWidths)
-
-function scrollToPanel(elementId) {
-  var elementPosition = panelPositionByNum(elementId);
-  elementPosition -= panelWrapperMargin;
-  // var scrollToPanelThrottle = _.throttle(scroll, 500);
-  function scroll() {
-    $('#vis').stop().animate( { scrollLeft: elementPosition }, { duration: 1000, easing: "swing"});
-  }
-  // scrollToPanelThrottle();
-  // $.throttle(100, scroll);
-  scroll();
-}
-
-function panelPositionByNum(panelId) {
+  // helpers
+  function findPanelPositionById(id, idArray, widthArray) {
     function matchId(el) {
-      return el.substring(el.length - 3) === panelId;
+      return el === id;
     }
-    var index = panelIds.findIndex(matchId);
-    return panelPositions[index];
+    var index = idArray.findIndex(matchId);
+    // var widthArrayLeft = widthArray;
+    // widthArrayLeft.length = index;
+    console.log(index);
+    var pos = widthArray.slice(0, index).reduce(function(a, b) {
+      return a + b;
+    });
+    console.log(panelWrapperMargin, firstPanelMargin, viewportWidth);
+    pos += panelWrapperMargin + firstPanelMargin - viewportWidth;
+    return pos;
+  }
+  // example use
+  // findPanelPositionById("panel-2-3", panelIds, panelWidths)
+
+  function scrollToPanel(elementId) {
+    var elementPosition = panelPositionByNum(elementId);
+    elementPosition -= panelWrapperMargin;
+    function scroll() {
+      $('#vis').stop().animate( { scrollLeft: elementPosition }, { duration: 1000, easing: "swing"});
+    }
+    scroll();
+  }
+
+  function panelPositionByNum(panelId) {
+      function matchId(el) {
+        return el.substring(el.length - 3) === panelId;
+      }
+      var index = panelIds.findIndex(matchId);
+      return panelPositions[index];
+  }
+
 }

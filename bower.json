@@ -7,8 +7,7 @@
     "jquery-mousewheel": "^3.1.13",
     "underscore": "^1.8.3",
     "perfect-scrollbar": "^0.6.16",
-    "d3": "^3",
-    "jquery-throttle-debounce": "*"
+    "d3": "^3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
