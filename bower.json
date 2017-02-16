@@ -6,7 +6,9 @@
     "modernizr": "~2.8.1",
     "jquery-mousewheel": "^3.1.13",
     "underscore": "^1.8.3",
-    "perfect-scrollbar": "^0.6.16"
+    "perfect-scrollbar": "^0.6.16",
+    "d3": "^3",
+    "jquery-throttle-debounce": "*"
   },
   "devDependencies": {
     "chai": "^3.5.0",

@@ -11,6 +11,7 @@ var totalWidth;
 
 var panelWidths = [];
 var panelIds = [];
+var panelPositions= [];
 var panelImageWidths = [];
 var panelTextBlockWidths = [];
 
@@ -35,7 +36,7 @@ function initViz() {
   $(document).ready(function() {
     var throttleSpeed = 50;
 
-    var viewportWidth = document.documentElement.clientWidth;
+    viewportWidth = document.documentElement.clientWidth;
     viewportHeight = document.documentElement.clientHeight;
     isMobile = viewportWidth < 768 ? true : false;
     var panelHeightPercent = 0.9;
@@ -96,6 +97,7 @@ function initViz() {
     panelsEl.each(function() {
       var panel = $(this);
       var data = panel.data();
+      var panelId = panel.attr("id");
       var width;
 
       if (data.type == 'image') {
@@ -123,14 +125,26 @@ function initViz() {
         panelTextBlockWidths.push(width);
       }
 
+      if (panelId == 'text-1-1') {
+        firstPanelWidth = width;
+        totalImagesWidthRight = viewportWidth - firstPanelWidth + panelWrapperMargin;
+      }
       // keep an array of widths
       if (data.type !== 'text-overlay') {
+        var initialPosition = panelWrapperMargin + totalImagesWidthRight;
+        if (panelWidths.length === 0) {
+          panelPositions.push(Math.round(initialPosition));
+        }
         panelWidths.push(width);
-        panelIds.push(panel.attr("id"));
+        panelIds.push(panelId);
+        var position = panelWidths.reduce(function(a, b) {
+          return a + b;
+        });
+        position += initialPosition;
+        position = Math.round(position);
+        panelPositions.push(position);
       }
-      if (panel.attr("id") == 'text-1-1') {
-        firstPanelWidth = width;
-      }
+
 
       if (data.type == 'map') {
         panel.css({
@@ -147,22 +161,47 @@ function initViz() {
     });
 
     var firstPanel = $('#panel-1-1');
-    // var firstPanelWidth = panelWidths[0];
-    console.log(firstPanelWidth)
-    totalImagesWidthRight = viewportWidth - firstPanelWidth + panelWrapperMargin;
     firstPanel.css({
       "margin-left": totalImagesWidthRight
     });
 
+    // set overlaid text position based on order
+    // for (var i = 0; i < textPanelsEl.length; i++) {
+    //   var textPanel = $(textPanelsEl[i]);
+    //   if (textPanel.data().type == 'text-overlay') {
+    //     var marginLeft = 0;
+    //     for (var j = 0; j < i; j++) {
+    //       marginLeft += $(imagePanelsEl[j]).width();
+    //     }
+    //     if (i > 0) {
+    //       marginLeft += totalImagesWidthRight
+    //     }
+    //     textPanel.css({
+    //       "margin-left": marginLeft
+    //     });
+    //   }
+    // }
+
+    // set overlaid text based on id
     for (var i = 0; i < textPanelsEl.length; i++) {
       var textPanel = $(textPanelsEl[i]);
+      var textPanelId = textPanel.attr("id");
+      var textPanelNum = textPanelId.substring(textPanelId.length - 3);
       if (textPanel.data().type == 'text-overlay') {
-        var marginLeft = 0;
-        for (var j = 0; j < i; j++) {
-          marginLeft += $(imagePanelsEl[j]).width();
+        function matchId(el) {
+          return el.substring(el.length - 3) === textPanelNum;
         }
-        if (i > 0) {
-          marginLeft += totalImagesWidthRight
+        var index = panelIds.findIndex(matchId);
+        // var marginLeft = 0;
+        // for (var j = 0; j < i; j++) {
+        //   marginLeft += $(imagePanelsEl[j]).width();
+        // }
+        // if (i > 0) {
+        //   marginLeft += totalImagesWidthRight
+        // }
+        var marginLeft = panelPositions[index] - panelWrapperMargin;
+        if (i === 0) {
+          marginLeft -= totalImagesWidthRight;
         }
         textPanel.css({
           "margin-left": marginLeft
@@ -173,13 +212,6 @@ function initViz() {
     var totalWidth = panelWidths.reduce(function(a, b) {
       return a + b;
     });
-    var totalImagesWidth = panelImageWidths.reduce(function(a, b) {
-      return a + b;
-    });
-    var totalTextBlocksWidth = panelTextBlockWidths.reduce(function(a, b) {
-      return a + b;
-    });
-    // var finalWidth = totalImagesWidth + panelWrapperMargin + totalTextBlocksWidth;
     var finalWidth = totalWidth + panelWrapperMargin;
     finalWidth += totalImagesWidthRight;
     panelsGroupEl.css({
@@ -206,7 +238,7 @@ function initViz() {
       if (lastScrollLeft != documentScrollLeft) {
         lastScrollLeft = documentScrollLeft;
 
-        console.log(lastScrollLeft)
+        // console.log(lastScrollLeft)
 
         var mappedScrollOpacity = mapRange(lastScrollLeft, 0, viewportWidth / 2, 0, 1);
         var opacity;
@@ -237,6 +269,13 @@ function initViz() {
       var currentScroll = $('#vis').scrollLeft();
       $('#vis').scrollLeft(currentScroll - (event.deltaY * event.deltaFactor));
       event.preventDefault(); //prevents horizontal scroll on trackpad
+    });
+
+    $(".steps-link").click(function() {
+      var link = $(this)
+      var numToScroll = link.data().scroll;
+      console.log(numToScroll);
+      scrollToPanel(numToScroll);
     });
 
     initMaps();
@@ -278,8 +317,8 @@ function initViz() {
     });
 
     function initExportMap(exportLines, exportPoints, states) {
-      var width = $('#map-export').width() * 0.99;
-      // var height = $('#map-export').height() * 0.99;
+      var width = $('#map-export-3-0').width() * 0.99;
+      // var height = $('#map-export-3-0').height() * 0.99;
       var height = viewportHeight;
 
       var projection = d3.geo.mercator()
@@ -311,13 +350,13 @@ function initViz() {
         .translate(t);
 
       //Create SVG element
-      var svg = d3.select("#map-export")
+      var svg = d3.select("#map-export-3-0")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
-        .attr("id", "map-export-svg");
+        .attr("id", "map-export-3-0-svg");
 
-      $("#map-export-svg").css({
+      $("#map-export-3-0-svg").css({
         position: "absolute",
         top: -topVisPadding
       });
@@ -450,8 +489,8 @@ function initViz() {
 
     function initNycMap(odLines, destPointsRefuseData, nycd, states) {
       //Width and height
-      var width = $('#map-nyc').width() * 0.99;
-      // var height = $('#map-nyc').height() * 0.99;
+      var width = $('#map-nyc-2-0').width() * 0.99;
+      // var height = $('#map-nyc-2-0').height() * 0.99;
       var height = viewportHeight;
 
       var projection = d3.geo.albers()
@@ -468,13 +507,13 @@ function initViz() {
         .translate(t);
 
       //Create SVG element
-      var svg = d3.select("#map-nyc")
+      var svg = d3.select("#map-nyc-2-0")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
-        .attr("id", "map-nyc-svg");
+        .attr("id", "map-nyc-2-0-svg");
 
-      $("#map-nyc-svg").css({
+      $("#map-nyc-2-0-svg").css({
         position: "absolute",
         top: -topVisPadding
       });
@@ -666,11 +705,33 @@ function initViz() {
       var index = idArray.findIndex(matchId);
       // var widthArrayLeft = widthArray;
       // widthArrayLeft.length = index;
-      var position = widthArray.slice(0, index).reduce(function(a, b) {
+      console.log(index)
+      var pos = widthArray.slice(0, index).reduce(function(a, b) {
         return a + b;
       });
-      position += panelWrapperMargin + totalImagesWidthRight - viewportWidth;
-      return position;
+      console.log(panelWrapperMargin, totalImagesWidthRight, viewportWidth)
+      pos += panelWrapperMargin + totalImagesWidthRight - viewportWidth;
+      return pos;
     }
     // example use
     // findPanelPositionById("panel-2-3", panelIds, panelWidths)
+
+function scrollToPanel(elementId) {
+  var elementPosition = panelPositionByNum(elementId);
+  elementPosition -= panelWrapperMargin;
+  // var scrollToPanelThrottle = _.throttle(scroll, 500);
+  function scroll() {
+    $('#vis').stop().animate( { scrollLeft: elementPosition }, { duration: 1000, easing: "swing"});
+  }
+  // scrollToPanelThrottle();
+  // $.throttle(100, scroll);
+  scroll();
+}
+
+function panelPositionByNum(panelId) {
+    function matchId(el) {
+      return el.substring(el.length - 3) === panelId;
+    }
+    var index = panelIds.findIndex(matchId);
+    return panelPositions[index];
+}

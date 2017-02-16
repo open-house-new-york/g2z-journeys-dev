@@ -12,9 +12,9 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/perfect-scrollbar/css/perfect-scrollbar.css" />
-    <link href="https://fonts.googleapis.com/css?family=Karla:400,700" rel="stylesheet">
     <!-- endbower -->
     <!-- endbuild -->
+    <link href="https://fonts.googleapis.com/css?family=Karla:400,700" rel="stylesheet">
 
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -23,7 +23,7 @@
     <!-- build:js scripts/vendor/modernizr.js -->
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
-    <script src="https://d3js.org/d3.v3.min.js"></script>
+
   </head>
   <body>
     <!--[if lt IE 10]>
@@ -57,26 +57,25 @@
                     <p>In a single day, they collect more than 10,500 tons of refuse and 1,700 tons of recyclables. This means that each sanitation worker collects about 2 tons of material per day.</p>
                   </div>
                 </div>
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-2-1">
+                <div class="panel panel-text overlay" data-type="text-overlay" id="text-2-0">
                   <div class="panel-text-wrapper">
                     <h3>Transfer</h3>
                     <p>When trucks are full, they head to one of the city’s transfer stations.</p>
                   </div>
                 </div>
 
+
+
                 <div class="panel panel-image" data-type="image" id="panel-1-1" data-ratio="0.579234973" style="background-image:url('images/panel-1-1.jpg')"></div>
-                <!-- <div class="panel panel-image" data-type="image" id="panel-1-2" data-ratio="2.647540984" style="background-image:url('images/panel-1-2.jpg')"></div> -->
                 <div class="panel panel-image" data-type="image" id="panel-1-2" data-ratio="3.665217391" style="background-image:url('images/panel-1-2B.jpg')"></div>
-                <!-- <div class="panel panel-text-block" data-type="text-block" id="text-2-1">
-                  <div class="panel-text-wrapper">
-                    <h3>Transfer</h3>
-                    <p>When trucks are full, they head to one of the city’s transfer stations.</p>
-                  </div>
-                </div> -->
-                <div class="panel panel-image" data-type="map" id="map-nyc" data-ratio="0.75"></div>
-                <!-- <div class="panel panel-image" data-type="image" id="panel-2-1" data-ratio="2.064220183" style="background-image:url('images/panel-2-1.jpg')"></div> -->
+                <div class="panel panel-image" data-type="map" id="map-nyc-2-0" data-ratio="0.75"></div>
                 <div class="panel panel-image" data-type="image" id="panel-2-1" data-ratio="2.974945534" style="background-image:url('images/panel-2-1B.jpg')"></div>
-                <!-- <div class="panel panel-image" data-type="image" id="panel-2-2" data-ratio="2.120155039" style="background-image:url('images/panel-2-2.jpg')"></div> -->
+                <div class="panel panel-text overlay" data-type="text-overlay" id="text-2-2">
+                  <div class="panel-text-wrapper">
+                    <h3>Tipping</h3>
+                    <p>Inside the transfer station, trucks will unload their content onto the "tipping floor".</p>
+                  </div>
+                </div>
                 <div class="panel panel-image" data-type="image" id="panel-2-2" data-ratio="6.724420191" style="background-image:url('images/panel-2-2.jpg')"></div>
                 <div class="panel panel-text-block" data-type="text-block" id="text-2-2">
                   <div class="panel-text-wrapper">
@@ -93,7 +92,7 @@
                     <p>Virtually no waste generated in NYC stays within the city.</p>
                   </div>
                 </div>
-                <div class="panel panel-image" data-type="map" id="map-export" data-ratio="0.75"></div>
+                <div class="panel panel-image" data-type="map" id="map-export-3-0" data-ratio="0.75"></div>
                 <div class="panel panel-text-block" data-type="text-block" id="text-3-1">
                   <div class="panel-text-wrapper">
                     <h3>Disposal</h3>
@@ -101,10 +100,8 @@
                     <p>They follow environmental regulations to prevent water and soil contamination, and can reach hundreds of feet in height.</p>
                   </div>
                 </div>
-                <div class="panel panel-image" data-type="image" id="panel-3-1" style="background-image:url('images/panel-3-1.jpg')"></div>
+                <div class="panel panel-image" data-type="image" id="panel-3-2" style="background-image:url('images/panel-3-1.jpg')"></div>
 
-                <!-- <div class="panel panel-image" data-type="image" id="panel-1-2b" data-ratio="0.409836066" style="background-image:url('images/panel-1-2b.jpg')"></div> -->
-                <!-- <div class="panel panel-image" data-type="image" id="panel-1-3b" data-ratio="2.427595628" style="background-image:url('images/panel-1-3b.jpg')"></div> -->
               </div>
               <!-- panels -->
             </div>
@@ -118,19 +115,19 @@
 
     <div class="footer" id="footer">
       <div class="steps-container">
-        <a href="#1" id="step-1">
+        <a href="#1" id="step-1" class="steps-link" data-scroll="1-2">
           <div class="steps-dot"></div>
         </a>
         <div class="steps-line" id="step-line-1"></div>
-        <a href="#2" id="step-1">
+        <a href="#2" id="step-2" class="steps-link" data-scroll="2-0">
           <div class="steps-dot"></div>
         </a>
         <div class="steps-line" id="step-line-2"></div>
-        <a href="#3" id="step-1">
+        <a href="#3" id="step-3" class="steps-link" data-scroll="2-3">
           <div class="steps-dot"></div>
         </a>
         <div class="steps-line" id="step-line-3"></div>
-        <a href="#4" id="step-1">
+        <a href="#4" id="step-4" class="steps-link" data-scroll="3-1">
           <div class="steps-dot"></div>
         </a>
       </div>
@@ -154,6 +151,8 @@
     <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
     <script src="/bower_components/underscore/underscore.js"></script>
     <script src="/bower_components/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <script src="/bower_components/d3/d3.js"></script>
+    <script src="/bower_components/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
