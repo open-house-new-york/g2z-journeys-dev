@@ -27,7 +27,10 @@ function initViz() {
   var panelImageWidths = [];
   var panelTextBlockWidths = [];
 
-  var mapEl = {};
+  var mapEl = {
+    nyc: {},
+    wasteExport: {}
+  };
 
   var topVisPadding,
     viewportHeight,
@@ -178,6 +181,12 @@ function initViz() {
       width: vizWidth
     });
 
+    mapEl.nyc.played = false;
+    mapEl.nyc.position = panelPositionByNum("2-0");
+    mapEl.nyc.animationTrigger = isMobile ? mapEl.nyc.position : mapEl.nyc.position - (viewportWidth / 2);
+    mapEl.wasteExport.played = false;
+    mapEl.wasteExport.position = panelPositionByNum("3-0");
+    mapEl.wasteExport.animationTrigger = isMobile ? mapEl.wasteExport.position : mapEl.wasteExport.position - (viewportWidth / 2);
     // fill progress bar based on scrolling
     var lastScrollLeft = 0;
     function progressBar() {
@@ -202,6 +211,16 @@ function initViz() {
         $('#step-line-2').css({
           background: mapOpacity(panelPositions[2], panelPositions[8])
         });
+
+        // trigger map animations
+        if (lastScrollLeft >= mapEl.nyc.animationTrigger && !mapEl.nyc.played) {
+          mapEl.nyc.linesIn();
+          mapEl.nyc.played = true;
+        }
+        if (lastScrollLeft >= mapEl.wasteExport.animationTrigger && !mapEl.wasteExport.played) {
+          mapEl.wasteExport.linesIn();
+          mapEl.wasteExport.played = true;
+        }
       }
     }
     var progressBarThrottle = _.throttle(progressBar, throttleSpeed);
@@ -333,7 +352,7 @@ function initViz() {
         .attr("clip-path", "url(#mapClip)");
       var usStates = mapGroup.append("g").attr("class", "usStates");
       var linePaths = mapGroup.append("g").attr("class", "lineConnect");
-      var pointPaths = mapGroup.append("g").attr("class", "exportPoints");
+      var destPoints = mapGroup.append("g").attr("class", "exportPoints");
 
       usStates.selectAll(".usStates")
         .data(states.features)
@@ -385,11 +404,11 @@ function initViz() {
         //     .duration(500)
         //     .style("opacity", 0);
         // })
-        .transition()
-        .duration(3000)
-        .attr('stroke-dashoffset', 0);
+        // .transition()
+        // .duration(3000)
+        // .attr('stroke-dashoffset', 0);
 
-      pointPaths.selectAll(".exportPoints")
+      destPoints.selectAll(".exportPoints")
         .data(exportPoints.features)
         .enter()
         .append("circle")
@@ -399,9 +418,10 @@ function initViz() {
         .attr("cy", function(d) {
           return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
         })
-        .attr("r", function(d) {
-          return mapEl.scales.circleRadius(d.properties.sent_tons_);
-        })
+        // .attr("r", function(d) {
+          // return mapEl.scales.circleRadius(d.properties.sent_tons_);
+        // })
+        .attr("r", 0)
         .style("stroke", "#fff")
         .style("stroke-width", 1)
         .style("fill", mapEl.colors.wasteCircles)
@@ -414,7 +434,14 @@ function initViz() {
         })
         .attr("class", "exportPoints");
 
-      mapEl.transitionLines = function() {
+      mapEl.wasteExport.linesIn = function() {
+
+        destPoints.selectAll(".exportPoints")
+          .each(function(d, i) {
+            d3.select(this)
+              .attr("r", 0);
+            });
+
         linePaths.selectAll(".lineConnect")
           .each(function(d, i) {
             d3.select(this)
@@ -426,11 +453,44 @@ function initViz() {
               })
               .attr("class", "lineConnect")
               .transition()
-              .duration(3000)
-              .attr('stroke-dashoffset', 0);
-            // .each("end", function() {
-            //   transitionLines();// infinite loop
-            // });
+              .duration(1500)
+              .attr('stroke-dashoffset', 0)
+              .each("end", function() {
+                mapEl.wasteExport.transitionCircles();
+              });
+          });
+      };
+
+      mapEl.wasteExport.transitionCircles = function() {
+        destPoints.selectAll(".exportPoints")
+          .each(function(d, i) {
+            d3.select(this)
+              .attr("r", 0)
+          .transition()
+            .duration(1500)
+            .attr("r", function(d) {
+              return mapEl.scales.circleRadius(d.properties.sent_tons_);
+            })
+            .each("end", function() {
+              mapEl.wasteExport.linesOut();
+            });
+          });
+      };
+
+      mapEl.wasteExport.linesOut = function() {
+        linePaths.selectAll(".lineConnect")
+          .each(function(d, i) {
+            d3.select(this)
+              .attr("stroke-dasharray", function(d) {
+                return (this.getTotalLength() + ' ' + this.getTotalLength());
+              })
+              .attr('stroke-dashoffset', 0)
+              .attr("class", "lineConnect")
+              .transition()
+              .duration(1500)
+              .attr("stroke-dashoffset", function(d) {
+                return this.getTotalLength();
+              });
           });
       };
     }
@@ -555,9 +615,9 @@ function initViz() {
         //     .duration(500)
         //     .style("opacity", 0);
         // })
-        .transition()
-          .duration(3000)
-          .attr('stroke-dashoffset', 0);
+        // .transition()
+        //   .duration(3000)
+        //   .attr('stroke-dashoffset', 0);
 
       destPointsRefuse.selectAll(".destPointsRefuse")
         .data(destPointsRefuseData.features)
@@ -574,13 +634,11 @@ function initViz() {
         .style("stroke-width", 1)
         .style("fill", mapEl.colors.wasteCircles)
         .attr("class", "destPointsRefuse")
-        .transition()
-          .duration(3000)
-          .attr("r", function(d) {
-            return mapEl.scales.circleRadius(d.properties.j_tot_rec);
-          });
-
-      mapEl.nyc = {};
+        // .transition()
+        //   .duration(3000)
+        //   .attr("r", function(d) {
+        //     return mapEl.scales.circleRadius(d.properties.j_tot_rec);
+        //   });
 
       mapEl.nyc.linesIn = function() {
         //clear circles
@@ -639,9 +697,6 @@ function initViz() {
               .attr("stroke-dashoffset", function(d) {
                 return -this.getTotalLength();
               });
-            // .each("end", function() {
-            //   mapEl.nyc.transitionCircles()
-            // });
           });
       };
     }
