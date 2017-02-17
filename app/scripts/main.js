@@ -185,7 +185,7 @@ function initViz() {
     mapEl.nyc.position = panelPositionByNum('2-0');
     mapEl.nyc.animationTrigger = isMobile ? mapEl.nyc.position : mapEl.nyc.position - (viewportWidth / 2);
     mapEl.wasteExport.played = false;
-    mapEl.wasteExport.position = panelPositionByNum('3-0');
+    mapEl.wasteExport.position = panelPositionByNum('3-1');
     mapEl.wasteExport.animationTrigger = isMobile ? mapEl.wasteExport.position : mapEl.wasteExport.position - (viewportWidth / 2);
     // fill progress bar based on scrolling
     var lastScrollLeft = 0;
