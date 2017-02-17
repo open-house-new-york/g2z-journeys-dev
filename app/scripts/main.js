@@ -85,6 +85,7 @@ function initViz() {
 
     // set the widths of panels and push their widths, ids, and positions to arrays
     var firstPanelWidth;
+    var textBlockPadding = 100;
     panelsEl.each(function() {
       var panel = $(this);
       var data = panel.data();
@@ -113,7 +114,7 @@ function initViz() {
       } else if (data.type == 'text-overlay') {
         width = textPanelWidth;
       } else if (data.type == 'text-block') {
-        width = textPanelWidth;
+        width = textPanelWidth + textBlockPadding;
         panelTextBlockWidths.push(width);
       }
 
@@ -138,10 +139,18 @@ function initViz() {
       }
 
       // set panel css
-      panel.css({
-        height: panelHeight,
-        width: width
-      });
+      if (data.type == 'text-block') {
+        panel.css({
+          height: panelHeight,
+          width: width - textBlockPadding,
+          "padding-left": textBlockPadding
+        });
+      } else {
+        panel.css({
+          height: panelHeight,
+          width: width
+        });
+      };
 
     });
 
@@ -173,6 +182,7 @@ function initViz() {
     var totalPanelsWidth = panelWidths.reduce(function(a, b) {
       return a + b;
     });
+    console.log(totalPanelsWidth, panelWidths)
     var vizWidth = totalPanelsWidth + panelWrapperMargin + firstPanelMargin;
     panelsGroupEl.css({
       height: panelHeight,
@@ -214,7 +224,7 @@ function initViz() {
         };
 
         // fade footer in
-        if (currentScroll >= panelPositionsCalculated.collection - panelWrapperMargin && !footerVisible) {
+        if (currentScroll >= panelPositionsCalculated.collection - panelWrapperMargin - firstPanelMargin && !footerVisible) {
           $("#footer").fadeTo("slow", 1);
         }
 
@@ -309,7 +319,7 @@ function initViz() {
     });
 
     function initExportMap(exportLines, exportPoints, states) {
-      var width = $('#panel-3-1').width() * 0.99;
+      var width = $('.map-export').width() * 0.99;
       // var height = $('#panel-3-1').height() * 0.99;
       var height = viewportHeight;
 
@@ -334,7 +344,7 @@ function initViz() {
       }
 
       var b = path.bounds(exportLines),
-          scaleFactor = isMobile ? 0.75 : 0.95,
+          scaleFactor = 0.75,
           s = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
           t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
       projection
@@ -342,18 +352,18 @@ function initViz() {
         .translate(t);
 
       // Clear SVG if there is one (on resize)
-      if (d3.select('#panel-3-1-svg')) {
-        d3.select('#panel-3-1-svg').remove();
+      if (d3.select('#map-export-svg')) {
+        d3.select('#map-export-svg').remove();
       }
 
       //Create SVG element
-      var svg = d3.select('#panel-3-1')
+      var svg = d3.select('.map-export')
         .append('svg')
         .attr('width', width)
         .attr('height', height)
-        .attr('id', 'panel-3-1-svg');
+        .attr('id', 'map-export-svg');
 
-      $('#panel-3-1-svg').css({
+      $('#map-export-svg').css({
         position: 'absolute',
         top: -topVisPadding
       });
@@ -548,8 +558,7 @@ function initViz() {
 
     function initNycMap(odLines, destPointsRefuseData, nycd, states) {
       //Width and height
-      var width = $('#panel-2-1').width() * 0.99;
-      // var height = $('#panel-2-1').height() * 0.99;
+      var width = $('.map-nyc').width() * 0.99;
       var height = viewportHeight;
 
       var projection = d3.geo.albers()
@@ -566,17 +575,17 @@ function initViz() {
         .translate(t);
 
       // Clear SVG if there is one (on resize)
-      if (d3.select('#panel-2-1-svg')) {
-        d3.select('#panel-2-1-svg').remove();
+      if (d3.select('#map-nyc-svg')) {
+        d3.select('#map-nyc-svg').remove();
       }
       //Create SVG element
-      var svg = d3.select('#panel-2-1')
+      var svg = d3.select('.map-nyc')
         .append('svg')
         .attr('width', width)
         .attr('height', height)
-        .attr('id', 'panel-2-1-svg');
+        .attr('id', 'map-nyc-svg');
 
-      $('#panel-2-1-svg').css({
+      $('#map-nyc-svg').css({
         position: 'absolute',
         top: -topVisPadding
       });

@@ -22,7 +22,8 @@
 - different sanitation workers, changes every time?
 - fix first photo of trash bags, falling to left
 - fix resolution and maybe set a series of different resolutions depending on device size
-
+- fix photo inside transfer station with empty background
+- fix tipping photo sanitation truck writing mirrorred
 
 # before deploy
 
@@ -36,7 +37,7 @@
 
 # maps
 
-- nyc: fix jagged edges
+<!-- - nyc: fix jagged edges -->
 - add circle label when touched
 <!-- - build geojsons too via gulp -->
 - concat several geojsons into one
