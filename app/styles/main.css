@@ -41,7 +41,7 @@ body {
 }
 .steps-container {
   display: flex;
-  margin: 0 auto;
+  margin: 10px auto;
   justify-content: space-around;
   max-width: 500px;
 }
@@ -74,9 +74,17 @@ body {
 }
 #vis {
   max-width: 100%;
-  /*overflow-x: hidden;*/
-  /*overflow-y: hidden;*/
   position: relative;
+  opacity: 0;
+  /*initially hidden*/
+}
+#begin {
+  display: none;
+  /*initially hidden*/
+}
+#begin-mobile {
+  display: none;
+  /*initially hidden*/
 }
 .panels-container {
   position: relative;
