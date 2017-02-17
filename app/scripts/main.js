@@ -41,8 +41,6 @@ function initViz() {
       firstPanelMargin;
 
   $(document).ready(function() {
-    var throttleSpeed = 50;
-
     viewportWidth = document.documentElement.clientWidth;
     viewportHeight = document.documentElement.clientHeight;
     console.log('vsz', viewportHeight, viewportWidth);
@@ -119,7 +117,7 @@ function initViz() {
         panelTextBlockWidths.push(width);
       }
 
-      if (panelId == 'panel-1-1') {
+      if (panelId == 'panel-0-1') {
         firstPanelWidth = width;
         firstPanelMargin = viewportWidth - firstPanelWidth;
       }
@@ -147,7 +145,7 @@ function initViz() {
 
     });
 
-    var firstPanel = $('#panel-1-1');
+    var firstPanel = $('#panel-0-1');
     firstPanel.css({
       'margin-left': firstPanelMargin
     });
@@ -182,48 +180,70 @@ function initViz() {
     });
 
     mapEl.nyc.played = false;
-    mapEl.nyc.position = panelPositionByNum('2-0');
+    mapEl.nyc.position = panelPositionByNum('2-1');
     mapEl.nyc.animationTrigger = isMobile ? mapEl.nyc.position : mapEl.nyc.position - (viewportWidth / 2);
     mapEl.wasteExport.played = false;
     mapEl.wasteExport.position = panelPositionByNum('3-1');
     mapEl.wasteExport.animationTrigger = isMobile ? mapEl.wasteExport.position : mapEl.wasteExport.position - (viewportWidth / 2);
+
+    var panelPositionsCalculated = {
+      collection: panelPositionByNum('1-1'),
+      transfer: panelPositionByNum('2-1'),
+      export: panelPositionByNum('3-1'),
+      disposal: panelPositionByNum('4-1')
+    };
+
+    var footerVisible = false;
+
     // fill progress bar based on scrolling
-    var lastScrollLeft = 0;
+    var currentScroll = 0;
     function progressBar() {
       var documentScrollLeft = $('#vis').scrollLeft();
-      if (lastScrollLeft != documentScrollLeft) {
-        lastScrollLeft = documentScrollLeft;
+      if (currentScroll != documentScrollLeft) {
+        currentScroll = documentScrollLeft;
 
         var mapOpacity = function (initialPosition, finalPosition) {
           function mapRange(value, low1, high1, low2, high2) {
             return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
           }
-          var mappedOpacity = mapRange(lastScrollLeft, initialPosition, finalPosition, 0, 1);
+          var mappedOpacity = mapRange(currentScroll, initialPosition, finalPosition, 0, 1);
           var opacity = mappedOpacity > 1 ? 1 : mappedOpacity;
           var opacityPct = Math.round(opacity * 100);
           var linearGradient = 'linear-gradient(90deg, #333 0%, #333 ' + opacityPct + '%, #9d9d9d ' + opacityPct + '%)';
           return linearGradient;
         };
 
-        $('#step-line-1').css({
-          background: mapOpacity(panelPositions[1], panelPositions[2])
-        });
-        $('#step-line-2').css({
-          background: mapOpacity(panelPositions[2], panelPositions[8])
-        });
+        // fade footer in
+        if (currentScroll >= panelPositionsCalculated.collection - panelWrapperMargin && !footerVisible) {
+          $("#footer").fadeTo("slow", 1);
+        }
+
+        // set footer dots
+        var setDotsColor = function (dotId, panelPos) {
+          if (currentScroll >= panelPos) { $(dotId).css({ background: "#333"}); } else { $(dotId).css({ background: "#9d9d9d"}); }
+        };
+        setDotsColor("#step-dot-1", panelPositionsCalculated.collection);
+        setDotsColor("#step-dot-2", panelPositionsCalculated.transfer);
+        setDotsColor("#step-dot-3", panelPositionsCalculated.export);
+        setDotsColor("#step-dot-4", panelPositionsCalculated.disposal);
+
+        // set footer lines
+        $('#step-line-1').css({ background: mapOpacity(panelPositionsCalculated.collection, panelPositionsCalculated.transfer) });
+        $('#step-line-2').css({ background: mapOpacity(panelPositionsCalculated.transfer, panelPositionsCalculated.export) });
+        $('#step-line-3').css({ background: mapOpacity(panelPositionsCalculated.export, panelPositionsCalculated.disposal) });
 
         // trigger map animations
-        if (lastScrollLeft >= mapEl.nyc.animationTrigger && !mapEl.nyc.played) {
+        if (currentScroll >= mapEl.nyc.animationTrigger && !mapEl.nyc.played) {
           mapEl.nyc.linesIn();
           mapEl.nyc.played = true;
         }
-        if (lastScrollLeft >= mapEl.wasteExport.animationTrigger && !mapEl.wasteExport.played) {
+        if (currentScroll >= mapEl.wasteExport.animationTrigger && !mapEl.wasteExport.played) {
           mapEl.wasteExport.linesIn();
           mapEl.wasteExport.played = true;
         }
       }
     }
-    var progressBarThrottle = _.throttle(progressBar, throttleSpeed);
+    var progressBarThrottle = _.throttle(progressBar, 100);
     $('#vis').scroll(progressBarThrottle);
 
     // use mousewheel to scroll horizontally
@@ -289,8 +309,8 @@ function initViz() {
     });
 
     function initExportMap(exportLines, exportPoints, states) {
-      var width = $('#map-export-3-1').width() * 0.99;
-      // var height = $('#map-export-3-1').height() * 0.99;
+      var width = $('#panel-3-1').width() * 0.99;
+      // var height = $('#panel-3-1').height() * 0.99;
       var height = viewportHeight;
 
       var projection = d3.geo.mercator()
@@ -322,18 +342,18 @@ function initViz() {
         .translate(t);
 
       // Clear SVG if there is one (on resize)
-      if (d3.select('#map-export-3-1-svg')) {
-        d3.select('#map-export-3-1-svg').remove();
+      if (d3.select('#panel-3-1-svg')) {
+        d3.select('#panel-3-1-svg').remove();
       }
 
       //Create SVG element
-      var svg = d3.select('#map-export-3-1')
+      var svg = d3.select('#panel-3-1')
         .append('svg')
         .attr('width', width)
         .attr('height', height)
-        .attr('id', 'map-export-3-1-svg');
+        .attr('id', 'panel-3-1-svg');
 
-      $('#map-export-3-1-svg').css({
+      $('#panel-3-1-svg').css({
         position: 'absolute',
         top: -topVisPadding
       });
@@ -528,8 +548,8 @@ function initViz() {
 
     function initNycMap(odLines, destPointsRefuseData, nycd, states) {
       //Width and height
-      var width = $('#map-nyc-2-0').width() * 0.99;
-      // var height = $('#map-nyc-2-0').height() * 0.99;
+      var width = $('#panel-2-1').width() * 0.99;
+      // var height = $('#panel-2-1').height() * 0.99;
       var height = viewportHeight;
 
       var projection = d3.geo.albers()
@@ -546,17 +566,17 @@ function initViz() {
         .translate(t);
 
       // Clear SVG if there is one (on resize)
-      if (d3.select('#map-nyc-2-0-svg')) {
-        d3.select('#map-nyc-2-0-svg').remove();
+      if (d3.select('#panel-2-1-svg')) {
+        d3.select('#panel-2-1-svg').remove();
       }
       //Create SVG element
-      var svg = d3.select('#map-nyc-2-0')
+      var svg = d3.select('#panel-2-1')
         .append('svg')
         .attr('width', width)
         .attr('height', height)
-        .attr('id', 'map-nyc-2-0-svg');
+        .attr('id', 'panel-2-1-svg');
 
-      $('#map-nyc-2-0-svg').css({
+      $('#panel-2-1-svg').css({
         position: 'absolute',
         top: -topVisPadding
       });

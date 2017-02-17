@@ -36,6 +36,10 @@ body {
   text-align: center;
   z-index: 1;
 }
+#footer {
+  opacity: 0;
+  /*initially hidden*/
+}
 .footer img {
   height: 100%;
 }
