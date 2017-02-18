@@ -109,9 +109,6 @@ body {
   position: relative;
   float: left;
 }
-.panel-text {
-  /*position: relative;*/
-}
 .overlay {
   position: absolute;
   z-index: 1;
