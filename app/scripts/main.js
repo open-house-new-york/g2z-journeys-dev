@@ -263,6 +263,43 @@ function initViz() {
       event.preventDefault(); //prevents horizontal scroll on trackpad
     });
 
+    // use keyboard to scroll horizontally
+    document.onkeydown = function(event) {
+      if (!event)
+           event = window.event;
+      var code = event.keyCode;
+      if (event.charCode && code === 0)
+           code = event.charCode;
+      var scrollFactor = viewportWidth * 0.1;
+      var currentScroll = $('#vis').scrollLeft();
+      switch(code) {
+           case 37: // left arrow
+               $('#vis').scrollLeft(currentScroll - scrollFactor);
+               break;
+           case 38: // up arrow
+               $('#vis').scrollLeft(currentScroll - scrollFactor);
+               break;
+           case 39: // right arrow
+               $('#vis').scrollLeft(currentScroll + scrollFactor);
+               break;
+           case 40: // down arrow
+               $('#vis').scrollLeft(currentScroll + scrollFactor);
+               break;
+           case 33: // page up
+               $('#vis').scrollLeft(currentScroll - scrollFactor * 2);
+               break;
+           case 34: // page down
+               $('#vis').scrollLeft(currentScroll + scrollFactor * 2);
+               break;
+           case 32: // spacebar
+               $('#vis').scrollLeft(currentScroll + scrollFactor * 2);
+               break;
+           default:
+                //
+      }
+      event.preventDefault();
+   };
+
     // follow links in progress bar
     $('.steps-link').click(function() {
       var link = $(this);
