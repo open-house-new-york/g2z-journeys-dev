@@ -190,7 +190,7 @@ function initViz() {
     });
 
     mapEl.nyc.played = false;
-    mapEl.nyc.position = panelPositionByNum('2-1');
+    mapEl.nyc.position = panelPositionByNum('1-3');
     mapEl.nyc.animationTrigger = isMobile ? mapEl.nyc.position : mapEl.nyc.position - (viewportWidth / 2);
     mapEl.wasteExport.played = false;
     mapEl.wasteExport.position = panelPositionByNum('3-1');

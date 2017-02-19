@@ -119,6 +119,9 @@ body {
     width: 80%;
     position: relative;
 }
+.pad-left {
+  padding-left: 50px;
+}
 .panel-image {
   background: url("../images/transparent.gif") no-repeat bottom center;
   background-size: cover;
