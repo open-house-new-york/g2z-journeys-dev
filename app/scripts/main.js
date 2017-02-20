@@ -143,7 +143,7 @@ function initViz() {
         panel.css({
           height: panelHeight,
           width: width - textBlockPadding,
-          "padding-left": textBlockPadding
+          'padding-left': textBlockPadding
         });
       } else {
         panel.css({
@@ -225,17 +225,17 @@ function initViz() {
 
         // fade footer in
         if (currentScroll >= panelPositionsCalculated.collection - panelWrapperMargin - firstPanelMargin && !footerVisible) {
-          $("#footer").fadeTo("slow", 1);
+          $('#footer').fadeTo('slow', 1);
         }
 
         // set footer dots
         var setDotsColor = function (dotId, panelPos) {
-          if (currentScroll >= panelPos) { $(dotId).css({ background: "#333"}); } else { $(dotId).css({ background: "#9d9d9d"}); }
+          if (currentScroll >= panelPos) { $(dotId).css({ background: '#333'}); } else { $(dotId).css({ background: '#9d9d9d'}); }
         };
-        setDotsColor("#step-dot-1", panelPositionsCalculated.collection);
-        setDotsColor("#step-dot-2", panelPositionsCalculated.transfer);
-        setDotsColor("#step-dot-3", panelPositionsCalculated.export);
-        setDotsColor("#step-dot-4", panelPositionsCalculated.disposal);
+        setDotsColor('#step-dot-1', panelPositionsCalculated.collection);
+        setDotsColor('#step-dot-2', panelPositionsCalculated.transfer);
+        setDotsColor('#step-dot-3', panelPositionsCalculated.export);
+        setDotsColor('#step-dot-4', panelPositionsCalculated.disposal);
 
         // set footer lines
         $('#step-line-1').css({ background: mapOpacity(panelPositionsCalculated.collection, panelPositionsCalculated.transfer) });
@@ -308,11 +308,11 @@ function initViz() {
     });
 
     // fade vis in
-    $("#vis").fadeTo("slow", 1, function() {
+    $('#vis').fadeTo('slow', 1, function() {
       // Animation complete.
-      var beginEl = Modernizr.touch ? ($("#begin-mobile")) : $("#begin");
+      var beginEl = Modernizr.touch ? ($('#begin-mobile')) : $('#begin');
       setTimeout(function() {
-        beginEl.css({ display: "block" });
+        beginEl.css({ display: 'block' });
       }, 1500);
     });
     initMaps();

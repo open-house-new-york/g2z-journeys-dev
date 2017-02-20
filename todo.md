@@ -48,6 +48,7 @@
 
 # before deploy
 
+- see if favicon cache has updated
 - browserupgrade class?
 - allow robots
 - create github org
