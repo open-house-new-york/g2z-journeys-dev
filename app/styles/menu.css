@@ -49,35 +49,33 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  margin-top: 10px;
-  border: solid 2px #9d9d9d;
+  /*margin-top: 10px;*/
+  border-top: solid 2px #9d9d9d;
   background: url("../images/transparent.gif") no-repeat center center;
   background-size: cover;
-  padding: 0 !important;
+  /*padding: 0 !important;*/
 }
 .btn-menu-disabled {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  margin-top: 10px;
-  border: solid 2px #9d9d9d;
+  /*margin-top: 10px;*/
+  border-top: solid 2px #9d9d9d;
   background: url("../images/transparent.gif") no-repeat center center;
   background-size: cover;
-  padding: 0 !important;
+  /*padding: 0 !important;*/
   cursor: default !important;
-}
-.btn-menu:first-child {
-  margin-top: 0;
 }
 .a-btn {
   text-decoration: none;
   color: #333;
+  cursor: pointer !important;
 }
 .a-btn:active {
   color: #f15a29;
 }
 .btn-menu:hover {
-  border: solid 2px #f15a29;
+  /*border-top: solid 2px #f15a29;*/
   color: #f15a29;
 }
 .a-btn-disabled {
@@ -89,7 +87,7 @@
   color: #9d9d9d;
 }
 .btn-menu-disabled:hover {
-  border: solid 2px #9d9d9d;
+  border-top: solid 2px #9d9d9d;
   color: #9d9d9d;
 }
 .no-margin {
@@ -138,7 +136,7 @@
 
 #footer-menu {
   display: none;
-  padding: 10px;
+  padding: 0 10px;
 }
 .footnotes {
   font-size: 0.8em;
