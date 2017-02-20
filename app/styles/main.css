@@ -1,5 +1,4 @@
-body {
-  /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+/*body {
   font-family: 'Karla', sans-serif;
   color: #333;
   margin: 0;
@@ -24,7 +23,7 @@ body {
 }
 .masthead img {
   height: 100%;
-}
+}*/
 .footer {
   /*margin: 0;*/
   padding: 5px;
@@ -134,13 +133,5 @@ body {
 @media (min-width: 738px) {
   .panel-text-wrapper {
     margin-top: 10%;
-  }
-}
-@media (max-width: 768px) {
-  p {
-    font-size: 1em;
-  }
-  h3 {
-    font-size: 1.2em;
   }
 }

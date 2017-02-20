@@ -43,6 +43,7 @@
 
 # before deploy
 
+- browserupgrade class?
 - allow robots
 - create github org
 - send IP for A records, CNAME on repo
