@@ -329,7 +329,7 @@
 
         }
       }
-      var progressBarThrottle = _.throttle(progressBar, 100);
+      var progressBarThrottle = _.throttle(progressBar, 200);
       $('#vis').scroll(progressBarThrottle);
 
       // use mousewheel to scroll horizontally
