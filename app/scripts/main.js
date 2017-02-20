@@ -190,7 +190,6 @@ function initViz() {
     var totalPanelsWidth = panelWidths.reduce(function(a, b) {
       return a + b;
     });
-    console.log(totalPanelsWidth, panelWidths)
     var vizWidth = totalPanelsWidth + panelWrapperMargin + firstPanelMargin;
     panelsGroupEl.css({
       height: panelHeight,
@@ -203,12 +202,14 @@ function initViz() {
     mapEl.wasteExport.played = false;
     mapEl.wasteExport.position = panelPositionByNum('3-1');
     mapEl.wasteExport.animationTrigger = isMobile ? mapEl.wasteExport.position : mapEl.wasteExport.position - (viewportWidth / 2);
+    var lastImagePlayed = false;
 
     var panelPositionsCalculated = {
       collection: panelPositionByNum('1-1'),
       transfer: panelPositionByNum('2-1'),
       export: panelPositionByNum('3-1'),
-      disposal: panelPositionByNum('4-1')
+      disposal: panelPositionByNum('4-1'),
+      lastText: panelPositionByNum('4-7')
     };
 
     var footerVisible = false;
@@ -258,6 +259,20 @@ function initViz() {
         if (currentScroll >= mapEl.wasteExport.animationTrigger && !mapEl.wasteExport.played) {
           mapEl.wasteExport.linesIn();
           mapEl.wasteExport.played = true;
+        }
+
+        // trigger last image animation
+        if (currentScroll >= panelPositionsCalculated.lastText - firstPanelMargin && !lastImagePlayed) {
+          // $('#panel-4-6').fadeTo('slow', 0);
+          var lastImage = $('#panel-4-6');
+          lastImage.css({
+            transition: "background 1.0s linear",
+            'background-image': 'url(images/panel-4-6-diagram.jpg)'
+          });
+          // $('#panel-4-6').fadeTo('slow', 0, function() {
+          //   $(this).css('background-image', 'url(images/panel-4-6-diagram.jpg)');
+          // }).fadeTo('slow', 1);
+          lastImagePlayed = true;
         }
       }
     }
@@ -821,11 +836,9 @@ function initViz() {
     var index = idArray.findIndex(matchId);
     // var widthArrayLeft = widthArray;
     // widthArrayLeft.length = index;
-    console.log(index);
     var pos = widthArray.slice(0, index).reduce(function(a, b) {
       return a + b;
     });
-    console.log(panelWrapperMargin, firstPanelMargin, viewportWidth);
     pos += panelWrapperMargin + firstPanelMargin - viewportWidth;
     return pos;
   }
