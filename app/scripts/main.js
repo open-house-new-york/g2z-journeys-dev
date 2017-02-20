@@ -48,7 +48,7 @@ function initViz() {
     isMobile = viewportWidth < 768 ? true : false;
     var panelWidthPercent = 0.9;
     var panelHeightPercent = 0.9;
-    topVisPadding = isMobile ? 50 : 100;
+    topVisPadding = isMobile ? 60 : 100;
     var panelHeight = viewportHeight - topVisPadding - 50;
     var textPanelWidth = viewportWidth * panelWidthPercent > 400 ? 400 : viewportWidth * panelWidthPercent;
     panelWrapperMargin = 40;

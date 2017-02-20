@@ -24,6 +24,7 @@
 - link to website in header logo
 - menu at end
 - ***title in each text section?***
+- padding around maps
 
 # interactivity
 
@@ -33,10 +34,10 @@
 
 # photos
 
-- person taking out the trash LE (find, crop)
-- different sanitation workers, changes every time? LE (crop)
-- add dsny worker doing baskets LE (crop)
-- fix first photo of trash bags, falling to left
+<!-- - person taking out the trash LE (find, crop) -->
+<!-- - different sanitation workers, changes every time? LE (crop) -->
+<!-- - add dsny worker doing baskets LE (crop) -->
+<!-- - fix first photo of trash bags, falling to left -->
 - fix resolution and maybe set a series of different resolutions depending on device size
 <!-- - fix photo inside transfer station with empty background -->
 <!-- - fix tipping photo sanitation truck writing mirrorred -->
@@ -61,6 +62,7 @@
 
 # maps
 
+- what about covanta essex? not TS
 <!-- - nyc: fix jagged edges -->
 - add circle label when touched
 <!-- - build geojsons too via gulp -->

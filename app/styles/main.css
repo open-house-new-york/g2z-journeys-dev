@@ -108,3 +108,8 @@
     margin-top: 10%;
   }
 }
+.section-title {
+  /*margin-top: -1.67em;*/
+  margin: 0;
+  float: left;
+}
