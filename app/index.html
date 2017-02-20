@@ -12,13 +12,14 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/perfect-scrollbar/css/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="/bower_components/components-font-awesome/css/font-awesome.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <link href="https://fonts.googleapis.com/css?family=Karla:400,700" rel="stylesheet">
 
-    <!-- build:css styles/main.css -->
+    <!-- build:css styles/menu.css -->
     <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/menu.css">
     <!-- endbuild -->
 
     <!-- build:js scripts/vendor/modernizr.js -->
@@ -32,142 +33,96 @@
     <![endif]-->
     <div class="container">
       <div class="masthead">
-        <a href="#">
+        <a href="/">
           <img src="images/ohny-logo-1.png" alt="OHNY Home">
         </a>
       </div>
 
-
-      <div id="vis">
-            <div class="panels-wrapper">
-              <div class="panels-group">
-
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-0-1">
-                  <div class="panel-text-wrapper">
-                    <h3>New Yorkers generate more than two pounds of trash per person, every day.</h3>
-                    <p>Find out what happens to it after you put it on the curb.</p>
-                    <p id="begin"><strong>Scroll down to begin &rarr;</strong></p>
-                    <p id="begin-mobile"><strong>Swipe right to begin &rarr;</strong></p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-0-1" style="background-image:url('images/panel-0-1.jpg')"></div>
-
-                <!-- collection -->
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-1-1">
-                  <div class="panel-text-wrapper">
-                    <h3>Collection</h3>
-                    <p>Every day, more than 6,000 men and women of the Department of Sanitation collect garbage from residences and public buildings in New York City.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-1-1" style="background-image:url('images/panel-1-1.jpg')"></div>
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-1-2">
-                  <div class="panel-text-wrapper">
-                    <h3>&nbsp;</h3>
-                    <p>They work in pairs and collect more than 10,000 tons of material every day. All that waste goes into the back of compactor trucks.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-1-2" style="background-image:url('images/panel-1-2.jpg')"></div>
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-1-3">
-                  <div class="panel-text-wrapper">
-                    <h3>&nbsp;</h3>
-                    <p>When trucks are full, they head to one of the city’s transfer stations.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image map-nyc" data-type="map" id="panel-1-3" data-geo="nyc"></div>
-
-                <!-- transfer -->
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-2-1">
-                  <div class="panel-text-wrapper">
-                    <h3>Transfer</h3>
-                    <p>Transfer stations are consolidation centers for waste. They combine material from several collection trucks into containers to make long-distance travel cheaper and more efficient.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-2-1" style="background-image:url('images/panel-2-3.jpg')"></div>
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-2-4">
-                  <div class="panel-text-wrapper pad-left">
-                    <h3>Tipping</h3>
-                    <p>Inside the transfer station, trucks unload their content onto a lower level known as the "tipping floor".</p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-2-4" style="background-image:url('images/panel-2-4.jpg')"></div>
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-2-5">
-                  <div class="panel-text-wrapper">
-                    <h3>Compaction</h3>
-                    <p>Front loaders place waste on treadmills, which drop it into compactors.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-2-5" style="background-image:url('images/panel-2-5.jpg')"></div>
-                <div class="panel" data-type="text-block" id="text-2-6">
-                  <div class="panel-text-wrapper">
-                    <h3>Containerization</h3>
-                    <p>After being compacted, waste is loaded into containers for long-distance transport.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-2-7" style="background-image:url('images/panel-2-7.jpg')"></div>
-
-                <!-- export -->
-                <div class="panel panel-text" data-type="text-block" id="text-3-1">
-                  <div class="panel-text-wrapper">
-                    <h3>Export</h3>
-                    <p>Virtually no waste generated in NYC stays within the city.</p>
-                    <p>Waste is then transported on trains or trailer trucks to landfills outside of NYC.</p>
-                    <p>It will travel to other cities and states, located from 70 up to 600 miles away.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image map-export" data-type="map" id="panel-3-2" data-geo="export"></div>
-
-                <!-- disposal -->
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-4-1">
-                  <div class="panel-text-wrapper">
-                    <h3>Disposal</h3>
-                    <p>Landfills are essentially man-made mountains of waste, covered with soil.</p>
-                    <p>They follow environmental regulations to prevent water and soil contamination.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-4-1" style="background-image:url('images/panel-4-2.jpg')"></div>
-                <div class="panel panel-image" data-type="image" id="panel-4-2" style="background-image:url('images/panel-4-3.jpg')"></div>
-                <div class="panel panel-text overlay" data-type="text-overlay" id="text-4-3">
-                  <div class="panel-text-wrapper">
-                    <h3>Compacting</h3>
-                    <p>Heavy machinery will move, compact, and cover the waste with soil.</p>
-                    <p>This process continues until several layers of waste have been put in place.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-4-3" style="background-image:url('images/panel-4-4.jpg')"></div>
-                <div class="panel" data-type="text-block" id="text-4-4">
-                  <div class="panel-text-wrapper">
-                    <h3>Piling up</h3>
-                    <p>Landfills are essentially man-made mountains of waste.</p>
-                    <p>They can reach hundreds of feet in height.</p>
-                  </div>
-                </div>
-                <div class="panel panel-image" data-type="image" id="panel-4-5" style="background-image:url('images/panel-4-6.jpg')"></div>
-              </div>
-              <!-- panels -->
-            </div>
-            <!-- panels wrapper -->
+    <div class="container-wrapper">
+      <div class="container-inner">
+        <h3>When you throw something away in New York City, where does it actually go?</h3>
+        <p><i>Waste Journeys</i> is a series of side-scrolling digital features created to help New Yorkers
+          understand where their waste goes when they throw it “away,” and exactly how it gets there.</p>
+        <p>
+          Different types of waste follow very different paths depending on where they enter the waste stream.
+          You are likely most familiar with what's called the residential waste stream. On average, each New Yorker
+          generates about <span class="highlight">15 pounds of waste each week at home</span>, adding up to
+          around <span class="highlight">3 million tons</span> of waste citywide each year. This residential wastestream
+          is handled directly by the New York City Department of Sanitation (DSNY), along with waste generated
+          by municipal and many non-profit sites. In all, the DSNY is directly responsible for collecting
+          around <span class="highlight">3.6 million tons</span><sup>1</sup>  of waste each year, including residential waste.
+          This is the part of the system addressed by the City’s 0x30 campaign to eliminate waste to landfills by the year 2030.
+        </p>
+        <p>
+          But the residential and institutional waste handled by the DSNY represents just about
+          <span class="highlight">27%</span> of the city’s overall waste stream. Waste generated at
+          commercial, industrial, and construction sites is not collected or disposed
+          of by the DSNY, but by hundreds of private carting companies. Commercial sites in the five
+          boroughs generate <span class="highlight">3.5 million tons</span><sup>2</sup> of waste each year. The
+          largest part of the waste stream, however, is Construction Debris, which
+          accounts for a staggering <span class="highlight">6 million tons</span><sup>3</sup> of waste each year,
+          or <span class="highlight">1.6 pound</span> for every pound that you generate at home.
+          New York’s goal of becoming a truly zero waste city will require innovative
+          approaches to the <span class="highlight">73%</span> of the waste stream not currently handled by the municipal system.
+        </p>
+        <p>
+          Further complicating matters, the private carting firms that handle commercial, industrial,
+          and C&amp;D waste rely on long-haul trucking to transport waste, and many have located their
+          transfer stations in industrial areas; approximately <span class="highlight">60%</span><sup>4</sup> of
+          the city’s waste is carted by companies located in one of just three areas: the South Bronx,
+          the North Brooklyn neighborhoods along Newtown Creek, and Southeast Queens. All of those trucks
+          transporting waste from various sites to transfer stations,
+          from transfer stations to far-flung landfills, and the methane emitted at these landfills generate
+          an estimated <span class="highlight">5 million tons</span><sup>5</sup> of carbon emissions every
+          year—<span class="highlight">10%</span> of the city’s carbon footprint.
+          For our city to even begin to address this massive environmental challenge,
+          we must first understand how the current system works.
+        </p>
+        <p>
+          Seven Journeys will be rolled out over the next few months, starting with
+          features detailing the evolution of the city’s physical waste infrastructure
+          over the past century, and the journey taken by your average piece of household waste on its way to
+          distant landfills.
+        </p>
+        <hr style="margin-right:60%">
+        <div class="footnotes">
+          <p>1: OneNYC, 2014.</p>
+          <p>2: New York City Commercial Solid Waste Study and Analysis, 2012 Summary Report.</p>
+          <p>3: PlaNYC, April 2011; NYSDEC C&amp;D Processors Annual Reports.</p>
+          <p>4: NYSDEC Transfer Station Annual Reports.</p>
+          <p>5: Inventory of New York City Greenhouse Gas Emissions, 2014. Figure is estimated from the 2.1 millions that only include DSNY managed waste.</p>  
+        </div>
       </div>
-      <!-- vis -->
+    </div>
 
     <div class="footer" id="footer">
       <div class="steps-container">
-        <a href="#" id="step-1" class="steps-link" data-scroll="1-1">
-          <div class="steps-dot" id="step-dot-1"></div>
-        </a>
-        <div class="steps-line" id="step-line-1"></div>
-        <a href="#" id="step-2" class="steps-link" data-scroll="2-1">
-          <div class="steps-dot" id="step-dot-2"></div>
-        </a>
-        <div class="steps-line" id="step-line-2"></div>
-        <a href="#" id="step-3" class="steps-link" data-scroll="3-1">
-          <div class="steps-dot" id="step-dot-3"></div>
-        </a>
-        <div class="steps-line" id="step-line-3"></div>
-        <a href="#" id="step-4" class="steps-link" data-scroll="4-1">
-          <div class="steps-dot" id="step-dot-4"></div>
-        </a>
+        <div class="btn btn-img" id="journeys-button">
+          <h3>Explore Journeys <i class="fa fa-caret-up" aria-hidden="true" id="journeys-caret"></i></h3>
+        </div>
+        <div id="footer-menu">
+          <div class="btn btn-menu" style="background-image:url('images/panel-1-1.jpg')" id="">
+            <a href="/from-curb-to-landfill.html" class="a-btn"><h3>From Curb to Landfill</h3></a>
+          </div>
+          <div class="btn-disabled btn-menu-disabled" style="background-image:url('images/transparent.gif')" id="">
+            <a href="#" class="a-btn-disabled"><h3>Waste in the 1900s</h3></a>
+          </div>
+          <div class="btn-disabled btn-menu-disabled" style="background-image:url('images/transparent.gif')" id="">
+            <a href="#" class="a-btn-disabled"><h3>Recyclables: A Global Trade</h3></a>
+          </div>
+          <div class="btn-disabled btn-menu-disabled" style="background-image:url('images/transparent.gif')" id="">
+            <a href="#" class="a-btn-disabled"><h3>Organics: Local Solutions</h3></a>
+          </div>
+          <div class="btn-disabled btn-menu-disabled" style="background-image:url('images/transparent.gif')" id="">
+            <a href="#" class="a-btn-disabled"><h3>Commercial Waste</h3></a>
+          </div>
+          <div class="btn-disabled btn-menu-disabled" style="background-image:url('images/transparent.gif')" id="">
+            <a href="#" class="a-btn-disabled"><h3>Construction &amp; Demoliton</h3></a>
+          </div>
+        </div>
       </div>
     </div>
+
     </div>
     <!-- container -->
 
@@ -191,9 +146,8 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- build:js scripts/main.js -->
-    <script src="scripts/sizes.js" charset="utf-8"></script>
-    <script src="scripts/main.js" charset="utf-8"></script>
+    <!-- build:js scripts/menu.js -->
+    <script src="scripts/menu.js" charset="utf-8"></script>
     <!-- endbuild -->
   </body>
 </html>

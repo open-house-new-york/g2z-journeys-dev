@@ -1,3 +1,8 @@
+### before showing intro text
+
+- add sources to text
+- add comment about ghg being estimated
+
 # general
 
 - intro page: on our template
@@ -15,7 +20,7 @@
 <!-- - center footer vertically into its container -->
 - breadcrumbs
 - check if mask with opacity is not too slow
-- where will the name of the journey be on the page? besides title tag
+- ***where will the name of the journey be on the page? besides title tag***
 - link to website in header logo
 - menu at end
 - ***title in each text section?***
@@ -60,6 +65,10 @@
 <!-- - build geojsons too via gulp -->
 - concat several geojsons into one
 - legend? add non city used transfer stations?
+
+# menu
+
+- launch dates
 
 ### SOURCES for data
 
