@@ -426,22 +426,19 @@
       };
 
       //Load in GeoJSON data
-      d3.json('data/od_lines_refuse.geojson', function(odLines) {
-        d3.json('data/dest_points_refuse.geojson', function(destPointsRefuseData) {
-          d3.json('data/nycd.geojson', function(nycd) {
-            d3.json('data/dest_lines.geojson', function(exportLines) {
-              d3.json('data/export_points.geojson', function(exportPoints) {
-                d3.json('data/us_states.geojson', function(states) {
-                  d3.json('data/ny_nj_ct.geojson', function(nynj) {
-                    initNycMap(odLines, destPointsRefuseData, nycd, nynj);
-                    initExportMap(exportLines, exportPoints, states);
-                  });
-                });
-              });
-            });
-          });
-        });
+      d3.json('data/mapdata.geojson', function(geojson) {
+        var odLines = geojson.od_lines_refuse;
+        var destPointsRefuseData = geojson.dest_points_refuse;
+        var nycd = geojson.nycd;
+        var exportLines = geojson.dest_lines;
+        var exportPoints = geojson.export_points;
+        var states = geojson.states_east;
+        var nynj = geojson.ny_nj_ct;
+
+        initNycMap(odLines, destPointsRefuseData, nycd, nynj);
+        initExportMap(exportLines, exportPoints, states);
       });
+
 
       function initExportMap(exportLines, exportPoints, states) {
         var width = $('.map-export').width() * 0.99;
@@ -553,7 +550,7 @@
           .attr('stroke-dashoffset', function(d) {
             return -this.getTotalLength();
           })
-          .attr('class', 'lineConnect')
+          .attr('class', 'lineConnect');
         // .on("mouseover", function(d) {
         //   div.transition()
         //     .duration(200)
@@ -615,7 +612,7 @@
                     } else {
                       return -this.getTotalLength();
                     }
-                  })
+                  });
               });
           })
           .attr('class', 'exportPoints');
@@ -784,7 +781,7 @@
           .attr('stroke-dashoffset', function(d) {
             return this.getTotalLength();
           })
-          .attr('class', 'lineConnect')
+          .attr('class', 'lineConnect');
         // .on("mouseover", function(d) {
         //   div.transition()
         //     .duration(200)
@@ -818,7 +815,7 @@
           .style('stroke', '#fff')
           .style('stroke-width', 1)
           .style('fill', mapEl.colors.wasteCircles)
-          .attr('class', 'destPointsRefuse')
+          .attr('class', 'destPointsRefuse');
         // .transition()
         //   .duration(3000)
         //   .attr("r", function(d) {
