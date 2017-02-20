@@ -5,8 +5,8 @@
 
 # general
 
-- intro page: on our template
-- ignored attempt to cancel... is it reproducible on mobile?
+<!-- - intro page: on our template -->
+<!-- - ignored attempt to cancel... is it reproducible on mobile? -->
 - add google fonts file to app?
 - lagging: is it image sizes or css gradient or both or what?
 
@@ -18,13 +18,13 @@
 <!-- - add updated logo and favicon (maybe the favicon should match the current website – I think it does) -->
 <!-- - mask content before js is done -->
 <!-- - center footer vertically into its container -->
-- breadcrumbs
+<!-- - breadcrumbs -->
 - check if mask with opacity is not too slow
 - ***where will the name of the journey be on the page? besides title tag***
 - link to website in header logo
 - menu at end
 - ***title in each text section?***
-- padding around maps
+<!-- - padding around maps -->
 
 # interactivity
 
@@ -43,9 +43,10 @@
 <!-- - fix tipping photo sanitation truck writing mirrorred -->
 - left treadmill looks wonky without anything under it
 <!-- - add left slope to tipping at landfill picture? -->
-- color truck arriving at landfill orange?
-- make sits entrance foto taller
+<!-- - color truck arriving at landfill orange? -->
+<!-- - make sits entrance photo taller -->
 - uniform treatment for photos
+- inside SITS: lighter background
 
 # before deploy
 
