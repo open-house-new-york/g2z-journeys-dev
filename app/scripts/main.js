@@ -222,7 +222,7 @@
       mapEl.nyc.position = panelPositionByNum('1-3');
       mapEl.nyc.animationTrigger = isMobile ? mapEl.nyc.position : mapEl.nyc.position - (viewportWidth / 2);
       mapEl.wasteExport.played = false;
-      mapEl.wasteExport.position = panelPositionByNum('3-1');
+      mapEl.wasteExport.position = panelPositionByNum('3-4');
       mapEl.wasteExport.animationTrigger = isMobile ? mapEl.wasteExport.position : mapEl.wasteExport.position - (viewportWidth / 2);
       var lastImagePlayed = false;
 
