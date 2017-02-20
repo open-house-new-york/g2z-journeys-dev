@@ -65,6 +65,11 @@
         }
         // console.log(imageNearestSize);
       }
+      var diagramLazy = $("#diagram-lazy-load");
+      var diagramLazyUrl = "images/" + imageNearestSize + "_" + diagramLazy.data().imageurl;
+      $("#diagram-lazy-load").css({
+        "background-image": 'url("' + diagramLazyUrl + '")'
+      });
 
       containerEl = $('.container');
       visEl = $('#vis');
