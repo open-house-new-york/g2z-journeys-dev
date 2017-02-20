@@ -18,7 +18,7 @@ body {
   left: 0;
   right: 0;
   text-align: center;
-  z-index: 2;
+  z-index: 3;
 }
 .masthead img {
   height: 100%;
@@ -33,4 +33,7 @@ body {
 }
 .highlight {
   color: #f15a29;
+}
+.text-center {
+  text-align: center;
 }
