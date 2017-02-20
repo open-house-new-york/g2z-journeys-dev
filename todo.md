@@ -1,7 +1,7 @@
 ### before showing intro text
 
-- add sources to text
-- add comment about ghg being estimated
+<!-- - add sources to text -->
+<!-- - add comment about ghg being estimated -->
 
 # general
 
