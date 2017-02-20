@@ -1,3 +1,9 @@
+### notes
+
+- last image with diagram not lazy loading
+- if phone is too small and horizontal ask to flip to vertical
+- say something about landfills being sanitary
+
 ### before showing intro text
 
 <!-- - add sources to text -->
