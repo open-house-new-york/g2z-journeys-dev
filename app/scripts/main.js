@@ -86,6 +86,7 @@ function initViz() {
     // set the widths of panels and push their widths, ids, and positions to arrays
     var firstPanelWidth;
     var textBlockPadding = 100;
+    var mapSidePadding = 100;
     panelsEl.each(function() {
       var panel = $(this);
       var data = panel.data();
@@ -110,6 +111,7 @@ function initViz() {
       } else if (data.type == 'map') {
         var widthFactor = isMobile ? 1.1 : 1.3;
         width = viewportHeight * widthFactor;
+        width += mapSidePadding;
         panelImageWidths.push(width);
       } else if (data.type == 'text-overlay') {
         width = textPanelWidth;
@@ -145,12 +147,18 @@ function initViz() {
           width: width - textBlockPadding,
           'padding-left': textBlockPadding
         });
+      } else if (data.type == 'map') {
+        panel.css({
+          height: panelHeight,
+          width: width - mapSidePadding,
+          'padding-right': mapSidePadding
+        });
       } else {
         panel.css({
           height: panelHeight,
           width: width
         });
-      };
+      }
 
     });
 
