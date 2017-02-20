@@ -53,6 +53,19 @@ function initViz() {
     var textPanelWidth = viewportWidth * panelWidthPercent > 400 ? 400 : viewportWidth * panelWidthPercent;
     panelWrapperMargin = 40;
 
+    console.log(panelHeight)
+    var imageNearestSize;
+    if (panelHeight < 1000) {
+      imageNearestSize = Math.ceil(panelHeight/100);
+      imageNearestSize *= 100;
+      if (imageNearestSize > 700) {
+        imageNearestSize = 800;
+      } else if (imageNearestSize < 500) {
+        imageNearestSize = 500;
+      }
+      console.log(imageNearestSize)
+    }
+
     containerEl = $('.container');
     visEl = $('#vis');
     panelsWrapperEl = $('.panels-wrapper');
@@ -94,15 +107,25 @@ function initViz() {
       var width;
 
       if (data.type == 'image') {
-        var bgUrl = panel.css('background-image');
-        bgUrl = bgUrl.split('\/');
-        bgUrl = bgUrl[bgUrl.length - 1];
-        bgUrl = bgUrl.replace(/[\)\"\']/g, '');
+        // var bgUrl = panel.css('background-image');
+        // bgUrl = bgUrl.split('\/');
+        // bgUrl = bgUrl[bgUrl.length - 1];
+        // bgUrl = bgUrl.replace(/[\)\"\']/g, '');
+        var bgUrl = data.imageurl;
+
+        var nearestImage = imageNearestSize + "_" + bgUrl;
+        var nearestBgImage = "url('images/" + nearestImage + "')";
+        console.log(nearestImage)
+
+        panel.css({
+          "background-image": nearestBgImage
+        });
 
         for (var i = 0; i < vizImageSizes.length; i++) {
-          if (bgUrl === vizImageSizes[i].filename) {
+          if (nearestImage === vizImageSizes[i].filename) {
             // calculate panel size based on image file ratio
             var ratio = vizImageSizes[i].width / vizImageSizes[i].height;
+            console.log(ratio)
             width = panelHeight * ratio;
             break;
           }
@@ -266,8 +289,8 @@ function initViz() {
           // $('#panel-4-6').fadeTo('slow', 0);
           var lastImage = $('#panel-4-6');
           lastImage.css({
-            transition: "background 1.0s linear",
-            'background-image': 'url(images/panel-4-6-diagram.jpg)'
+            transition: 'background 1.0s linear',
+            'background-image': 'url(images/' + imageNearestSize + '_panel-4-6-diagram.jpg)'
           });
           // $('#panel-4-6').fadeTo('slow', 0, function() {
           //   $(this).css('background-image', 'url(images/panel-4-6-diagram.jpg)');

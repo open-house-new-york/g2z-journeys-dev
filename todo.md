@@ -1,8 +1,9 @@
 ### notes
 
 - last image with diagram not lazy loading
-- if phone is too small and horizontal ask to flip to vertical
+- if phone is too small and horizontal ask to flip to vertical (5oopx min height)
 - say something about landfills being sanitary
+- add credits
 
 ### before showing intro text
 
