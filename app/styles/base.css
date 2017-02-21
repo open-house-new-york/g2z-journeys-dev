@@ -25,10 +25,10 @@ body {
 }
 @media (max-width: 768px) {
   p {
-    font-size: 1em;
+    font-size: 0.8em;
   }
   h3 {
-    font-size: 1.2em;
+    font-size: 1em;
   }
 }
 .highlight {

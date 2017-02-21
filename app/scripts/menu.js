@@ -1,5 +1,7 @@
 $(document).ready(function() {
   var active = false;
+  var footerInitialHeight = $("#footer").outerHeight();
+  var mastheadHeight = $(".masthead").outerHeight();
   $('#journeys-button').click(function() {
     var link = $(this);
     var body = $('body');
@@ -9,7 +11,7 @@ $(document).ready(function() {
     var caret = $('#journeys-caret');
     if (!active) {
       body.css({ overflow: 'hidden' });
-      footer.animate({height: viewportHeight - 60}, 500, function() {
+      footer.animate({height: viewportHeight - mastheadHeight}, 500, function() {
         // Animation complete.
         footerMenu.show();
         caret.removeClass('fa-caret-up');
