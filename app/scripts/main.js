@@ -65,10 +65,10 @@
         }
         // console.log(imageNearestSize);
       }
-      var diagramLazy = $("#diagram-lazy-load");
-      var diagramLazyUrl = "images/" + imageNearestSize + "_" + diagramLazy.data().imageurl;
-      $("#diagram-lazy-load").css({
-        "background-image": 'url("' + diagramLazyUrl + '")'
+      var diagramLazy = $('#diagram-lazy-load');
+      var diagramLazyUrl = 'images/' + imageNearestSize + '_' + diagramLazy.data().imageurl;
+      $('#diagram-lazy-load').css({
+        'background-image': 'url("' + diagramLazyUrl + '")'
       });
 
       containerEl = $('.container');
@@ -118,12 +118,12 @@
           // bgUrl = bgUrl.replace(/[\)\"\']/g, '');
           var bgUrl = data.imageurl;
 
-          var nearestImage = imageNearestSize + "_" + bgUrl;
-          var nearestBgImage = "url('images/" + nearestImage + "')";
+          var nearestImage = imageNearestSize + '_' + bgUrl;
+          var nearestBgImage = 'url(\'images/' + nearestImage + '\')';
           // console.log(nearestImage);
 
           panel.css({
-            "background-image": nearestBgImage
+            'background-image': nearestBgImage
           });
 
           for (var i = 0; i < vizImageSizes.length; i++) {
@@ -195,16 +195,19 @@
       });
 
       // set overlaid text based on id
-      var matchId = function(el) {
-        return el.substring(el.length - 3) === textPanelNum;
-      };
+      // var matchId = function(el) {
+      //   return el.substring(el.length - 3) === textPanelNum;
+      // };
       for (var i = 0; i < textPanelsEl.length; i++) {
         var textPanel = $(textPanelsEl[i]);
         var textPanelId = textPanel.attr('id');
         var textPanelNum = textPanelId.substring(textPanelId.length - 3);
         if (textPanel.data().type == 'text-overlay') {
-          var index = panelIds.findIndex(matchId);
-          var marginLeft = panelPositions[index] - panelWrapperMargin;
+          // var index = panelIds.findIndex(matchId);
+          var f;
+          var found = panelIds.some(function(item, index) { f = index; return item.substring(item.length - 3) == textPanelNum; });
+
+          var marginLeft = panelPositions[f] - panelWrapperMargin;
           if (i === 0) {
             marginLeft -= firstPanelMargin;
           }
@@ -321,12 +324,12 @@
 
           // show menu on end of scroll
           if (currentScroll >= vizLimit && !menuVisible) {
-            $("#menu").fadeTo(500, 1);
+            $('#menu').fadeTo(500, 1);
             menuVisible = true;
           } else if (currentScroll < vizLimit && menuVisible) {
-            $("#menu").fadeTo(500, 0, function () {
+            $('#menu').fadeTo(500, 0, function () {
               $(this).css({
-                display: "none"
+                display: 'none'
               });
             });
             menuVisible = false;
@@ -392,7 +395,7 @@
       $('#menu-back').click(function() {
         $('#menu').fadeTo(500, 0, function () {
           $(this).css({
-            display: "none"
+            display: 'none'
           });
         });
         menuVisible = false;
@@ -896,22 +899,6 @@
     }
 
     // helpers
-    function findPanelPositionById(id, idArray, widthArray) {
-      function matchId(el) {
-        return el === id;
-      }
-      var index = idArray.findIndex(matchId);
-      // var widthArrayLeft = widthArray;
-      // widthArrayLeft.length = index;
-      var pos = widthArray.slice(0, index).reduce(function(a, b) {
-        return a + b;
-      });
-      pos += panelWrapperMargin + firstPanelMargin - viewportWidth;
-      return pos;
-    }
-    // example use
-    // findPanelPositionById("panel-2-3", panelIds, panelWidths)
-
     function scrollToPanel(elementId) {
       var elementPosition = panelPositionByNum(elementId);
       elementPosition -= panelWrapperMargin;
@@ -928,11 +915,18 @@
     }
 
     function panelPositionByNum(panelId) {
-      function matchId(el) {
-        return el.substring(el.length - 3) === panelId;
+      // function matchId(el) {
+      //   return el.substring(el.length - 3) === panelId;
+      // }
+      // // var index = panelIds.findIndex(matchId);
+
+      var f;
+      var found = panelIds.some(function(item, index) { f = index; return item.substring(item.length - 3) == panelId; });
+      if (!found) {
+          return false;
       }
-      var index = panelIds.findIndex(matchId);
-      return panelPositions[index];
+
+      return panelPositions[f];
     }
 
   }
