@@ -222,3 +222,6 @@
   top: 0;
   left: 0;
 }
+.image-preload {
+  display: none;
+}
