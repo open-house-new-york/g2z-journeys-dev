@@ -55,16 +55,14 @@
 
       // console.log(panelHeight);
       var imageNearestSize;
-      if (panelHeight < 1000) {
-        imageNearestSize = Math.ceil(panelHeight / 100);
-        imageNearestSize *= 100;
-        if (imageNearestSize > 700) {
-          imageNearestSize = 800;
-        } else if (imageNearestSize < 500) {
-          imageNearestSize = 500;
-        }
-        // console.log(imageNearestSize);
+      imageNearestSize = Math.ceil(panelHeight / 100);
+      imageNearestSize *= 100;
+      if (imageNearestSize > 700) {
+        imageNearestSize = 800;
+      } else if (imageNearestSize < 500) {
+        imageNearestSize = 500;
       }
+
       var diagramLazy = $('#diagram-lazy-load');
       var diagramLazyUrl = 'images/' + imageNearestSize + '_' + diagramLazy.data().imageurl;
       $('#diagram-lazy-load').css({
