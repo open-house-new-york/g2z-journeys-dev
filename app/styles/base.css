@@ -30,6 +30,12 @@ body {
   h3 {
     font-size: 1em;
   }
+  .smaller {
+    font-size: 0.7em
+  }
+}
+.smaller {
+  font-size: 0.8em;
 }
 .highlight {
   color: #f15a29;
