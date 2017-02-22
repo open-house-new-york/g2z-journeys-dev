@@ -15,4 +15,4 @@ for (var i = 0; i < files.length; i++) {
 
 console.log(sizes);
 
-fs.writeFileSync('app/scripts/sizes.js', 'var vizImageSizes \= ' + JSON.stringify(sizes) + '\;');
+fs.writeFileSync('app/scripts/sizes.js', 'var visImageSizes \= ' + JSON.stringify(sizes) + '\;');

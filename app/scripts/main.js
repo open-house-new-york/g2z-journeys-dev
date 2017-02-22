@@ -1,16 +1,16 @@
 // $.getJSON( "scripts/sizes.json", function( data ) {
-// vizImageSizes = data;
+// visImageSizes = data;
 $(document).ready(function() {
-  initViz();
+  initVis();
 });
 // });
 
   // recalculate on window resize
   $(window).on('resize', _.debounce(function() {
-    initViz();
+    initVis();
   }, 500));
 
-  function initViz() {
+  function initVis() {
 
     // configs
     var firstPanelId = 'panel-0-1';
@@ -145,10 +145,10 @@ $(document).ready(function() {
             'background-image': nearestBgImage
           });
 
-          for (var i = 0; i < vizImageSizes.length; i++) {
-            if (nearestImage === vizImageSizes[i].filename) {
+          for (var i = 0; i < visImageSizes.length; i++) {
+            if (nearestImage === visImageSizes[i].filename) {
               // calculate panel size based on image file ratio
-              var ratio = vizImageSizes[i].width / vizImageSizes[i].height;
+              var ratio = visImageSizes[i].width / visImageSizes[i].height;
               width = panelHeight * ratio;
               break;
             }
@@ -232,10 +232,10 @@ $(document).ready(function() {
       var totalPanelsWidth = panelWidths.reduce(function(a, b) {
         return a + b;
       });
-      var vizWidth = totalPanelsWidth + panelWrapperMargin + firstPanelMargin;
+      var visWidth = totalPanelsWidth + panelWrapperMargin + firstPanelMargin;
       panelsGroupEl.css({
         height: panelHeight,
-        width: vizWidth
+        width: visWidth
       });
 
       // calculate positions and triggers for maps
@@ -264,7 +264,7 @@ $(document).ready(function() {
       // trigger events based on scrolling
       var footerVisible = false;
       var menuVisible = false;
-      var vizLimit = Math.floor(vizWidth - viewportWidth + panelWrapperMargin);
+      var visLimit = Math.floor(visWidth - viewportWidth + panelWrapperMargin);
       var currentScroll = 0;
       function progressBar(maps, steps) {
         var documentScrollLeft = $('#vis').scrollLeft();
@@ -329,10 +329,10 @@ $(document).ready(function() {
 
           // FIXME: not good in terms of ux
           // show menu on end of scroll
-          if (currentScroll >= vizLimit && !menuVisible) {
+          if (currentScroll >= visLimit && !menuVisible) {
             $('#menu').fadeTo(500, 1);
             menuVisible = true;
-          } else if (currentScroll < vizLimit && menuVisible) {
+          } else if (currentScroll < visLimit && menuVisible) {
             $('#menu').fadeTo(500, 0, function () {
               $(this).css({
                 display: 'none'
