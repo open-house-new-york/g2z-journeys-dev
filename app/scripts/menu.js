@@ -1,7 +1,7 @@
 $(document).ready(function() {
   var active = false;
-  var footerInitialHeight = $("#footer").outerHeight();
-  var mastheadHeight = $(".masthead").outerHeight();
+  var footerInitialHeight = $('#footer').outerHeight();
+  var mastheadHeight = $('.masthead').outerHeight();
   $('#journeys-button').click(function() {
     var link = $(this);
     var body = $('body');

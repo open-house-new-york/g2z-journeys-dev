@@ -1,3 +1,12 @@
+# compatibility
+
+- firefox 47 last menu triggers out of nowhere
+- modernizr tests:
+https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssanimations-cssgradients-cssscrollbar-csstransitions-devicemotion_deviceorientation-es5array-flexbox-flexwrap-hiddenscroll-inlinesvg-json-mediaqueries-opacity-rgba-scrollsnappoints-svgclippaths-touchevents-setclasses
+- maybe use underscore instead of array reduce
+- horizontal menu in small devices
+- on mobile, hide top address bar?
+
 ### notes
 
 <!-- - last image with diagram not lazy loading -->
