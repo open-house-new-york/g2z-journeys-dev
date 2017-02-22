@@ -4,27 +4,19 @@ var panelWidths = [],
     panelImageWidths = [],
     panelTextBlockWidths = [];
 
-  var viewportWidth = document.documentElement.clientWidth;
-  var viewportHeight = document.documentElement.clientHeight;
-  var horizontalViewport = viewportWidth >= viewportHeight ? true : false;
-  var isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
-  console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
-
-  var panelWidthPercent = 0.9;
-  var panelHeightPercent = 0.9;
-  var panelWrapperMargin = 40;
-  var topVisPadding = isMobile ? 60 : 100;
-  var textBlockPadding = 100;
-  var mapSidePadding = 100;
-  var maximumTextPanelWidth = 400;
-
-  var panelHeight = viewportHeight - topVisPadding - 50;
-  var textPanelWidth;
-  if (horizontalViewport) {
-    textPanelWidth = viewportHeight * panelHeightPercent > maximumTextPanelWidth ? maximumTextPanelWidth : viewportHeight * panelHeightPercent;
-  } else {
-    textPanelWidth = viewportWidth * panelWidthPercent > maximumTextPanelWidth ? maximumTextPanelWidth : viewportWidth * panelWidthPercent;
-  }
+var viewportWidth,
+    viewportHeight,
+    horizontalViewport,
+    isMobile,
+    panelWidthPercent,
+    panelHeightPercent,
+    panelWrapperMargin,
+    topVisPadding,
+    textBlockPadding,
+    mapSidePadding,
+    maximumTextPanelWidth,
+    panelHeight,
+    textPanelWidth;
 
 // $.getJSON( "scripts/sizes.json", function( data ) {
 // visImageSizes = data;
@@ -39,6 +31,32 @@ $(document).ready(function() {
   }, 500));
 
   function initVis() {
+      panelWidths = [];
+      panelIds = [];
+      panelPositions = [];
+      panelImageWidths = [];
+      panelTextBlockWidths = [];
+
+      viewportWidth = document.documentElement.clientWidth;
+      viewportHeight = document.documentElement.clientHeight;
+      horizontalViewport = viewportWidth >= viewportHeight ? true : false;
+      isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
+      console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
+
+      panelWidthPercent = 0.9;
+      panelHeightPercent = 0.9;
+      panelWrapperMargin = 40;
+      topVisPadding = isMobile ? 60 : 100;
+      textBlockPadding = 100;
+      mapSidePadding = 100;
+      maximumTextPanelWidth = 400;
+      panelHeight = viewportHeight - topVisPadding - 50;
+
+      if (horizontalViewport) {
+        textPanelWidth = viewportHeight * panelHeightPercent > maximumTextPanelWidth ? maximumTextPanelWidth : viewportHeight * panelHeightPercent;
+      } else {
+        textPanelWidth = viewportWidth * panelWidthPercent > maximumTextPanelWidth ? maximumTextPanelWidth : viewportWidth * panelWidthPercent;
+      }
 
       if (horizontalViewport && isMobile) {
         console.log('flip please') // and stop everything, of fix for horizontal small screens?

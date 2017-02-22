@@ -34,7 +34,7 @@ function initMaps() {
   function initExportMap(exportLines, exportPoints, states) {
     var width = $('.map-export').width() * 0.99;
     // var height = $('#panel-3-1').height() * 0.99;
-    var height = document.documentElement.clientHeight;
+    var height = viewportHeight;
 
     var projection = d3.geo.mercator()
       .scale(1)
@@ -272,7 +272,7 @@ function initMaps() {
   function initNycMap(odLines, destPointsRefuseData, nycd, states) {
     //Width and height
     var width = $('.map-nyc').width() * 0.99;
-    var height = document.documentElement.clientHeight;
+    var height = viewportHeight;
 
     var projection = d3.geo.albers()
       .scale(1)
