@@ -5,12 +5,12 @@
 https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssanimations-cssgradients-cssscrollbar-csstransitions-devicemotion_deviceorientation-es5array-flexbox-flexwrap-hiddenscroll-inlinesvg-json-mediaqueries-opacity-rgba-scrollsnappoints-svgclippaths-touchevents-setclasses
 - maybe use underscore instead of array reduce
 - horizontal menu in small devices
-- on mobile, hide top address bar?
+<!-- - on mobile, hide top address bar? -->
 
 ### notes
 
 <!-- - last image with diagram not lazy loading -->
-- if phone is too small and horizontal ask to flip to vertical (5oopx min height)
+- if phone is too small and horizontal ask to flip to vertical (500px min height)
 <!-- - say something about landfills being sanitary -->
 - add credits
 

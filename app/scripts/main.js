@@ -20,15 +20,29 @@ var viewportWidth,
 
 // $.getJSON( "scripts/sizes.json", function( data ) {
 // visImageSizes = data;
+function calculateViewportDimensions() {
+  viewportWidth = document.documentElement.clientWidth;
+  viewportHeight = document.documentElement.clientHeight;
+  horizontalViewport = viewportWidth >= viewportHeight ? true : false;
+  isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
+  console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
+  if (horizontalViewport && isMobile) {
+    $("#change-orientation").show();
+  } else {
+    $("#change-orientation").hide();
+    initVis();
+  }
+}
+
 $(document).ready(function() {
-  initVis();
+ calculateViewportDimensions();
 });
 // });
 
-  // recalculate on window resize
-  $(window).on('resize', _.debounce(function() {
-    initVis();
-  }, 500));
+// recalculate on window resize
+$(window).on('resize', _.debounce(function() {
+ calculateViewportDimensions();
+}, 500));
 
   function initVis() {
       panelWidths = [];
@@ -36,12 +50,6 @@ $(document).ready(function() {
       panelPositions = [];
       panelImageWidths = [];
       panelTextBlockWidths = [];
-
-      viewportWidth = document.documentElement.clientWidth;
-      viewportHeight = document.documentElement.clientHeight;
-      horizontalViewport = viewportWidth >= viewportHeight ? true : false;
-      isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
-      console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
 
       panelWidthPercent = 0.9;
       panelHeightPercent = 0.9;
@@ -56,10 +64,6 @@ $(document).ready(function() {
         textPanelWidth = viewportHeight * panelHeightPercent > maximumTextPanelWidth ? maximumTextPanelWidth : viewportHeight * panelHeightPercent;
       } else {
         textPanelWidth = viewportWidth * panelWidthPercent > maximumTextPanelWidth ? maximumTextPanelWidth : viewportWidth * panelWidthPercent;
-      }
-
-      if (horizontalViewport && isMobile) {
-        console.log('flip please') // and stop everything, of fix for horizontal small screens?
       }
 
       // get image size depending on viewport size
@@ -434,7 +438,5 @@ $(document).ready(function() {
 
       // FIXME:
       initMaps();
-
-
 
 }
