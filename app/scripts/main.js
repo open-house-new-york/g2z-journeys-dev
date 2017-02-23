@@ -12,6 +12,7 @@ var viewportWidth,
     panelHeightPercent,
     panelWrapperMargin,
     topVisPadding,
+    footerPadding,
     textBlockPadding,
     mapSidePadding,
     maximumTextPanelWidth,
@@ -26,12 +27,7 @@ function calculateViewportDimensions() {
   horizontalViewport = viewportWidth >= viewportHeight ? true : false;
   isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
   console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
-  if (horizontalViewport && isMobile) {
-    $('#change-orientation').show();
-  } else {
-    $('#change-orientation').hide();
-    initVis();
-  }
+  initVis();
 }
 
 $(document).ready(function() {
@@ -52,13 +48,28 @@ $(window).on('resize', _.debounce(function() {
       panelTextBlockWidths = [];
 
       panelWidthPercent = 0.9;
-      panelHeightPercent = 0.9;
+      panelHeightPercent = 0.7;
       panelWrapperMargin = 40;
-      topVisPadding = isMobile ? 60 : 100;
+      // topVisPadding = isMobile ? 60 : 100;
+
+      if (isMobile && horizontalViewport) {
+        topVisPadding = 10;
+        footerPadding = 0;
+        $(".masthead").hide();
+        $("#footer").hide();
+      } else {
+        $(".masthead").show();
+        footerPadding = 50;
+        if (isMobile) {
+          topVisPadding = 60;
+        } else {
+          topVisPadding = 100;
+        }
+      }
       textBlockPadding = 25;
       mapSidePadding = 100;
       maximumTextPanelWidth = 400;
-      panelHeight = viewportHeight - topVisPadding - 50;
+      panelHeight = viewportHeight - topVisPadding - footerPadding;
       var firstPanelMargin;
 
       if (horizontalViewport) {
@@ -267,11 +278,6 @@ $(window).on('resize', _.debounce(function() {
         if (currentScroll != documentScrollLeft) {
           currentScroll = documentScrollLeft;
 
-          // fade footer in
-          if (currentScroll >= steps[0].position - panelWrapperMargin - firstPanelMargin && !footerVisible) {
-            $('#footer').fadeTo('slow', 1);
-          }
-
           // set footer dots
           var setDotsColor = function(dotId, panelPos) {
             if (currentScroll >= panelPos) {
@@ -297,14 +303,23 @@ $(window).on('resize', _.debounce(function() {
             return linearGradient;
           };
 
-          for (var i = 0; i < steps.length; i++) {
-            setDotsColor('#step-dot-' + steps[i].step, steps[i].position);
-            if (i > 0) {
-              $('#step-line-' + i).css({
-                background: setLinesOpacity(steps[i - 1].position, steps[i].position)
-              });
+          if (isMobile && horizontalViewport) {
+
+          } else {
+            // fade footer in
+            if (currentScroll >= steps[0].position - panelWrapperMargin - firstPanelMargin && !footerVisible) {
+              $('#footer').fadeTo('slow', 1);
+            }
+            for (var i = 0; i < steps.length; i++) {
+              setDotsColor('#step-dot-' + steps[i].step, steps[i].position);
+              if (i > 0) {
+                $('#step-line-' + i).css({
+                  background: setLinesOpacity(steps[i - 1].position, steps[i].position)
+                });
+              }
             }
           }
+
 
           // trigger map animations
           for (var i = 0; i < maps.length; i++) {
