@@ -31,6 +31,7 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 - add google fonts file to app?
 - lagging: is it image sizes or css gradient or both or what? **gradient**
 - **Maybe there should be text block / title sections for each step**
+- *font-size may be too small*
 
 # layout / styles
 
@@ -85,16 +86,17 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # social
 
-- facebook and other meta tags
+- facebook and other meta tags (twitter)
 
 # maps
 
 - what about covanta essex? not TS
-<!-- - nyc: fix jagged edges -->
 - add circle label when touched
+- legend? add non city used transfer stations?
+- cirlce clips making it too slow?
 <!-- - build geojsons too via gulp -->
 <!-- - concat several geojsons into one -->
-- legend? add non city used transfer stations?
+<!-- - nyc: fix jagged edges -->
 
 # menu
 

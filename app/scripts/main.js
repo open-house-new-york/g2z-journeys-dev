@@ -55,10 +55,10 @@ $(window).on('resize', _.debounce(function() {
       if (isMobile && horizontalViewport) {
         topVisPadding = 10;
         footerPadding = 0;
-        $(".masthead").hide();
-        $("#footer").hide();
+        $('.masthead').hide();
+        $('#footer').hide();
       } else {
-        $(".masthead").show();
+        $('.masthead').show();
         footerPadding = 50;
         if (isMobile) {
           topVisPadding = 60;
@@ -124,7 +124,7 @@ $(window).on('resize', _.debounce(function() {
       preloadImagesEl.each(function () {
         var image = $(this);
         var data = image.data();
-        var loadUrl = 'images/' + imageNearestSize + '_' + image.data().transitionurl;
+        var loadUrl = 'images/' + journeyConfigs.meta.slug + '/'  + imageNearestSize + '_' + image.data().transitionurl;
         var loadedImage = new Image();
         loadedImage.src = loadUrl;
       });
@@ -140,7 +140,7 @@ $(window).on('resize', _.debounce(function() {
           // set image size based on screen size
           var bgUrl = data.imageurl;
           var nearestImage = imageNearestSize + '_' + bgUrl;
-          var nearestBgImage = 'url(\'images/' + nearestImage + '\')';
+          var nearestBgImage = 'url(\'images/' + journeyConfigs.meta.slug + '/' + nearestImage + '\')';
           panel.css({
             'background-image': nearestBgImage
           });
@@ -334,7 +334,7 @@ $(window).on('resize', _.debounce(function() {
             if (currentScroll >= preloadImagesEl[i].triggerPosition - firstPanelMargin && !preloadImagesEl[i].played) {
               var panel = $(preloadImagesEl[i]);
               panel.css({
-                'background-image': 'url(images/' + imageNearestSize + '_' + panel.data().transitionurl + ')'
+                'background-image': 'url(images/' + journeyConfigs.meta.slug + '/' + imageNearestSize + '_' + panel.data().transitionurl + ')'
               });
             }
           }
