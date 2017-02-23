@@ -108,14 +108,13 @@ $(window).on('resize', _.debounce(function() {
       });
 
       // preload images that are hidden for transition
-      var preloadImages = $('.image-preload');
-      preloadImages.each(function () {
+      var preloadImagesEl = $('.image-transition');
+      preloadImagesEl.each(function () {
         var image = $(this);
         var data = image.data();
-        var loadUrl = 'images/' + imageNearestSize + '_' + preloadImages.data().imageurl;
-        image.css({
-          'background-image': 'url("' + loadUrl + '")'
-        });
+        var loadUrl = 'images/' + imageNearestSize + '_' + image.data().transitionurl;
+        var loadedImage = new Image();
+        loadedImage.src = loadUrl;
       });
 
       // set the widths of panels and push their widths, ids, and positions to arrays
@@ -240,17 +239,22 @@ $(window).on('resize', _.debounce(function() {
         }
       }
 
-      // trigger last image animation CUSTOM
-      if (journeyConfigs.meta.id === 1) {
-        var lastPanelPlayed = false;
-        var lastPanel = $('#panel-4-6');
-        var lastPanelPosition = panelPositionByNum('4-7');
-      }
-
       // calculate positions for vis steps change panels
       for (var i = 0; i < journeyConfigs.visSteps.length; i++) {
         journeyConfigs.visSteps[i].position = panelPositionByNum(journeyConfigs.visSteps[i].id);
       }
+
+      function calculatePreloadImagesPosition() {
+        var positions = [];
+        for (var i = 0; i < preloadImagesEl.length; i++) {
+          var panel = preloadImagesEl[i];
+          var data = $(panel).data();
+          var position = panelPositionByNum(data.transitionnum);
+          panel.triggerPosition = position;
+          panel.played = false;
+        }
+      }
+      calculatePreloadImagesPosition();
 
       // trigger events based on scrolling
       var footerVisible = false;
@@ -309,14 +313,13 @@ $(window).on('resize', _.debounce(function() {
             }
           }
 
-          // trigger last image animation CUSTOM
-          if (journeyConfigs.meta.id === 1) {
-            if (currentScroll >= lastPanelPosition - firstPanelMargin && !lastPanelPlayed) {
-              lastPanel.css({
-                transition: 'background 1.0s linear',
-                'background-image': 'url(images/' + imageNearestSize + '_panel-4-6-diagram.jpg)'
+
+          for (var i = 0; i < preloadImagesEl.length; i++) {
+            if (currentScroll >= preloadImagesEl[i].triggerPosition - firstPanelMargin && !preloadImagesEl[i].played) {
+              var panel = $(preloadImagesEl[i]);
+              panel.css({
+                'background-image': 'url(images/' + imageNearestSize + '_' + panel.data().transitionurl + ')'
               });
-              lastPanelPlayed = true;
             }
           }
 

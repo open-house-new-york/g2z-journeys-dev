@@ -244,6 +244,9 @@
   top: 0;
   left: 0;
 }
-.image-preload {
-  display: none;
+.image-transition {
+  -webkit-transition: background 1s;
+  -moz-transition: background 1s;
+  -o-transition: background 1s;
+  transition: background 1s;
 }
