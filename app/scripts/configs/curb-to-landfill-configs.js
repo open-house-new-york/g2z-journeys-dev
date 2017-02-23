@@ -1,5 +1,10 @@
 // configs
 var journeyConfigs = {};
+journeyConfigs.meta = {
+  name: 'From Curb to Lanfill',
+  slug: 'curb-to-landfill',
+  id: 1
+};
 journeyConfigs.firstPanelId = 'panel-0-1';
 journeyConfigs.visSteps = [
   {

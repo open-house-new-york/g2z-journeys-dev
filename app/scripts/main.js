@@ -27,9 +27,9 @@ function calculateViewportDimensions() {
   isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
   console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
   if (horizontalViewport && isMobile) {
-    $("#change-orientation").show();
+    $('#change-orientation').show();
   } else {
-    $("#change-orientation").hide();
+    $('#change-orientation').hide();
     initVis();
   }
 }
@@ -55,7 +55,7 @@ $(window).on('resize', _.debounce(function() {
       panelHeightPercent = 0.9;
       panelWrapperMargin = 40;
       topVisPadding = isMobile ? 60 : 100;
-      textBlockPadding = 100;
+      textBlockPadding = 25;
       mapSidePadding = 100;
       maximumTextPanelWidth = 400;
       panelHeight = viewportHeight - topVisPadding - 50;
@@ -241,9 +241,11 @@ $(window).on('resize', _.debounce(function() {
       }
 
       // trigger last image animation CUSTOM
-      var lastPanelPlayed = false;
-      var lastPanel = $('#panel-4-6');
-      var lastPanelPosition = panelPositionByNum('4-7');
+      if (journeyConfigs.meta.id === 1) {
+        var lastPanelPlayed = false;
+        var lastPanel = $('#panel-4-6');
+        var lastPanelPosition = panelPositionByNum('4-7');
+      }
 
       // calculate positions for vis steps change panels
       for (var i = 0; i < journeyConfigs.visSteps.length; i++) {
@@ -308,26 +310,14 @@ $(window).on('resize', _.debounce(function() {
           }
 
           // trigger last image animation CUSTOM
-          if (currentScroll >= lastPanelPosition - firstPanelMargin && !lastPanelPlayed) {
-            lastPanel.css({
-              transition: 'background 1.0s linear',
-              'background-image': 'url(images/' + imageNearestSize + '_panel-4-6-diagram.jpg)'
-            });
-            lastPanelPlayed = true;
-          }
-
-          // FIXME: not good in terms of ux
-          // show menu on end of scroll
-          if (currentScroll >= visLimit && !menuVisible) {
-            $('#menu').fadeTo(500, 1);
-            menuVisible = true;
-          } else if (currentScroll < visLimit && menuVisible) {
-            $('#menu').fadeTo(500, 0, function () {
-              $(this).css({
-                display: 'none'
+          if (journeyConfigs.meta.id === 1) {
+            if (currentScroll >= lastPanelPosition - firstPanelMargin && !lastPanelPlayed) {
+              lastPanel.css({
+                transition: 'background 1.0s linear',
+                'background-image': 'url(images/' + imageNearestSize + '_panel-4-6-diagram.jpg)'
               });
-            });
-            menuVisible = false;
+              lastPanelPlayed = true;
+            }
           }
 
         }
@@ -389,6 +379,11 @@ $(window).on('resize', _.debounce(function() {
         var link = $(this);
         var numToScroll = link.data().scroll;
         scrollToPanel(numToScroll);
+      });
+
+      $('#menu-link').click(function() {
+        $('#menu').fadeTo(500, 1);
+        menuVisible = true;
       });
 
       // helper

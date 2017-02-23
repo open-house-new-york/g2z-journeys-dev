@@ -199,6 +199,28 @@
   position: absolute;
   bottom: 0;
 }
+.menu-link {
+  position: absolute;
+  bottom: 50%;
+  padding-right: 30%;
+  z-index: 2;
+}
+.menu-link:hover {
+  cursor: pointer;
+  color: #f15a29;
+}
+.menu-link-arrow {
+  position: absolute;
+  bottom: 50%;
+  right: 0;
+  width: 2.34em;
+  height: 2.34em;
+  background: url("../images/icons/arrow-right-1.png") no-repeat center center;
+  background-size: cover;
+}
+.menu-link:hover + .menu-link-arrow {
+  background: url("../images/icons/arrow-right-2.png") no-repeat center center;
+}
 .menu {
   position: fixed;
   width: 90%;
