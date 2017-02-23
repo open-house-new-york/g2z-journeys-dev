@@ -59,6 +59,7 @@ $(window).on('resize', _.debounce(function() {
       mapSidePadding = 100;
       maximumTextPanelWidth = 400;
       panelHeight = viewportHeight - topVisPadding - 50;
+      var firstPanelMargin;
 
       if (horizontalViewport) {
         textPanelWidth = viewportHeight * panelHeightPercent > maximumTextPanelWidth ? maximumTextPanelWidth : viewportHeight * panelHeightPercent;
@@ -404,7 +405,7 @@ $(window).on('resize', _.debounce(function() {
       // fade vis in
       $('#vis').fadeTo('slow', 1, function() {
         // Animation complete.
-        var beginEl = Modernizr.touch ? ($('#begin-mobile')) : $('#begin');
+        var beginEl = isMobile ? ($('#begin-mobile')) : $('#begin');
         setTimeout(function() {
           beginEl.css({
             display: 'block'
