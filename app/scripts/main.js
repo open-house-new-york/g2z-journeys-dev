@@ -285,7 +285,7 @@ $(window).on('resize', _.debounce(function() {
           };
 
           // set footer lines
-          var mapOpacity = function(initialPosition, finalPosition) {
+          var setLinesOpacity = function(initialPosition, finalPosition) {
             function mapRange(value, low1, high1, low2, high2) {
               return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
             }
@@ -300,7 +300,7 @@ $(window).on('resize', _.debounce(function() {
             setDotsColor('#step-dot-' + steps[i].step, steps[i].position);
             if (i > 0) {
               $('#step-line-' + i).css({
-                background: mapOpacity(steps[i - 1].position, steps[i].position)
+                background: setLinesOpacity(steps[i - 1].position, steps[i].position)
               });
             }
           }
