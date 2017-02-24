@@ -94,6 +94,12 @@
 .panel-text {
   z-index: 3;
 }
+.panel-video {
+  position: absolute;
+  bottom: 0;
+  width: 320px;
+  
+}
 .pad-left {
   padding-left: 50px;
 }
@@ -206,6 +212,9 @@
 .credits {
   position: absolute;
   bottom: 0;
+}
+.credits p {
+  margin-bottom: 0;
 }
 .menu-link {
   /*position: absolute;*/
