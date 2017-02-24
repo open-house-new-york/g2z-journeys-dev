@@ -23,7 +23,7 @@ journeyConfigs.mapEl = {
   //   id: '1-3'
   // },
   dumpingWharves: {
-    id: '3-4',
+    id: '1-8',
     slug: 'dumping-wharves'
   }
 };

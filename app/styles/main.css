@@ -259,3 +259,6 @@
   -o-transition: background 1s;
   transition: background 1s;
 }
+.map-label {
+  font-size: 0.8em;
+}

@@ -32,7 +32,7 @@ function initMaps() {
   d3.json('data/dumping_lines.geojson', function(dumpingLines) {
   d3.json('data/dumping_wharves.geojson', function(dumpingWharves) {
   d3.json('data/dumping_location.geojson', function(dumpingLocation) {
-    initOceanDumpingMap(dumpingLines, dumpingWharves, dumpingLocation, nynj);
+    initOceanDumpingMap(dumpingLines, dumpingWharves, dumpingLocation, nynj, nycd);
   });
   });
   });
@@ -40,9 +40,7 @@ function initMaps() {
   });
   });
 
-  function initOceanDumpingMap(dumpingLines, dumpingWharves, dumpingLocation, states) {
-    console.log(dumpingLines, dumpingWharves, dumpingLocation, states);
-
+  function initOceanDumpingMap(dumpingLines, dumpingWharves, dumpingLocation, states, nycd) {
     var mapClass = '.map-' + journeyConfigs.mapEl.dumpingWharves.slug;
     var mapSvgId = '#map-' + journeyConfigs.mapEl.dumpingWharves.slug + '-svg';
     var width = $(mapClass).width() * 0.99;
@@ -55,7 +53,7 @@ function initMaps() {
       .projection(projection);
 
     var b = path.bounds(dumpingLines),
-      scaleFactor = 0.75,
+      scaleFactor = 0.65,
       s = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
       t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
     projection
@@ -104,9 +102,21 @@ function initMaps() {
 
     // config
     var usStates = mapGroup.append('g').attr('class', 'usStates');
+    var nycdShape = mapGroup.append('g').attr('class', 'nycd');
     var dumpingLinesPaths = mapGroup.append('g').attr('class', 'dumpingLines');
     var dumpingWharvesPoints = mapGroup.append('g').attr('class', 'dumpingWharves');
     var dumpingLocationPoints = mapGroup.append('g').attr('class', 'dumpingLocation');
+
+    nycdShape.selectAll('.nycd')
+      .data(nycd.features)
+      .enter()
+      .append('path')
+      .attr({
+        'd': path
+      })
+      .style('stroke', journeyConfigs.mapConfigs.colors.land)
+      .style('stroke-width', 1)
+      .style('fill', journeyConfigs.mapConfigs.colors.land);
 
     usStates.selectAll('.usStates')
       .data(states.features)
@@ -165,12 +175,11 @@ function initMaps() {
         return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
       })
       .attr('r', 0)
-      .attr('opacity', 0.5)
+      .attr('opacity', 0.7)
       .style('stroke', '#fff')
       .style('stroke-width', 1)
       .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
       .attr('class', 'dumpingLocation');
-
 
     journeyConfigs.mapEl.dumpingWharves.startAnimation = function() {
 
@@ -190,7 +199,7 @@ function initMaps() {
               return this.getTotalLength();
             })            .attr('class', 'dumpingLines')
             .transition()
-            .duration(2500)
+            .duration(1500)
             .attr('stroke-dashoffset', 0)
             .each('end', function() {
               journeyConfigs.mapEl.dumpingWharves.transitionCircles();
@@ -205,27 +214,55 @@ function initMaps() {
             .attr('r', 0)
             .transition()
             .duration(1500)
-            .attr('r', 50)
+            .attr('r', 45)
             .each('end', function() {
-              // journeyConfigs.mapEl.dumpingWharves.linesOut();
+              journeyConfigs.mapEl.dumpingWharves.linesOut();
             });
         });
     };
 
     journeyConfigs.mapEl.dumpingWharves.linesOut = function() {
+      svg.selectAll("text")
+          .data(dumpingLocation.features)
+          .enter()
+          .append("text")
+          .attr("class", "map-label")
+          .attr("x", function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr("y", function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr("transform", function(d) { return "translate(50,0)"; })
+          .text('Ocean dumping');
+
+      svg.selectAll("text-below")
+          .data(dumpingLocation.features)
+          .enter()
+          .append("text")
+          .attr("class", "map-label")
+          .attr("x", function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr("y", function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr("transform", function(d) { return "translate(50,17)"; })
+          .text('off Sandy Hook');
+
       dumpingLinesPaths.selectAll('.dumpingLines')
         .each(function(d, i) {
           d3.select(this)
             .attr('stroke-dasharray', function(d) {
               return (this.getTotalLength() + ' ' + this.getTotalLength());
             })
-            .attr('stroke-dashoffset', function(d) {
-              return this.getTotalLength();
-            })
+            .attr('stroke-dashoffset', 0)
             .attr('class', 'dumpingLines')
             .transition()
             .duration(1500)
-            .attr('stroke-dashoffset', 0);
+            .attr('stroke-dashoffset', function(d) {
+              return -this.getTotalLength();
+            });
         });
     };
   }
