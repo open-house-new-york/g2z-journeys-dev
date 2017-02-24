@@ -25,6 +25,10 @@ journeyConfigs.mapEl = {
   dumpingWharves: {
     id: '1-8',
     slug: 'dumping-wharves'
+  },
+  landfillsNyc: {
+    id: '1-10',
+    slug: 'landfills-nyc'
   }
 };
 journeyConfigs.mapDataPath = 'data/curb-to-landfill.geojson';
