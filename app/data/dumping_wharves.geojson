@@ -1,0 +1,25 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "name": "110th St" }, "geometry": { "type": "Point", "coordinates": [ -73.935584095362842, 40.791174007078688 ] } },
+{ "type": "Feature", "properties": { "id": 2, "name": "129th St" }, "geometry": { "type": "Point", "coordinates": [ -73.961988551566563, 40.818198401756973 ] } },
+{ "type": "Feature", "properties": { "id": 3, "name": "79th St" }, "geometry": { "type": "Point", "coordinates": [ -73.985049122969215, 40.785909837959906 ] } },
+{ "type": "Feature", "properties": { "id": 4, "name": "47th St" }, "geometry": { "type": "Point", "coordinates": [ -73.998587778505339, 40.765057468067852 ] } },
+{ "type": "Feature", "properties": { "id": 5, "name": "37th St" }, "geometry": { "type": "Point", "coordinates": [ -74.004398797824308, 40.759250682370855 ] } },
+{ "type": "Feature", "properties": { "id": 6, "name": "19th St" }, "geometry": { "type": "Point", "coordinates": [ -74.009302482547852, 40.746577464479103 ] } },
+{ "type": "Feature", "properties": { "id": 7, "name": "12th St" }, "geometry": { "type": "Point", "coordinates": [ -74.010546244577526, 40.737540239891032 ] } },
+{ "type": "Feature", "properties": { "id": 8, "name": "Canal St" }, "geometry": { "type": "Point", "coordinates": [ -74.011739032753539, 40.725519601294863 ] } },
+{ "type": "Feature", "properties": { "id": 9, "name": "Old Slip" }, "geometry": { "type": "Point", "coordinates": [ -74.007681514000993, 40.702955729384648 ] } },
+{ "type": "Feature", "properties": { "id": 10, "name": "Rutgers St" }, "geometry": { "type": "Point", "coordinates": [ -73.989942612922022, 40.70980297261093 ] } },
+{ "type": "Feature", "properties": { "id": 11, "name": "Jackson St" }, "geometry": { "type": "Point", "coordinates": [ -73.980298359806667, 40.710297554338879 ] } },
+{ "type": "Feature", "properties": { "id": 12, "name": "Stanton St" }, "geometry": { "type": "Point", "coordinates": [ -73.974303834614474, 40.716726782513931 ] } },
+{ "type": "Feature", "properties": { "id": 13, "name": "17th St" }, "geometry": { "type": "Point", "coordinates": [ -73.971734752389239, 40.729521571730572 ] } },
+{ "type": "Feature", "properties": { "id": 14, "name": "22nd St" }, "geometry": { "type": "Point", "coordinates": [ -73.974263055531523, 40.73435760865835 ] } },
+{ "type": "Feature", "properties": { "id": 15, "name": "38th St" }, "geometry": { "type": "Point", "coordinates": [ -73.96977735640813, 40.745696968382966 ] } },
+{ "type": "Feature", "properties": { "id": 16, "name": "46th St" }, "geometry": { "type": "Point", "coordinates": [ -73.965679058572633, 40.750655399627604 ] } },
+{ "type": "Feature", "properties": { "id": 17, "name": "70th St" }, "geometry": { "type": "Point", "coordinates": [ -73.952242350743873, 40.764632786840764 ] } },
+{ "type": "Feature", "properties": { "id": 18, "name": "80th St" }, "geometry": { "type": "Point", "coordinates": [ -73.946676005922541, 40.770948674951512 ] } }
+]
+}
