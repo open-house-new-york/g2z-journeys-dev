@@ -121,7 +121,7 @@ function initMaps() {
         'd': path
       })
       .style('stroke', journeyConfigs.mapConfigs.colors.land)
-      .style('stroke-width', 1)
+      .style('stroke-width', 0)
       .style('fill', journeyConfigs.mapConfigs.colors.land);
 
     usStates.selectAll('.usStates')
@@ -132,7 +132,7 @@ function initMaps() {
         'd': path
       })
       .style('stroke', '#fff')
-      .style('stroke-width', 1)
+      .style('stroke-width', 0)
       .style('fill', journeyConfigs.mapConfigs.colors.land);
 
     dumpingLinesPaths.selectAll('.dumpingLines')
@@ -286,7 +286,7 @@ function initMaps() {
       .projection(projection);
 
     var b = path.bounds(landfillsNycAreas),
-      scaleFactor = 0.65,
+      scaleFactor = 0.75,
       s = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
       t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
     projection
@@ -347,7 +347,7 @@ function initMaps() {
         'd': path
       })
       .style('stroke', journeyConfigs.mapConfigs.colors.land)
-      .style('stroke-width', 1)
+      .style('stroke-width', 0)
       .style('fill', journeyConfigs.mapConfigs.colors.land);
 
     usStates.selectAll('.usStates')
@@ -358,7 +358,7 @@ function initMaps() {
         'd': path
       })
       .style('stroke', '#fff')
-      .style('stroke-width', 1)
+      .style('stroke-width', 0)
       .style('fill', journeyConfigs.mapConfigs.colors.land);
 
     landfillsNycAreasPaths.selectAll('.landfillsNycAreas')
@@ -369,7 +369,7 @@ function initMaps() {
         'd': path
       })
       .style('stroke', '#fff')
-      .style('stroke-width', 1)
+      .style('stroke-width', 0.5)
       .style('fill', function(d) {
         if (d.properties.year <= 1900) {
           return journeyConfigs.mapConfigs.colors.scale[0];
@@ -383,6 +383,50 @@ function initMaps() {
       })
       .attr('opacity', 0)
       .attr('class', 'landfillsNycAreas');
+
+      var landfillsLegendTitleText = ['Areas landfilled:'];
+      var landfillsLegendLabels = ['1844-1900', '1907-1924', '1925-1957', '1958-today'];
+      var legendWidth = 20;
+      var legendHeight = 20;
+      var legendSpacing = 10;
+      var legendStartingX = 60;
+
+      var landfillsLegendTitle = svg.selectAll("landfillsLegendTitle")
+          .data(landfillsLegendTitleText)
+          .enter()
+          .append("text")
+          .attr("class", "map-legend")
+          .attr("id", "landfills-legend-title")
+          .attr("x", legendStartingX)
+          .attr("y", height / 2 - legendSpacing)
+          .text(function(d, i){ return landfillsLegendTitleText[i]; })
+          .attr("opacity", 0);
+
+      var landfillsLegend = svg.selectAll("landfillsLegend")
+          .data(journeyConfigs.mapConfigs.colors.scale)
+          .enter()
+          .append("g")
+          .attr("class", "map-legend")
+          .attr("id", function (d, i) {
+            return "landfills-legend-" + i;
+          })
+          .attr("opacity", 0);
+
+      landfillsLegend.append("rect")
+        .attr("x", legendStartingX)
+        .attr("y", function(d, i) {
+          return (height/2) + (i*legendHeight) + (i*legendSpacing);
+        })
+        .attr("width", legendWidth)
+        .attr("height", legendHeight)
+        .style("fill", function(d, i) { return d; });
+
+      landfillsLegend.append("text")
+        .attr("x", legendStartingX + legendWidth + legendSpacing)
+        .attr("y", function(d, i) {
+          return (height/2) + (i*legendHeight) + 13 + (i*legendSpacing);
+        })
+        .text(function(d, i){ return landfillsLegendLabels[i]; });
 
     landfillsNycPlacesPoints.selectAll('.landfillsNycPlaces')
       .data(landfillsNycPlaces.features)
@@ -414,9 +458,53 @@ function initMaps() {
             .attr('opacity', 0)
             .transition()
             .duration(1500)
-            .attr('opacity', 0.7)
+            .attr('opacity', function (d) {
+              if (d.properties.year <= 1900) {
+                return 0.7;
+              } else {
+                return 0;
+              }
+            })
+            .each('end', function(d, i) {
+              d3.select("#landfills-legend-title").attr("opacity", 1);
+              d3.select("#landfills-legend-0").attr("opacity", 1);
+            })
+            .transition()
+            .duration(1500)
+            .attr('opacity', function (d) {
+              if (d.properties.year <= 1924) {
+                return 0.7;
+              } else {
+                return 0;
+              }
+            })
+            .each('end', function(d, i) {
+              d3.select("#landfills-legend-1").attr("opacity", 1);
+            })
+            .transition()
+            .duration(1500)
+            .attr('opacity', function (d) {
+              if (d.properties.year <= 1957) {
+                return 0.7;
+              } else {
+                return 0;
+              }
+            })
+            .each('end', function(d, i) {
+              d3.select("#landfills-legend-2").attr("opacity", 1);
+            })
+            .transition()
+            .duration(1500)
+            .attr('opacity', function (d) {
+              if (d.properties.year < 2017) {
+                return 0.7;
+              } else {
+                return 0;
+              }
+            })
             .each('end', function() {
-              journeyConfigs.mapEl.landfillsNyc.transitionCircles();
+              d3.select("#landfills-legend-3").attr("opacity", 1);
+              // journeyConfigs.mapEl.landfillsNyc.transitionCircles();
             });
         });
     };
@@ -448,7 +536,7 @@ function initMaps() {
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
           })
           .attr("transform", function(d) { return "translate(5,0)"; })
-          .text(function(d){
+          .text(function(d) {
               return d.properties.name;
           });
         };
