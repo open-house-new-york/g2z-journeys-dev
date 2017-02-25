@@ -7,3 +7,4 @@ test/bower_components
 deploy_test_auth
 deploy_github
 deploy_wsdt
+*.mp4

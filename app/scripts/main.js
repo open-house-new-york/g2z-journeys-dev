@@ -134,6 +134,7 @@ $(window).on('resize', _.debounce(function() {
         var panel = $(this);
         var data = panel.data();
         var panelId = panel.attr('id');
+        var panelNum = panelId.substring(panelId.length - 3);
         var width;
 
         if (data.type == 'image') {
@@ -164,6 +165,8 @@ $(window).on('resize', _.debounce(function() {
         } else if (data.type == 'text-block') {
           width = textPanelWidth + textBlockPadding;
           panelTextBlockWidths.push(width);
+        } else if (data.type == 'video') {
+          width = viewportWidth > 800 ? 800 : viewportWidth;
         }
 
         // set margin for first panel
@@ -204,6 +207,27 @@ $(window).on('resize', _.debounce(function() {
             width: width - mapSidePadding,
             'padding-right': mapSidePadding
           });
+        } else if (data.type === 'video') {
+          panel.css({
+            height: panelHeight,
+            width: width
+          });
+          var videoFrame = $("#video-" + panelNum);
+          videoFrame.css({
+            height: panelHeight,
+            width: width * 0.9,
+            "margin-left": width * 0.05,
+            "margin-right": width * 0.05
+          });
+          var videoData = videoFrame.data();
+          var videoSize;
+          if (isMobile) {
+            videoSize = 'sm';
+          } else {
+            videoSize = 'lg';
+          }
+          var videoUrl = "videos/" + journeyConfigs.meta.slug + "/" + videoData.src + "-" + videoSize + "." + videoData.format;
+          videoFrame.attr("src", videoUrl);
         } else {
           panel.css({
             height: panelHeight,
