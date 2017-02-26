@@ -460,7 +460,7 @@ function initMaps() {
             .duration(1500)
             .attr('opacity', function (d) {
               if (d.properties.year <= 1900) {
-                return 0.7;
+                return 1;
               } else {
                 return 0;
               }
@@ -473,7 +473,7 @@ function initMaps() {
             .duration(1500)
             .attr('opacity', function (d) {
               if (d.properties.year <= 1924) {
-                return 0.7;
+                return 1;
               } else {
                 return 0;
               }
@@ -485,7 +485,7 @@ function initMaps() {
             .duration(1500)
             .attr('opacity', function (d) {
               if (d.properties.year <= 1957) {
-                return 0.7;
+                return 1;
               } else {
                 return 0;
               }
@@ -497,7 +497,7 @@ function initMaps() {
             .duration(1500)
             .attr('opacity', function (d) {
               if (d.properties.year < 2017) {
-                return 0.7;
+                return 1;
               } else {
                 return 0;
               }
