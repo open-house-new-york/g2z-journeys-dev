@@ -27,7 +27,12 @@ function calculateViewportDimensions() {
   horizontalViewport = viewportWidth >= viewportHeight ? true : false;
   isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
   console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
-  initVis();
+  if (horizontalViewport && isMobile) {
+    $("#change-orientation").show();
+    $(".menu-icon-container").hide();
+  } else {
+    initVis();
+  }
 }
 
 $(document).ready(function() {
@@ -37,7 +42,9 @@ $(document).ready(function() {
 
 // recalculate on window resize
 $(window).on('resize', _.debounce(function() {
- calculateViewportDimensions();
+  $("#change-orientation").hide();
+  $(".menu-icon-container").show();
+  calculateViewportDimensions();
 }, 500));
 
   function initVis() {
