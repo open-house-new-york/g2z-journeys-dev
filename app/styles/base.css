@@ -59,3 +59,27 @@ sup {
 .intro-paragraph {
   line-height: 1.5em;
 }
+.menu-icon-container {
+  font-size: 25px;
+  margin: 0;
+  padding-right: 20px;
+  padding-top: 10px;
+  height: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  display: table;
+  z-index: 7;
+}
+.menu-icon {
+  display: table-cell;
+  vertical-align: middle;
+  cursor: pointer !important;
+}
+.menu-icon:hover {
+  color: #f15a29;
+}
+.menu-icon:focus, .menu-icon:active {
+  color: #333;
+}
