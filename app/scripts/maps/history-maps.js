@@ -228,32 +228,32 @@ function initMaps() {
     };
 
     journeyConfigs.mapEl.dumpingWharves.linesOut = function() {
-      svg.selectAll("text")
+      svg.selectAll('text')
           .data(dumpingLocation.features)
           .enter()
-          .append("text")
-          .attr("class", "map-label")
-          .attr("x", function(d){
+          .append('text')
+          .attr('class', 'map-label')
+          .attr('x', function(d){
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
           })
-          .attr("y", function(d){
+          .attr('y', function(d){
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
           })
-          .attr("transform", function(d) { return "translate(50,0)"; })
+          .attr('transform', function(d) { return 'translate(50,0)'; })
           .text('Ocean dumping');
 
-      svg.selectAll("text-below")
+      svg.selectAll('text-below')
           .data(dumpingLocation.features)
           .enter()
-          .append("text")
-          .attr("class", "map-label")
-          .attr("x", function(d){
+          .append('text')
+          .attr('class', 'map-label')
+          .attr('x', function(d){
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
           })
-          .attr("y", function(d){
+          .attr('y', function(d){
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
           })
-          .attr("transform", function(d) { return "translate(50,17)"; })
+          .attr('transform', function(d) { return 'translate(50,17)'; })
           .text('off Sandy Hook');
 
       dumpingLinesPaths.selectAll('.dumpingLines')
@@ -391,39 +391,39 @@ function initMaps() {
       var legendSpacing = 10;
       var legendStartingX = 60;
 
-      var landfillsLegendTitle = svg.selectAll("landfillsLegendTitle")
+      var landfillsLegendTitle = svg.selectAll('landfillsLegendTitle')
           .data(landfillsLegendTitleText)
           .enter()
-          .append("text")
-          .attr("class", "map-legend")
-          .attr("id", "landfills-legend-title")
-          .attr("x", legendStartingX)
-          .attr("y", height / 2 - legendSpacing)
+          .append('text')
+          .attr('class', 'map-legend')
+          .attr('id', 'landfills-legend-title')
+          .attr('x', legendStartingX)
+          .attr('y', height / 2 - legendSpacing)
           .text(function(d, i){ return landfillsLegendTitleText[i]; })
-          .attr("opacity", 0);
+          .attr('opacity', 0);
 
-      var landfillsLegend = svg.selectAll("landfillsLegend")
+      var landfillsLegend = svg.selectAll('landfillsLegend')
           .data(journeyConfigs.mapConfigs.colors.scale)
           .enter()
-          .append("g")
-          .attr("class", "map-legend")
-          .attr("id", function (d, i) {
-            return "landfills-legend-" + i;
+          .append('g')
+          .attr('class', 'map-legend')
+          .attr('id', function (d, i) {
+            return 'landfills-legend-' + i;
           })
-          .attr("opacity", 0);
+          .attr('opacity', 0);
 
-      landfillsLegend.append("rect")
-        .attr("x", legendStartingX)
-        .attr("y", function(d, i) {
+      landfillsLegend.append('rect')
+        .attr('x', legendStartingX)
+        .attr('y', function(d, i) {
           return (height/2) + (i*legendHeight) + (i*legendSpacing);
         })
-        .attr("width", legendWidth)
-        .attr("height", legendHeight)
-        .style("fill", function(d, i) { return d; });
+        .attr('width', legendWidth)
+        .attr('height', legendHeight)
+        .style('fill', function(d, i) { return d; });
 
-      landfillsLegend.append("text")
-        .attr("x", legendStartingX + legendWidth + legendSpacing)
-        .attr("y", function(d, i) {
+      landfillsLegend.append('text')
+        .attr('x', legendStartingX + legendWidth + legendSpacing)
+        .attr('y', function(d, i) {
           return (height/2) + (i*legendHeight) + 13 + (i*legendSpacing);
         })
         .text(function(d, i){ return landfillsLegendLabels[i]; });
@@ -466,8 +466,8 @@ function initMaps() {
               }
             })
             .each('end', function(d, i) {
-              d3.select("#landfills-legend-title").attr("opacity", 1);
-              d3.select("#landfills-legend-0").attr("opacity", 1);
+              d3.select('#landfills-legend-title').attr('opacity', 1);
+              d3.select('#landfills-legend-0').attr('opacity', 1);
             })
             .transition()
             .duration(1500)
@@ -479,7 +479,7 @@ function initMaps() {
               }
             })
             .each('end', function(d, i) {
-              d3.select("#landfills-legend-1").attr("opacity", 1);
+              d3.select('#landfills-legend-1').attr('opacity', 1);
             })
             .transition()
             .duration(1500)
@@ -491,7 +491,7 @@ function initMaps() {
               }
             })
             .each('end', function(d, i) {
-              d3.select("#landfills-legend-2").attr("opacity", 1);
+              d3.select('#landfills-legend-2').attr('opacity', 1);
             })
             .transition()
             .duration(1500)
@@ -503,7 +503,7 @@ function initMaps() {
               }
             })
             .each('end', function() {
-              d3.select("#landfills-legend-3").attr("opacity", 1);
+              d3.select('#landfills-legend-3').attr('opacity', 1);
               // journeyConfigs.mapEl.landfillsNyc.transitionCircles();
             });
         });
@@ -524,18 +524,18 @@ function initMaps() {
     };
 
     journeyConfigs.mapEl.landfillsNyc.linesOut = function() {
-      svg.selectAll("text")
+      svg.selectAll('text')
           .data(landfillsNycPlaces.features)
           .enter()
-          .append("text")
-          .attr("class", "map-label")
-          .attr("x", function(d){
+          .append('text')
+          .attr('class', 'map-label')
+          .attr('x', function(d){
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
           })
-          .attr("y", function(d){
+          .attr('y', function(d){
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
           })
-          .attr("transform", function(d) { return "translate(5,0)"; })
+          .attr('transform', function(d) { return 'translate(5,0)'; })
           .text(function(d) {
               return d.properties.name;
           });
