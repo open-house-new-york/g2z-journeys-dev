@@ -1,21 +1,21 @@
 # compatibility
 
-- firefox 47 last menu triggers out of nowhere
 - modernizr tests:
 https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssanimations-cssgradients-cssscrollbar-csstransitions-devicemotion_deviceorientation-es5array-flexbox-flexwrap-hiddenscroll-inlinesvg-json-mediaqueries-opacity-rgba-scrollsnappoints-svgclippaths-touchevents-setclasses
-- maybe use underscore instead of array reduce
 - horizontal menu in small devices
-<!-- - on mobile, hide top address bar? -->
 - sometimes breaking on desktop when resizing small WHY??????
 - image is not preloading again...
-- **allow for mobile horizontal**
 - in horiz mobile, show logo at first screen
+<!-- - firefox 47 last menu triggers out of nowhere -->
+<!-- - on mobile, hide top address bar? -->
+<!-- - **allow for mobile horizontal** -->
+<!-- - maybe use underscore instead of array reduce -->
 
 ### notes
 
+<!-- - beautify flip message -->
 <!-- - last image with diagram not lazy loading -->
 <!-- - if phone is too small and horizontal ask to flip to vertical (500px min height) -->
-- beautify flip message
 <!-- - say something about landfills being sanitary -->
 <!-- - add credits -->
 
@@ -28,17 +28,18 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 <!-- - intro page: on our template -->
 <!-- - ignored attempt to cancel... is it reproducible on mobile? -->
-- add google fonts file to app?
-- lagging: is it image sizes or css gradient or both or what? **gradient**
-- **Maybe there should be text block / title sections for each step**
+<!-- - add google fonts file to app? -->
+<!-- - lagging: is it image sizes or css gradient or both or what? **gradient** -->
+<!-- - **Maybe there should be text block / title sections for each step** -->
 - *font-size may be too small*
 
 # layout / styles
 
 - ***where will the name of the journey be on the page? besides title tag***
-- ***title in each text section?***
 - last text margin right looks bad on mobile
-- "scroll down" showing on mobile
+- add larger arrow to indicate swipe right
+<!-- - ***title in each text section?*** -->
+<!-- - "scroll down" showing on mobile -->
 <!-- - choose font -->
 <!-- - recalculate on resize -->
 <!-- - mobile devices on horizontal mode -->
@@ -53,13 +54,15 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # interactivity
 
-<!-- - allow use keyboard arrows and spacebar to scroll -->
-- what happens when clicking on circles on map?
-<!-- - on touch, prevent pinch zoom -->
 - on mobile, menu SHOULD be triggered with swipe to end
+- what happens when clicking on circles on map?
+<!-- - allow use keyboard arrows and spacebar to scroll -->
+<!-- - on touch, prevent pinch zoom -->
 
 # photos
 
+- photos are low res on mobile
+- uniform treatment for photos
 <!-- - person taking out the trash LE (find, crop) -->
 <!-- - different sanitation workers, changes every time? LE (crop) -->
 <!-- - add dsny worker doing baskets LE (crop) -->
@@ -67,26 +70,29 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 <!-- - fix resolution and maybe set a series of different resolutions depending on device size -->
 <!-- - fix photo inside transfer station with empty background -->
 <!-- - fix tipping photo sanitation truck writing mirrorred -->
-- left treadmill looks wonky without anything under it
+<!-- - left treadmill looks wonky without anything under it -->
 <!-- - add left slope to tipping at landfill picture? -->
 <!-- - color truck arriving at landfill orange? -->
 <!-- - make sits entrance photo taller -->
-- uniform treatment for photos
-- inside SITS: lighter background
-- photos are low res on mobile
+<!-- - inside SITS: lighter background -->
 
 # before deploy
 
-- see if favicon cache has updated
+<!-- - see if favicon cache has updated -->
 - browserupgrade class?
 - allow robots
-- create github org
+<!-- - create github org -->
 - send IP for A records, CNAME on repo
-- add google analytics
+- **add google analytics**
 
 # social
 
 - facebook and other meta tags (twitter)
+
+##### twitter:
+- Maximum dimension: 1024px x 512px; minimum dimension: 440px x 220px
+##### og:
+- Recommended dimension: 1200px x 630px; minimum dimension: 600px x 315px
 
 # maps
 
@@ -100,10 +106,13 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # menu
 
-- launch dates
+<!-- - launch dates -->
+- scroll on menu at end of journey
+- horizontal menu
 
 ### SOURCES for data
 
-### CREDITS for photos
+- where can these citations live?
 
-### Refer back to outline
+<!-- ### CREDITS for photos -->
+<!-- ### Refer back to outline -->
