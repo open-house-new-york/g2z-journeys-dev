@@ -91,6 +91,11 @@ gulp.task('data', () => {
     .pipe(gulp.dest('dist/data'));
 });
 
+gulp.task('videos', () => {
+  return gulp.src('app/videos/**/*')
+    .pipe(gulp.dest('dist/videos'));
+});
+
 gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
@@ -169,7 +174,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'data', 'extras'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'data', 'videos', 'extras'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
