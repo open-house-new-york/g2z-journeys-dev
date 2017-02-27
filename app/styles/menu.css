@@ -7,9 +7,6 @@
   overflow: auto;
   padding-bottom: 85px;
 }
-
-.container-inner {}
-
 .buttons-container {
   display: block;
 }
@@ -119,7 +116,7 @@
   text-align: center;
   z-index: 1;
   background: #fff;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .steps-container {
