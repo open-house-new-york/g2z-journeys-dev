@@ -41,6 +41,9 @@
   border-top: solid 2px #f15a29;
   color: #f15a29;
 }
+.btn-img:active, .btn-img:focus {
+  color: #333;
+}
 
 .btn-menu {
   box-sizing: border-box;
@@ -68,12 +71,14 @@
   color: #333;
   cursor: pointer !important;
 }
-.a-btn:active {
-  color: #f15a29;
+.a-btn:active, .a-btn:focus {
+  color: #333;
 }
 .btn-menu:hover {
-  /*border-top: solid 2px #f15a29;*/
   color: #f15a29;
+}
+.btn-menu:active, .btn-menu:focus {
+  color: #333;
 }
 .a-btn-disabled {
   text-decoration: none;

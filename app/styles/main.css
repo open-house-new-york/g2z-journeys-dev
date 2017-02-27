@@ -135,21 +135,22 @@
   width: 100%;
   padding: 20px 0;
 }
-.btn-disabled {
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0px;
-  text-decoration: none;
-  text-align: center;
-  cursor: auto;
-  width: 100%;
-  padding: 20px 0;
-}
 @media only screen and (max-height: 400px) {
-  .btn, .btn-disabled {
+  .btn {
     padding: 5px 0;
   }
 }
+@media only screen and (max-width: 768px) and (min-height: 400px) {
+  .btn {
+    padding: 15px 0;
+  }
+}
+@media only screen and (max-width: 768px) {
+  #menu-back {
+    display: none;
+  }
+}
+
 .btn-img {
   border-top: solid 2px #9d9d9d;
   background: url("../images/transparent.gif") no-repeat center center;
@@ -160,51 +161,35 @@
   border-top: solid 2px #f15a29;
   color: #f15a29;
 }
+.btn-img:active, .btn-img:focus {
+  color: #333;
+}
 
 .btn-menu {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  /*margin-top: 10px;*/
   border-top: solid 2px #9d9d9d;
-  background: url("../images/transparent.gif") no-repeat center center;
   background-size: cover;
-  /*padding: 0 !important;*/
 }
-.btn-menu-disabled {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  /*margin-top: 10px;*/
-  border-top: solid 2px #9d9d9d;
-  background: url("../images/transparent.gif") no-repeat center center;
-  background-size: cover;
-  /*padding: 0 !important;*/
-  cursor: default !important;
-}
+
 .a-btn {
   text-decoration: none;
   color: #333;
-  cursor: pointer !important;
+  cursor: pointer;
 }
-.a-btn:active {
-  color: #f15a29;
+.a-btn:active, .a-btn:focus {
+  color: #333;
 }
 .btn-menu:hover {
-  /*border-top: solid 2px #f15a29;*/
   color: #f15a29;
 }
-.a-btn-disabled {
-  text-decoration: none;
-  color: #9d9d9d;
+.btn-menu:active, .btn-menu:focus {
+  color: #333;
+}
+.disabled {
+  color: #9d9d9d !important;
   cursor: default !important;
-}
-.a-btn-disabled:active {
-  color: #9d9d9d;
-}
-.btn-menu-disabled:hover {
-  border-top: solid 2px #9d9d9d;
-  color: #9d9d9d;
 }
 .no-margin {
   margin: 0;
@@ -225,6 +210,9 @@
 .menu-link:hover {
   cursor: pointer;
   color: #f15a29;
+}
+.menu-link:active, .menu-link:focus {
+  color: #333;
 }
 .menu-link-arrow {
   /*position: absolute;*/
@@ -251,6 +239,7 @@
   margin-left: auto;
   margin-right: auto;
   background: #fff;
+  overflow: scroll;
 }
 .cover {
   display: none;

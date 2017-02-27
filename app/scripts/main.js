@@ -429,18 +429,40 @@ $(window).on('resize', _.debounce(function() {
       });
 
       $('#menu-link').click(function() {
-        $('#menu').fadeTo(500, 1);
+        $('#menu-cover').fadeTo(500, 1);
+        $('#menu-icon').removeClass("fa-bars").addClass("fa-times");
         menuVisible = true;
+      });
+
+      $('#menu-icon').click(function() {
+        if (!menuVisible) {
+          $(this).removeClass("fa-bars").addClass("fa-times");
+          $('#menu-cover').fadeTo(500, 1, function () {
+            $(this).css({
+              display: 'none'
+            });
+          });
+          menuVisible = true;
+        } else {
+          $(this).removeClass("fa-times").addClass("fa-bars");
+          $('#menu-cover').fadeTo(500, 0, function () {
+            $(this).css({
+              display: 'none'
+            });
+          });
+          menuVisible = false;
+        }
       });
 
       // helper
       // follow back in menu
       $('#menu-back').click(function() {
-        $('#menu').fadeTo(500, 0, function () {
+        $('#menu-cover').fadeTo(500, 0, function () {
           $(this).css({
             display: 'none'
           });
         });
+        $('#menu-icon').removeClass("fa-times").addClass("fa-bars");
         menuVisible = false;
       });
 
