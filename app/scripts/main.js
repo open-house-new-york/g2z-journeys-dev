@@ -123,10 +123,14 @@ $(window).on('resize', _.debounce(function() {
       var preloadImagesEl = $('.image-transition');
       preloadImagesEl.each(function () {
         var image = $(this);
+        var imagelId = image.attr('id');
+        var imagelNum = imagelId.substring(imagelId.length - 3);
         var data = image.data();
         var loadUrl = 'images/' + journeyConfigs.meta.slug + '/'  + imageNearestSize + '_' + image.data().transitionurl;
-        var loadedImage = new Image();
-        loadedImage.src = loadUrl;
+        var bgLoadUrl = 'url(' + loadUrl + ')';
+        $("#transition-" +  imagelNum).css({
+            'background-image': bgLoadUrl
+        });
       });
 
       // set the widths of panels and push their widths, ids, and positions to arrays
