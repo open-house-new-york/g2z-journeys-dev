@@ -2,14 +2,14 @@
 
 - modernizr tests:
 https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssanimations-cssgradients-cssscrollbar-csstransitions-devicemotion_deviceorientation-es5array-flexbox-flexwrap-hiddenscroll-inlinesvg-json-mediaqueries-opacity-rgba-scrollsnappoints-svgclippaths-touchevents-setclasses
-- horizontal menu in small devices
 - sometimes breaking on desktop when resizing small WHY??????
-- image is not preloading again...
 - in horiz mobile, show logo at first screen
+<!-- - image is not preloading again... -->
 <!-- - firefox 47 last menu triggers out of nowhere -->
 <!-- - on mobile, hide top address bar? -->
 <!-- - **allow for mobile horizontal** -->
 <!-- - maybe use underscore instead of array reduce -->
+<!-- - horizontal menu in small devices -->
 
 ### notes
 
@@ -26,18 +26,18 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # general
 
+- *font-size may be too small*
 <!-- - intro page: on our template -->
 <!-- - ignored attempt to cancel... is it reproducible on mobile? -->
 <!-- - add google fonts file to app? -->
 <!-- - lagging: is it image sizes or css gradient or both or what? **gradient** -->
 <!-- - **Maybe there should be text block / title sections for each step** -->
-- *font-size may be too small*
 
 # layout / styles
 
-- ***where will the name of the journey be on the page? besides title tag***
-- last text margin right looks bad on mobile
 - add larger arrow to indicate swipe right
+<!-- - ***where will the name of the journey be on the page? besides title tag*** -->
+<!-- - last text margin right looks bad on mobile -->
 <!-- - ***title in each text section?*** -->
 <!-- - "scroll down" showing on mobile -->
 <!-- - choose font -->
@@ -55,7 +55,6 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 # interactivity
 
 - on mobile, menu SHOULD be triggered with swipe to end
-- what happens when clicking on circles on map?
 <!-- - allow use keyboard arrows and spacebar to scroll -->
 <!-- - on touch, prevent pinch zoom -->
 
@@ -78,16 +77,18 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # before deploy
 
-<!-- - see if favicon cache has updated -->
-- browserupgrade class?
-- allow robots
-<!-- - create github org -->
-- send IP for A records, CNAME on repo
 - **add google analytics**
+- allow robots
+<!-- - send IP for A records, CNAME on repo -->
+<!-- - see if favicon cache has updated -->
+<!-- - browserupgrade class? -->
+<!-- - create github org -->
 
 # social
 
 - facebook and other meta tags (twitter)
+
+### add images
 
 ##### twitter:
 - Maximum dimension: 1024px x 512px; minimum dimension: 440px x 220px
@@ -107,8 +108,8 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 # menu
 
 <!-- - launch dates -->
-- scroll on menu at end of journey
-- horizontal menu
+<!-- - scroll on menu at end of journey -->
+<!-- - horizontal menu -->
 
 ### SOURCES for data
 
