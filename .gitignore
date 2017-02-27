@@ -4,7 +4,5 @@ dist
 bower_components
 test/bower_components
 *.DS_Store
-deploy_test_auth
-deploy_github
-deploy_wsdt
+deploy_*
 *.mp4
