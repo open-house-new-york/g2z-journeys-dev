@@ -66,3 +66,6 @@
 .footnotes {
   font-size: 0.8em;
 }
+.credits p {
+  margin-bottom: 0;
+}
