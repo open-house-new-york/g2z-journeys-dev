@@ -123,77 +123,6 @@
   float: left;
 }
 
-
-/*menu*/
-.btn {
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0px;
-  text-decoration: none;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  padding: 20px 0;
-}
-@media only screen and (max-height: 400px) {
-  .btn {
-    padding: 5px 0;
-  }
-}
-@media only screen and (max-width: 768px) and (min-height: 400px) {
-  .btn {
-    padding: 15px 0;
-  }
-}
-@media only screen and (max-width: 768px) {
-  #menu-back {
-    display: none;
-  }
-}
-
-.btn-img {
-  border-top: solid 2px #9d9d9d;
-  background: url("../images/transparent.gif") no-repeat center center;
-  background-size: cover;
-}
-
-.btn-img:hover {
-  border-top: solid 2px #f15a29;
-  color: #f15a29;
-}
-.btn-img:active, .btn-img:focus {
-  color: #333;
-}
-
-.btn-menu {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  border-top: solid 2px #9d9d9d;
-  background-size: cover;
-}
-
-.a-btn {
-  text-decoration: none;
-  color: #333;
-  cursor: pointer;
-}
-.a-btn:active, .a-btn:focus {
-  color: #333;
-}
-.btn-menu:hover {
-  color: #f15a29;
-}
-.btn-menu:active, .btn-menu:focus {
-  color: #333;
-}
-.disabled {
-  color: #9d9d9d !important;
-  cursor: default !important;
-}
-.no-margin {
-  margin: 0;
-}
 .credits {
   position: absolute;
   bottom: 0;
@@ -201,6 +130,7 @@
 .credits p {
   margin-bottom: 0;
 }
+
 .menu-link {
   border-top-width: 0px;
   border-right-width: 0px;
@@ -229,6 +159,7 @@
 .menu-link:hover .menu-link-arrow {
   background: url("../images/icons/arrow-right-2.png") no-repeat center center;
 }
+
 .menu {
   position: fixed;
   width: 90%;
@@ -242,6 +173,7 @@
   margin-right: auto;
   background: #fff;
 }
+
 .image-transition {
   -webkit-transition: background 1s;
   -moz-transition: background 1s;

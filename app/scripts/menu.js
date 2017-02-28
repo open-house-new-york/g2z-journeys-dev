@@ -1,4 +1,9 @@
 $(document).ready(function() {
+  var viewportWidth = document.documentElement.clientWidth;
+  var viewportHeight = document.documentElement.clientHeight;
+  var horizontalViewport = viewportWidth >= viewportHeight ? true : false;
+  var isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
+  var footerHeight = isMobile ? 50 : 70;
   var active = false;
   var footerInitialHeight = $('#footer').outerHeight();
   var mastheadHeight = $('.masthead').outerHeight();
@@ -20,7 +25,7 @@ $(document).ready(function() {
       active = true;
     } else {
       body.css({ overflow: 'auto' });
-      footer.animate({height: 70}, 500, function () {
+      footer.animate({height: footerHeight}, 500, function () {
         caret.removeClass('fa-caret-down');
         caret.addClass('fa-caret-up');
       });
