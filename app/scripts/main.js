@@ -28,8 +28,8 @@ function calculateViewportDimensions() {
   isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
   console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
   if (horizontalViewport && isMobile) {
-    $("#change-orientation").show();
-    $(".menu-icon-container").hide();
+    $('#change-orientation').show();
+    $('.menu-icon-container').hide();
   } else {
     initVis();
   }
@@ -42,8 +42,8 @@ $(document).ready(function() {
 
 // recalculate on window resize
 $(window).on('resize', _.debounce(function() {
-  $("#change-orientation").hide();
-  $(".menu-icon-container").show();
+  $('#change-orientation').hide();
+  $('.menu-icon-container').show();
   calculateViewportDimensions();
 }, 500));
 
@@ -96,7 +96,9 @@ $(window).on('resize', _.debounce(function() {
         imageNearestSize = 500;
       }
       // FIXME:
-      // imageNearestSize = 600;
+      if (journeyConfigs.meta.slug === 'history') {
+        imageNearestSize = 600;
+      }
 
       var containerEl = $('.container');
       var visEl = $('#vis');
