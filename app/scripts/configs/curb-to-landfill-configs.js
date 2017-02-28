@@ -30,7 +30,7 @@ journeyConfigs.visSteps = [
 ];
 journeyConfigs.mapEl = {
   nyc: {
-    id: '1-3'
+    id: '1-4'
   },
   wasteExport: {
     id: '3-4'
