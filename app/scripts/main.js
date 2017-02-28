@@ -272,7 +272,7 @@ $(window).on('resize', _.debounce(function() {
       var totalPanelsWidth = panelWidths.reduce(function(a, b) {
         return a + b;
       });
-      var visWidth = totalPanelsWidth + panelWrapperMargin/2 + firstPanelMargin;
+      var visWidth = totalPanelsWidth + panelWrapperMargin + firstPanelMargin;
       panelsGroupEl.css({
         height: panelHeight,
         width: visWidth
