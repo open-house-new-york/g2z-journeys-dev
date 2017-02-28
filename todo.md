@@ -103,8 +103,8 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # maps
 
-- what about covanta essex? not TS
-- legend? add non city used transfer stations?
+<!-- - what about covanta essex? not TS -->
+<!-- - legend? add non city used transfer stations? -->
 <!-- - add circle label when touched -->
 <!-- - cirlce clips making it too slow? -->
 <!-- - build geojsons too via gulp -->
@@ -119,7 +119,7 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 ### SOURCES for data
 
-- add tooltip
+<!-- - add tooltip -->
 <!-- - where can these citations live? -->
 
 <!-- ### CREDITS for photos -->
