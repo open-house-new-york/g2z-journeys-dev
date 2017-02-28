@@ -35,7 +35,7 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # layout / styles
 
-- Add OHNY to page titles
+<!-- - Add OHNY to page titles -->
 - explore footer at the end
 - no circles in footer, a single bar?
 - add larger arrow to indicate swipe right
@@ -83,6 +83,7 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # before deploy
 
+- remove history
 - **add google analytics**
 - allow robots
 <!-- - send IP for A records, CNAME on repo -->
@@ -94,12 +95,12 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 - facebook and other meta tags (twitter)
 
-### add images
+<!-- ### add images
 
 ##### twitter:
 - Maximum dimension: 1024px x 512px; minimum dimension: 440px x 220px
 ##### og:
-- Recommended dimension: 1200px x 630px; minimum dimension: 600px x 315px
+- Recommended dimension: 1200px x 630px; minimum dimension: 600px x 315px -->
 
 # maps
 
