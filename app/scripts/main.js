@@ -275,8 +275,7 @@ $(window).on('resize', _.debounce(function() {
       var totalPanelsWidth = panelWidths.reduce(function(a, b) {
         return a + b;
       });
-      var totalMargin = isMobile ? panelWrapperMargin/2 : panelWrapperMargin;
-      var visWidth = totalPanelsWidth + totalMargin + firstPanelMargin;
+      var visWidth = totalPanelsWidth + panelWrapperMargin + firstPanelMargin;
       panelsGroupEl.css({
         height: panelHeight,
         width: visWidth
