@@ -33,6 +33,9 @@ body {
   .intro-paragraph {
     font-size: 1em !important;
   }
+  .smaller {
+    font-size: 0.7em !important;
+  }
 }
 @media only screen and (max-height: 400px) {
   h3 {

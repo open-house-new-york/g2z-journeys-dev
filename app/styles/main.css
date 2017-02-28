@@ -202,9 +202,11 @@
   margin-bottom: 0;
 }
 .menu-link {
-  /*position: absolute;*/
-  /*bottom: 50%;*/
-  /*padding-right: 30%;*/
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+  border-spacing: 0px;
   z-index: 2;
 }
 .menu-link:hover {
