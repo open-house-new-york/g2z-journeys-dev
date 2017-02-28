@@ -3,7 +3,7 @@
 - modernizr tests:
 https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssanimations-cssgradients-cssscrollbar-csstransitions-devicemotion_deviceorientation-es5array-flexbox-flexwrap-hiddenscroll-inlinesvg-json-mediaqueries-opacity-rgba-scrollsnappoints-svgclippaths-touchevents-setclasses
 - sometimes breaking on desktop when resizing small WHY??????
-- in horiz mobile, show logo at first screen
+<!-- - in horiz mobile, show logo at first screen -->
 <!-- - image is not preloading again... -->
 <!-- - firefox 47 last menu triggers out of nowhere -->
 <!-- - on mobile, hide top address bar? -->
@@ -26,7 +26,7 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # general
 
-- *font-size may be too small*
+<!-- - *font-size may be too small* -->
 <!-- - intro page: on our template -->
 <!-- - ignored attempt to cancel... is it reproducible on mobile? -->
 <!-- - add google fonts file to app? -->
@@ -35,7 +35,11 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # layout / styles
 
+- Add OHNY to page titles
+- explore footer at the end
+- no circles in footer, a single bar?
 - add larger arrow to indicate swipe right
+- remove subtitles for chapters
 <!-- - ***where will the name of the journey be on the page? besides title tag*** -->
 <!-- - last text margin right looks bad on mobile -->
 <!-- - ***title in each text section?*** -->
@@ -54,7 +58,8 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # interactivity
 
-- on mobile, menu SHOULD be triggered with swipe to end
+- on mobile, last image transition should trigger at half viewport width
+<!-- - on mobile, menu SHOULD be triggered with swipe to end -->
 <!-- - allow use keyboard arrows and spacebar to scroll -->
 <!-- - on touch, prevent pinch zoom -->
 
@@ -113,7 +118,8 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 ### SOURCES for data
 
-- where can these citations live?
+- add tooltip
+<!-- - where can these citations live? -->
 
 <!-- ### CREDITS for photos -->
 <!-- ### Refer back to outline -->
