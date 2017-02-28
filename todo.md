@@ -58,7 +58,7 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # interactivity
 
-- on mobile, last image transition should trigger at half viewport width
+<!-- - on mobile, last image transition should trigger at half viewport width -->
 <!-- - on mobile, menu SHOULD be triggered with swipe to end -->
 <!-- - allow use keyboard arrows and spacebar to scroll -->
 <!-- - on touch, prevent pinch zoom -->
@@ -66,7 +66,8 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 # photos
 
 - photos are low res on mobile
-- uniform treatment for photos
+- fix some photos
+<!-- - uniform treatment for photos -->
 <!-- - person taking out the trash LE (find, crop) -->
 <!-- - different sanitation workers, changes every time? LE (crop) -->
 <!-- - add dsny worker doing baskets LE (crop) -->
@@ -103,9 +104,9 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 # maps
 
 - what about covanta essex? not TS
-- add circle label when touched
 - legend? add non city used transfer stations?
-- cirlce clips making it too slow?
+<!-- - add circle label when touched -->
+<!-- - cirlce clips making it too slow? -->
 <!-- - build geojsons too via gulp -->
 <!-- - concat several geojsons into one -->
 <!-- - nyc: fix jagged edges -->
