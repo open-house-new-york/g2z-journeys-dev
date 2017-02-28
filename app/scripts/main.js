@@ -86,19 +86,20 @@ $(window).on('resize', _.debounce(function() {
       }
 
       // get image size depending on viewport size
-      var imageNearestSize = Math.ceil(panelHeight / 100);
-      imageNearestSize *= 100;
-      if (imageNearestSize > 700) {
-        // max size
-        imageNearestSize = 800;
-      } else if (imageNearestSize < 500) {
-        // min size
-        imageNearestSize = 500;
-      }
-      // FIXME:
-      if (journeyConfigs.meta.slug === 'history') {
-        imageNearestSize = 600;
-      }
+      // var imageNearestSize = Math.ceil(panelHeight / 100);
+      // imageNearestSize *= 100;
+      // if (imageNearestSize > 700) {
+      //   // max size
+      //   imageNearestSize = 800;
+      // } else if (imageNearestSize < 500) {
+      //   // min size
+      //   imageNearestSize = 500;
+      // }
+      // // FIXME:
+      // if (journeyConfigs.meta.slug === 'history') {
+      //   imageNearestSize = 600;
+      // }
+      var imageNearestSize = isMobile ? 600 : 800;
 
       var containerEl = $('.container');
       var visEl = $('#vis');
