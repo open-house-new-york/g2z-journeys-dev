@@ -74,7 +74,10 @@ function initMaps() {
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .attr('id', 'map-export-svg');
+      .attr('id', 'map-export-svg')
+      .on('click', function (d) {
+        journeyConfigs.mapEl.wasteExport.startAnimation();
+      });
 
     $('#map-export-svg').css({
       position: 'absolute',
@@ -102,10 +105,7 @@ function initMaps() {
 
     var mapGroup = svg.append('g')
       .attr('class', 'mapGroup')
-      .attr('clip-path', 'url(#mapClip)')
-      .on('click', function (d) {
-        journeyConfigs.mapEl.wasteExport.startAnimation();
-      });
+      .attr('clip-path', 'url(#mapClip)');
     var usStates = mapGroup.append('g').attr('class', 'usStates');
     var linePaths = mapGroup.append('g').attr('class', 'lineConnect');
     var destPoints = mapGroup.append('g').attr('class', 'exportPoints');
@@ -309,7 +309,10 @@ function initMaps() {
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .attr('id', 'map-nyc-svg');
+      .attr('id', 'map-nyc-svg')
+      .on('click', function (d) {
+        journeyConfigs.mapEl.nyc.startAnimation();
+      });
 
     $('#map-nyc-svg').css({
       position: 'absolute',
@@ -337,10 +340,7 @@ function initMaps() {
 
     var mapGroup = svg.append('g')
       .attr('class', 'mapGroup')
-      .attr('clip-path', 'url(#mapClip)')
-      .on('click', function (d) {
-        journeyConfigs.mapEl.nyc.startAnimation();
-      });
+      .attr('clip-path', 'url(#mapClip)');
     var usStates = mapGroup.append('g').attr('class', 'usStates');
     var commDist = mapGroup.append('g').attr('class', 'commDist');
     var linePaths = mapGroup.append('g').attr('class', 'lineConnect');
