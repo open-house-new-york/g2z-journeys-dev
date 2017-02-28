@@ -56,6 +56,9 @@ sup {
 .highlight {
   color: #f15a29;
 }
+.bold {
+  font-weight: bold;
+}
 .text-center {
   text-align: center;
 }
