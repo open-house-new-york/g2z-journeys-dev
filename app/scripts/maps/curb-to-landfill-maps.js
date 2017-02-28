@@ -81,10 +81,10 @@ function initMaps() {
       top: -topVisPadding
     });
 
-    var div = d3.select('body')
-      .append('div')
-      .attr('class', 'tooltip')
-      .style('opacity', 0);
+    // var div = d3.select('body')
+    //   .append('div')
+    //   .attr('class', 'tooltip')
+    //   .style('opacity', 0);
 
     var clipBackground = svg.append('circle')
       .attr('cx', width / 2)
@@ -316,10 +316,10 @@ function initMaps() {
       top: -topVisPadding
     });
 
-    var div = d3.select('body')
-      .append('div')
-      .attr('class', 'tooltip')
-      .style('opacity', 0);
+    // var div = d3.select('body')
+    //   .append('div')
+    //   .attr('class', 'tooltip')
+    //   .style('opacity', 0);
 
     var clipBackground = svg.append('circle')
       .attr('cx', width / 2)
