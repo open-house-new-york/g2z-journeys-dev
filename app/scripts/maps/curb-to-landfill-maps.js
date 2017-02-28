@@ -102,7 +102,10 @@ function initMaps() {
 
     var mapGroup = svg.append('g')
       .attr('class', 'mapGroup')
-      .attr('clip-path', 'url(#mapClip)');
+      .attr('clip-path', 'url(#mapClip)')
+      .on('click', function (d) {
+        journeyConfigs.mapEl.wasteExport.startAnimation();
+      });
     var usStates = mapGroup.append('g').attr('class', 'usStates');
     var linePaths = mapGroup.append('g').attr('class', 'lineConnect');
     var destPoints = mapGroup.append('g').attr('class', 'exportPoints');
@@ -185,12 +188,41 @@ function initMaps() {
           return 0;
         }
       })
-      .on('click', function(d) {
-        var pointFac = d.properties.sent_fac;
-        var matchingLines = $.grep(exportLines.features, function(e) {
-          return e.properties.sent_fac == d.properties.sent_fac;
-        });
-        console.log(matchingLines);
+      // .on('click', function(d) {
+      //   var pointFac = d.properties.sent_fac;
+      //   var matchingLines = $.grep(exportLines.features, function(e) {
+      //     return e.properties.sent_fac == d.properties.sent_fac;
+      //   });
+      //   console.log(matchingLines);
+      //   linePaths.selectAll('.lineConnect')
+      //     .each(function(d, i) {
+      //       d3.select(this)
+      //         .attr('stroke-dasharray', function(d) {
+      //           return (this.getTotalLength() + ' ' + this.getTotalLength());
+      //         })
+      //         .attr('stroke-dashoffset', function(d) {
+      //           if (d.properties.sent_fac == pointFac) {
+      //             return 0;
+      //           } else {
+      //             return -this.getTotalLength();
+      //           }
+      //         });
+      //     });
+      // })
+      .attr('class', 'exportPoints');
+    journeyConfigs.mapEl.wasteExport.animationPlayed = false;
+
+    journeyConfigs.mapEl.wasteExport.startAnimation = function() {
+
+      if (!journeyConfigs.mapEl.wasteExport.animationPlayed) {
+        journeyConfigs.mapEl.wasteExport.animationPlayed = true;
+
+        destPoints.selectAll('.exportPoints')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('r', 0);
+          });
+
         linePaths.selectAll('.lineConnect')
           .each(function(d, i) {
             d3.select(this)
@@ -198,41 +230,18 @@ function initMaps() {
                 return (this.getTotalLength() + ' ' + this.getTotalLength());
               })
               .attr('stroke-dashoffset', function(d) {
-                if (d.properties.sent_fac == pointFac) {
-                  return 0;
-                } else {
-                  return -this.getTotalLength();
-                }
+                return -this.getTotalLength();
+              })
+              .attr('class', 'lineConnect')
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', 0)
+              .each('end', function() {
+                journeyConfigs.mapEl.wasteExport.transitionCircles();
               });
           });
-      })
-      .attr('class', 'exportPoints');
+      }
 
-    journeyConfigs.mapEl.wasteExport.startAnimation = function() {
-
-      destPoints.selectAll('.exportPoints')
-        .each(function(d, i) {
-          d3.select(this)
-            .attr('r', 0);
-        });
-
-      linePaths.selectAll('.lineConnect')
-        .each(function(d, i) {
-          d3.select(this)
-            .attr('stroke-dasharray', function(d) {
-              return (this.getTotalLength() + ' ' + this.getTotalLength());
-            })
-            .attr('stroke-dashoffset', function(d) {
-              return -this.getTotalLength();
-            })
-            .attr('class', 'lineConnect')
-            .transition()
-            .duration(1500)
-            .attr('stroke-dashoffset', 0)
-            .each('end', function() {
-              journeyConfigs.mapEl.wasteExport.transitionCircles();
-            });
-        });
     };
 
     journeyConfigs.mapEl.wasteExport.transitionCircles = function() {
@@ -266,6 +275,10 @@ function initMaps() {
               return this.getTotalLength();
             });
         });
+
+      setTimeout(function () {
+        journeyConfigs.mapEl.wasteExport.animationPlayed = false;
+      }, 1600);
     };
   }
 
@@ -324,7 +337,10 @@ function initMaps() {
 
     var mapGroup = svg.append('g')
       .attr('class', 'mapGroup')
-      .attr('clip-path', 'url(#mapClip)');
+      .attr('clip-path', 'url(#mapClip)')
+      .on('click', function (d) {
+        journeyConfigs.mapEl.nyc.startAnimation();
+      });
     var usStates = mapGroup.append('g').attr('class', 'usStates');
     var commDist = mapGroup.append('g').attr('class', 'commDist');
     var linePaths = mapGroup.append('g').attr('class', 'lineConnect');
@@ -412,32 +428,38 @@ function initMaps() {
     //   .attr("r", function(d) {
     //     return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.j_tot_rec);
     //   });
+    journeyConfigs.mapEl.nyc.animationPlayed = false;
 
     journeyConfigs.mapEl.nyc.startAnimation = function() {
-      //clear circles
-      destPointsRefuse.selectAll('.destPointsRefuse')
-        .each(function(d, i) {
-          d3.select(this)
-            .attr('r', 0);
-        });
 
-      linePaths.selectAll('.lineConnect')
-        .each(function(d, i) {
-          d3.select(this)
-            .attr('stroke-dasharray', function(d) {
-              return (this.getTotalLength() + ' ' + this.getTotalLength());
-            })
-            .attr('stroke-dashoffset', function(d) {
-              return this.getTotalLength();
-            })
-            .attr('class', 'lineConnect')
-            .transition()
-            .duration(1500)
-            .attr('stroke-dashoffset', 0)
-            .each('end', function() {
-              journeyConfigs.mapEl.nyc.transitionCircles();
-            });
-        });
+      if (!journeyConfigs.mapEl.nyc.animationPlayed) {
+        journeyConfigs.mapEl.nyc.animationPlayed = true;
+
+        //clear circles
+        destPointsRefuse.selectAll('.destPointsRefuse')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('r', 0);
+          });
+
+        linePaths.selectAll('.lineConnect')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('stroke-dasharray', function(d) {
+                return (this.getTotalLength() + ' ' + this.getTotalLength());
+              })
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
+              })
+              .attr('class', 'lineConnect')
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', 0)
+              .each('end', function() {
+                journeyConfigs.mapEl.nyc.transitionCircles();
+              });
+          });
+      }
     };
 
     journeyConfigs.mapEl.nyc.transitionCircles = function() {
@@ -454,9 +476,6 @@ function initMaps() {
               return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.j_tot_rec);
             })
             .each('end', function() {
-              // if (i === 1) {
-              // $("#text-2-0").append("<p class='animation-text'>These are the transfer stations used by the City in the NYC area.</p>");
-              // }
               journeyConfigs.mapEl.nyc.linesOut();
             });
         });
@@ -477,6 +496,10 @@ function initMaps() {
               return -this.getTotalLength();
             });
         });
+
+      setTimeout(function () {
+        journeyConfigs.mapEl.nyc.animationPlayed = false;
+      }, 1600);
     };
   }
 }
