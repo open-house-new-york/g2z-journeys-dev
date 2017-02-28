@@ -10,9 +10,6 @@ body {
   padding: 0.2em 0;
 }
 .masthead {
-  margin: 0;
-  padding: 7px 5px 5px 5px;
-  height: 40px;
   position: absolute;
   top: 0;
   left: 0;
@@ -37,7 +34,7 @@ body {
     font-size: 0.7em !important;
   }
 }
-@media only screen and (max-height: 400px) {
+@media only screen and (max-height: 480px) {
   h3 {
     margin-bottom: 0;
   }
@@ -66,17 +63,40 @@ sup {
   line-height: 1.5em;
 }
 .menu-icon-container {
-  font-size: 25px;
-  margin: 0;
-  padding-right: 20px;
-  padding-top: 10px;
-  height: 40px;
   position: absolute;
   top: 0;
   right: 0;
   text-align: center;
   display: table;
   z-index: 7;
+}
+@media only screen and (min-height: 480px) {
+  .menu-icon-container {
+    font-size: 25px;
+    margin: 0;
+    padding-right: 20px;
+    padding-top: 10px;
+    height: 40px;
+  }
+  .masthead {
+    margin: 0;
+    padding: 7px 5px 5px 5px;
+    height: 40px;
+  }
+}
+@media only screen and (max-height: 480px) {
+  .menu-icon-container {
+    font-size: 18px;
+    margin: 0;
+    padding-right: 15px;
+    padding-top: 5px;
+    height: 30px;
+  }
+  .masthead {
+    margin: 0;
+    padding: 4px 2px 2px 2px;
+    height: 30px;
+  }
 }
 .menu-icon {
   display: table-cell;
@@ -121,12 +141,12 @@ sup {
   width: 100%;
   padding: 20px 0;
 }
-@media only screen and (max-height: 400px) {
+@media only screen and (max-height: 480px) {
   .btn {
     padding: 5px 0;
   }
 }
-@media only screen and (max-width: 768px) and (min-height: 400px) {
+@media only screen and (max-width: 768px) and (min-height: 480px) {
   .btn {
     padding: 10px 0;
   }

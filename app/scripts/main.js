@@ -73,10 +73,13 @@ $(window).on('resize', _.debounce(function() {
           topVisPadding = 100;
         }
       }
+      if (viewportHeight <= 480) {
+          topVisPadding = 40;
+      }
       textBlockPadding = 25;
       mapSidePadding = 100;
       maximumTextPanelWidth = 400;
-      panelHeight = viewportHeight - topVisPadding - footerPadding;
+      panelHeight = viewportHeight - topVisPadding - 20;
       var firstPanelMargin;
 
       if (horizontalViewport) {
@@ -347,17 +350,17 @@ $(window).on('resize', _.debounce(function() {
 
           } else {
             // fade footer in
-            if (currentScroll >= steps[0].position - panelWrapperMargin - firstPanelMargin && !footerVisible) {
-              $('#footer').fadeTo('slow', 1);
-            }
-            for (var i = 0; i < steps.length; i++) {
-              setDotsColor('#step-dot-' + steps[i].step, steps[i].position);
-              if (i > 0) {
-                $('#step-line-' + i).css({
-                  background: setLinesOpacity(steps[i - 1].position, steps[i].position)
-                });
-              }
-            }
+            // if (currentScroll >= steps[0].position - panelWrapperMargin - firstPanelMargin && !footerVisible) {
+            //   $('#footer').fadeTo('slow', 1);
+            // }
+            // for (var i = 0; i < steps.length; i++) {
+            //   setDotsColor('#step-dot-' + steps[i].step, steps[i].position);
+            //   if (i > 0) {
+            //     $('#step-line-' + i).css({
+            //       background: setLinesOpacity(steps[i - 1].position, steps[i].position)
+            //     });
+            //   }
+            // }
           }
 
 
