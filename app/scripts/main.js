@@ -1,37 +1,16 @@
-var panelWidths = [],
-    panelIds = [],
-    panelPositions = [],
-    panelImageWidths = [],
-    panelTextBlockWidths = [];
-
-var viewportWidth,
-    viewportHeight,
-    horizontalViewport,
-    isMobile,
-    panelWidthPercent,
-    panelHeightPercent,
-    panelWrapperMargin,
-    topVisPadding,
-    footerPadding,
-    textBlockPadding,
-    mapSidePadding,
-    maximumTextPanelWidth,
-    panelHeight,
-    textPanelWidth;
-
 // $.getJSON( "scripts/sizes.json", function( data ) {
 // visImageSizes = data;
 function calculateViewportDimensions() {
-  viewportWidth = document.documentElement.clientWidth;
-  viewportHeight = document.documentElement.clientHeight;
-  horizontalViewport = viewportWidth >= viewportHeight ? true : false;
-  isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
+  var viewportWidth = document.documentElement.clientWidth;
+  var viewportHeight = document.documentElement.clientHeight;
+  var horizontalViewport = viewportWidth >= viewportHeight ? true : false;
+  var isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
   console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
   if (horizontalViewport && isMobile) {
     $('#change-orientation').show();
     $('.menu-icon-container').hide();
   } else {
-    initVis();
+    initVis(viewportWidth, viewportHeight, horizontalViewport, isMobile);
   }
 }
 
@@ -44,20 +23,31 @@ $(document).ready(function() {
 $(window).on('resize', _.debounce(function() {
   $('#change-orientation').hide();
   $('.menu-icon-container').show();
+  $('.ps-scrollbar-x-rail, .ps-scrollbar-y-rail').remove();
   calculateViewportDimensions();
 }, 500));
 
-  function initVis() {
-      panelWidths = [];
-      panelIds = [];
-      panelPositions = [];
-      panelImageWidths = [];
-      panelTextBlockWidths = [];
+  function initVis(viewportWidth, viewportHeight, horizontalViewport, isMobile) {
+      var panelWidths = [],
+          panelIds = [],
+          panelPositions = [],
+          panelImageWidths = [],
+          panelTextBlockWidths = [];
+
+      var panelWidthPercent,
+          panelHeightPercent,
+          panelWrapperMargin,
+          topVisPadding,
+          footerPadding,
+          textBlockPadding,
+          mapSidePadding,
+          maximumTextPanelWidth,
+          panelHeight,
+          textPanelWidth;
 
       panelWidthPercent = 0.9;
       panelHeightPercent = 0.7;
       panelWrapperMargin = 40;
-      // topVisPadding = isMobile ? 60 : 100;
 
       if (isMobile && horizontalViewport) {
         topVisPadding = 10;
@@ -99,12 +89,13 @@ $(window).on('resize', _.debounce(function() {
       //   // min size
       //   imageNearestSize = 500;
       // }
-      // // FIXME:
-      // if (journeyConfigs.meta.slug === 'history') {
-      //   imageNearestSize = 600;
-      // }
-      var imageNearestSize = isMobile ? 600 : 800;
 
+      var imageNearestSize = isMobile ? 600 : 800;
+      
+      // // FIXME:
+      if (journeyConfigs.meta.slug === 'history') {
+        imageNearestSize = 600;
+      }
       var containerEl = $('.container');
       var visEl = $('#vis');
       var panelsWrapperEl = $('.panels-wrapper');
@@ -528,6 +519,6 @@ $(window).on('resize', _.debounce(function() {
       }
 
       // FIXME:
-      initMaps();
+      initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, panelWidthPercent, panelHeightPercent, panelWrapperMargin, topVisPadding, footerPadding, textBlockPadding, mapSidePadding, maximumTextPanelWidth, panelHeight, textPanelWidth);
 
 }

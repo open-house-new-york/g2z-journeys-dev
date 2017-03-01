@@ -1,4 +1,4 @@
-function initMaps() {
+function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, panelWidthPercent, panelHeightPercent, panelWrapperMargin, topVisPadding, footerPadding, textBlockPadding, mapSidePadding, maximumTextPanelWidth, panelHeight, textPanelWidth) {
 
   //color configs
   journeyConfigs.mapConfigs.colors = {
