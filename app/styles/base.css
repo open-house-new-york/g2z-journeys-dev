@@ -70,11 +70,26 @@ sup {
   display: table;
   z-index: 7;
 }
+.menu-back-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  display: table;
+  z-index: 7;
+}
 @media only screen and (min-height: 480px) {
   .menu-icon-container {
     font-size: 25px;
     margin: 0;
     padding-right: 20px;
+    padding-top: 10px;
+    height: 40px;
+  }
+  .menu-back-container {
+    font-size: 1em;
+    margin: 0;
+    padding-left: 20px;
     padding-top: 10px;
     height: 40px;
   }
@@ -92,6 +107,13 @@ sup {
     padding-top: 5px;
     height: 30px;
   }
+  .menu-back-container {
+    font-size: 0.8em;
+    margin: 0;
+    padding-left: 15px;
+    padding-top: 5px;
+    height: 30px;
+  }
   .masthead {
     margin: 0;
     padding: 4px 2px 2px 2px;
@@ -102,6 +124,10 @@ sup {
   display: table-cell;
   vertical-align: middle;
   cursor: pointer !important;
+}
+.menu-back {
+  display: table-cell;
+  vertical-align: middle;
 }
 .menu-icon:hover {
   color: #f15a29;
