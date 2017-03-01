@@ -71,7 +71,7 @@ sup {
   z-index: 7;
 }
 .menu-back-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   text-align: center;
@@ -229,4 +229,8 @@ sup {
   /*text-decoration: none;*/
   /*border-bottom: 1px dotted #f15a29;*/
   color: #f15a29;
+}
+.menu-back-link {
+  color: #333;
+  text-decoration: none;
 }

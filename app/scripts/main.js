@@ -123,7 +123,7 @@ $(window).on('resize', _.debounce(function() {
       var endedOnce = false;
       document.addEventListener('ps-x-reach-end', function () {
         if (endedOnce && endedOnce !== 'done') {
-          $("#menu-link").fadeTo('slow', 1);
+          $('#menu-link').fadeTo('slow', 1);
           endedOnce = 'done';
         }
         if (endedOnce !== 'done') {
