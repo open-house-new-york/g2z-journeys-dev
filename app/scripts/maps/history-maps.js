@@ -27,14 +27,14 @@ function initMaps() {
   //
   //   initOceanDumpingMap(dumpingLines, dumpingWharves, dumpingLocation, states);
   // });
-  d3.json('data/nycd.geojson', function(nycd) {
-  d3.json('data/ny_nj_ct.geojson', function(nynj) {
-  d3.json('data/states_east.geojson', function(states) {
-  d3.json('data/dumping_lines.geojson', function(dumpingLines) {
-  d3.json('data/dumping_wharves.geojson', function(dumpingWharves) {
-  d3.json('data/dumping_location.geojson', function(dumpingLocation) {
-  d3.json('data/landfills_nyc_areas.geojson', function(landfillsNycAreas) {
-  d3.json('data/landfills_nyc_points.geojson', function(landfillsNycPoints) {
+  d3.json('data/temp/nycd.geojson', function(nycd) {
+  d3.json('data/temp/ny_nj_ct.geojson', function(nynj) {
+  d3.json('data/temp/states_east.geojson', function(states) {
+  d3.json('data/temp/dumping_lines.geojson', function(dumpingLines) {
+  d3.json('data/temp/dumping_wharves.geojson', function(dumpingWharves) {
+  d3.json('data/temp/dumping_location.geojson', function(dumpingLocation) {
+  d3.json('data/temp/landfills_nyc_areas.geojson', function(landfillsNycAreas) {
+  d3.json('data/temp/landfills_nyc_points.geojson', function(landfillsNycPoints) {
     initOceanDumpingMap(dumpingLines, dumpingWharves, dumpingLocation, nynj, nycd);
     initLandfillsNycMap(landfillsNycAreas, landfillsNycPoints, nynj, nycd);
   });

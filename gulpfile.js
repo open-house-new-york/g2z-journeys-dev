@@ -87,7 +87,7 @@ gulp.task('fonts', () => {
 });
 
 gulp.task('data', () => {
-  return gulp.src('app/data/**/*')
+  return gulp.src('app/data/*')
     .pipe(gulp.dest('dist/data'));
 });
 
