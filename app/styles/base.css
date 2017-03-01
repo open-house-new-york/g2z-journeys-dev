@@ -167,7 +167,7 @@ sup {
   text-align: center;
   cursor: pointer;
   width: 100%;
-  padding: 20px 0;
+  padding: 15px 0;
 }
 @media only screen and (max-height: 480px) {
   .btn {
