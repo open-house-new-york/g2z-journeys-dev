@@ -75,6 +75,7 @@ $(window).on('resize', _.debounce(function() {
       }
       if (viewportHeight <= 480) {
           topVisPadding = 40;
+          panelWidthPercent = 0.7;
       }
       textBlockPadding = 25;
       mapSidePadding = 100;
