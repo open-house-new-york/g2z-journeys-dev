@@ -29,6 +29,9 @@
   .container-wrapper {
     margin-top: 50px;
   }
+  .footer {
+    height: 40px;
+  }
 }
 @media (max-height: 600px) {
   .btn > a > h3 {

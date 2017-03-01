@@ -1,22 +1,22 @@
 $(document).ready(function() {
-  var viewportWidth = document.documentElement.clientWidth;
-  var viewportHeight = document.documentElement.clientHeight;
-  var horizontalViewport = viewportWidth >= viewportHeight ? true : false;
-  var isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
+  var horizontalViewport = document.documentElement.clientWidth >= document.documentElement.clientHeight ? true : false;
+  var isMobile = document.documentElement.clientWidth < 768 && horizontalViewport || document.documentElement.clientHeight < 768 && !horizontalViewport ? true : false;
   var footerHeight = isMobile ? 50 : 70;
+  if (document.documentElement.clientHeight <= 480) {
+    footerHeight = 40;
+  }
   var active = false;
   var footerInitialHeight = $('#footer').outerHeight();
   var mastheadHeight = $('.masthead').outerHeight();
   $('#journeys-button').click(function() {
     var link = $(this);
     var body = $('body');
-    var viewportHeight = document.documentElement.clientHeight;
     var footer = $('#footer');
     var footerMenu = $('#footer-menu');
     var caret = $('#journeys-caret');
     if (!active) {
       body.css({ overflow: 'hidden' });
-      footer.animate({height: viewportHeight - mastheadHeight}, 500, function() {
+      footer.animate({height: document.documentElement.clientHeight - mastheadHeight}, 500, function() {
         // Animation complete.
         footerMenu.show();
         caret.removeClass('fa-caret-up');
