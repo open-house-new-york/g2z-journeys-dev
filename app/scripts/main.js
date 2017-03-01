@@ -91,7 +91,7 @@ $(window).on('resize', _.debounce(function() {
       // }
 
       var imageNearestSize = isMobile ? 600 : 800;
-      
+
       // // FIXME:
       if (journeyConfigs.meta.slug === 'history') {
         imageNearestSize = 600;
@@ -521,4 +521,10 @@ $(window).on('resize', _.debounce(function() {
       // FIXME:
       initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, panelWidthPercent, panelHeightPercent, panelWrapperMargin, topVisPadding, footerPadding, textBlockPadding, mapSidePadding, maximumTextPanelWidth, panelHeight, textPanelWidth);
 
+      if ($('#vis').scrollLeft() >= totalPanelsWidth - viewportWidth) {
+        // if on last screen move one screen over resizing
+        var currentScroll = $('#vis').scrollLeft();
+        var delta = currentScroll + viewportWidth - totalPanelsWidth;
+        $('#vis').scrollLeft(currentScroll - delta);
+      }
 }
