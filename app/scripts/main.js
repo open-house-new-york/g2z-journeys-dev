@@ -123,7 +123,22 @@ $(window).on('resize', _.debounce(function() {
       });
 
       // initialize perfect-scrollbar (hidden)
-      Ps.initialize(document.getElementById('vis'));
+      Ps.initialize(document.getElementById('vis'), {
+          handlers: ['click-rail', 'drag-scrollbar', 'keyboard', 'wheel', 'touch'],
+          suppressScrollY: true,
+          minScrollbarLength: 50
+      });
+
+      var endedOnce = false;
+      document.addEventListener('ps-x-reach-end', function () {
+        if (endedOnce && endedOnce !== 'done') {
+          $("#menu-link").fadeTo('slow', 1);
+          endedOnce = 'done';
+        }
+        if (endedOnce !== 'done') {
+          endedOnce = true;
+        }
+      });
 
       panelsWrapperEl.css({
         height: panelHeight,

@@ -109,9 +109,18 @@
   /*margin-left: 100px;*/
 }
 .ps-scrollbar-x, .ps-scrollbar-x-rail {
-  display: none !important;
+  height: 20px !important;
+  border-radius: 0 !important;
+  opacity: 0.7 !important;
+  transition: none;
+  z-index: 7;
 }
-
+.ps-container > .ps-scrollbar-x-rail > .ps-scrollbar-x {
+  bottom: 0 !important;
+}
+.ps-container.ps-in-scrolling.ps-x > .ps-scrollbar-x-rail {
+  background-color: transparent !important;
+}
 @media (min-width: 738px) {
   .panel-text-wrapper {
     margin-top: 10%;
@@ -138,6 +147,7 @@
   border-left-width: 0px;
   border-spacing: 0px;
   z-index: 2;
+  opacity: 0;
 }
 .menu-link:hover {
   cursor: pointer;
