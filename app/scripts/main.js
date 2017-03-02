@@ -472,6 +472,18 @@ $(window).on('resize', _.debounce(function() {
         }
       });
 
+      var menuLinksEl = $('#menu > a');
+      for (var i = 0; i < menuLinksEl.length; i++) {
+        var el = $(menuLinksEl[i]);
+        var id = el.attr('id');
+        if (id === 'menu-' + journeyConfigs.meta.slug) {
+          // this journey
+          el.attr('href', '#');
+          el.addClass('disabled');
+          el.find('div > h3').addClass('highlight');
+        }
+      }
+
       // helper
       // follow back in menu
       $('#menu-back').click(function() {

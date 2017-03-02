@@ -14,6 +14,7 @@ gulp.task('sizeImages', () => {
   spawn('node', ['size-images.js'], { stdio: 'inherit' });
 });
 
+const htmlrender = require('gulp-htmlrender');
 
 gulp.task('styles', () => {
   return gulp.src('app/styles/*.css')
@@ -107,7 +108,13 @@ gulp.task('extras', () => {
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('serve', ['styles', 'scripts', 'fonts', 'sizeImages'], () => {
+gulp.task('render', function() {
+    return gulp.src('app/views/*.html', {read: false})
+        .pipe(htmlrender.render())
+        .pipe(gulp.dest('app'));
+});
+
+gulp.task('serve', ['render', 'styles', 'scripts', 'fonts', 'sizeImages'], () => {
   browserSync({
     notify: false,
     port: 9000,
@@ -132,7 +139,7 @@ gulp.task('serve', ['styles', 'scripts', 'fonts', 'sizeImages'], () => {
   gulp.watch('app/scripts/**/*.js', ['scripts']);
   gulp.watch('app/fonts/**/*', ['fonts']);
   gulp.watch('bower.json', ['wiredep', 'fonts']);
-
+  gulp.watch(['app/partials/**/*', 'app/views/**/*'], ['render']);
   gulp.watch('app/images/**/*', ['sizeImages']);
 });
 
@@ -174,7 +181,7 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'data', 'videos', 'extras'], () => {
+gulp.task('build', ['lint', 'render', 'html', 'images', 'fonts', 'data', 'videos', 'extras'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
