@@ -76,7 +76,10 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .attr('id', mapSvgId.substring(1, mapSvgId.length));
+      .attr('id', mapSvgId.substring(1, mapSvgId.length))
+      .on('click', function (d) {
+        journeyConfigs.mapEl.dumpingWharves.startAnimation();
+      });
 
     $(mapSvgId).css({
       position: 'absolute',
@@ -187,30 +190,38 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
       .attr('class', 'dumpingLocation');
 
+    journeyConfigs.mapEl.dumpingWharves.animationPlayed = false;
+
     journeyConfigs.mapEl.dumpingWharves.startAnimation = function() {
 
-      dumpingLocationPoints.selectAll('.dumpingLocation')
-        .each(function(d, i) {
-          d3.select(this)
-            .attr('r', 0);
-        });
+      if (!journeyConfigs.mapEl.dumpingWharves.animationPlayed) {
+        journeyConfigs.mapEl.dumpingWharves.animationPlayed = true;
 
-      dumpingLinesPaths.selectAll('.dumpingLines')
-        .each(function(d, i) {
-          d3.select(this)
-            .attr('stroke-dasharray', function(d) {
-              return (this.getTotalLength() + ' ' + this.getTotalLength());
-            })
-            .attr('stroke-dashoffset', function(d) {
-              return this.getTotalLength();
-            })            .attr('class', 'dumpingLines')
-            .transition()
-            .duration(1500)
-            .attr('stroke-dashoffset', 0)
-            .each('end', function() {
-              journeyConfigs.mapEl.dumpingWharves.transitionCircles();
-            });
-        });
+        svg.selectAll('.legend-dumping').remove();
+
+        dumpingLocationPoints.selectAll('.dumpingLocation')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('r', 0);
+          });
+
+        dumpingLinesPaths.selectAll('.dumpingLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('stroke-dasharray', function(d) {
+                return (this.getTotalLength() + ' ' + this.getTotalLength());
+              })
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
+              })            .attr('class', 'dumpingLines')
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', 0)
+              .each('end', function() {
+                journeyConfigs.mapEl.dumpingWharves.transitionCircles();
+              });
+          });
+        }
     };
 
     journeyConfigs.mapEl.dumpingWharves.transitionCircles = function() {
@@ -240,6 +251,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
           })
           .attr('transform', function(d) { return 'translate(50,0)'; })
+          .attr('class', 'legend-dumping')
           .text('Ocean dumping');
 
       svg.selectAll('text-below')
@@ -254,6 +266,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
           })
           .attr('transform', function(d) { return 'translate(50,17)'; })
+          .attr('class', 'legend-dumping')
           .text('off Sandy Hook');
 
       dumpingLinesPaths.selectAll('.dumpingLines')
@@ -270,6 +283,10 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               return -this.getTotalLength();
             });
         });
+
+      setTimeout(function () {
+          journeyConfigs.mapEl.dumpingWharves.animationPlayed = false;
+        }, 1600);
     };
   }
 
@@ -303,7 +320,10 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .attr('id', mapSvgId.substring(1, mapSvgId.length));
+      .attr('id', mapSvgId.substring(1, mapSvgId.length))
+      .on('click', function (d) {
+        journeyConfigs.mapEl.landfillsNyc.startAnimation();
+      });
 
     $(mapSvgId).css({
       position: 'absolute',
@@ -389,16 +409,17 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       var legendWidth = 20;
       var legendHeight = 20;
       var legendSpacing = 10;
-      var legendStartingX = 60;
+      var legendStartingX = isMobile ? 10 : 60;
+      var legendStartingY = isMobile ? 100 : height/2;
 
       var landfillsLegendTitle = svg.selectAll('landfillsLegendTitle')
           .data(landfillsLegendTitleText)
           .enter()
           .append('text')
-          .attr('class', 'map-legend')
+          .attr('class', 'map-legend legend-landfills')
           .attr('id', 'landfills-legend-title')
           .attr('x', legendStartingX)
-          .attr('y', height / 2 - legendSpacing)
+          .attr('y', legendStartingY - legendSpacing)
           .text(function(d, i){ return landfillsLegendTitleText[i]; })
           .attr('opacity', 0);
 
@@ -406,25 +427,27 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .data(journeyConfigs.mapConfigs.colors.scale)
           .enter()
           .append('g')
-          .attr('class', 'map-legend')
+          .attr('class', 'map-legend legend-landfills')
           .attr('id', function (d, i) {
             return 'landfills-legend-' + i;
           })
           .attr('opacity', 0);
 
       landfillsLegend.append('rect')
+        .attr('class', 'legend-landfills')
         .attr('x', legendStartingX)
         .attr('y', function(d, i) {
-          return (height/2) + (i*legendHeight) + (i*legendSpacing);
+          return legendStartingY + (i*legendHeight) + (i*legendSpacing);
         })
         .attr('width', legendWidth)
         .attr('height', legendHeight)
         .style('fill', function(d, i) { return d; });
 
       landfillsLegend.append('text')
+        .attr('class', 'legend-landfills')
         .attr('x', legendStartingX + legendWidth + legendSpacing)
         .attr('y', function(d, i) {
-          return (height/2) + (i*legendHeight) + 13 + (i*legendSpacing);
+          return legendStartingY + (i*legendHeight) + 13 + (i*legendSpacing);
         })
         .text(function(d, i){ return landfillsLegendLabels[i]; });
 
@@ -444,69 +467,77 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
       .attr('class', 'landfillsNycPlaces');
 
+
+    journeyConfigs.mapEl.landfillsNyc.animationPlayed = false;
+
     journeyConfigs.mapEl.landfillsNyc.startAnimation = function() {
 
-      landfillsNycPlacesPoints.selectAll('.landfillsNycPlaces')
-        .each(function(d, i) {
-          d3.select(this)
-            .attr('r', 0);
-        });
+      if (!journeyConfigs.mapEl.landfillsNyc.animationPlayed) {
+        journeyConfigs.mapEl.landfillsNyc.animationPlayed = true;
 
-      landfillsNycAreasPaths.selectAll('.landfillsNycAreas')
-        .each(function(d, i) {
-          d3.select(this)
-            .attr('opacity', 0)
-            .transition()
-            .duration(1500)
-            .attr('opacity', function (d) {
-              if (d.properties.year <= 1900) {
-                return 1;
-              } else {
-                return 0;
-              }
-            })
-            .each('end', function(d, i) {
-              d3.select('#landfills-legend-title').attr('opacity', 1);
-              d3.select('#landfills-legend-0').attr('opacity', 1);
-            })
-            .transition()
-            .duration(1500)
-            .attr('opacity', function (d) {
-              if (d.properties.year <= 1924) {
-                return 1;
-              } else {
-                return 0;
-              }
-            })
-            .each('end', function(d, i) {
-              d3.select('#landfills-legend-1').attr('opacity', 1);
-            })
-            .transition()
-            .duration(1500)
-            .attr('opacity', function (d) {
-              if (d.properties.year <= 1957) {
-                return 1;
-              } else {
-                return 0;
-              }
-            })
-            .each('end', function(d, i) {
-              d3.select('#landfills-legend-2').attr('opacity', 1);
-            })
-            .transition()
-            .duration(1500)
-            .attr('opacity', function (d) {
-              if (d.properties.year < 2017) {
-                return 1;
-              } else {
-                return 0;
-              }
-            })
-            .each('end', function() {
-              d3.select('#landfills-legend-3').attr('opacity', 1);
-              // journeyConfigs.mapEl.landfillsNyc.transitionCircles();
-            });
-        });
+        landfillsNycPlacesPoints.selectAll('.landfillsNycPlaces')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('r', 0);
+          });
+
+        landfillsNycAreasPaths.selectAll('.landfillsNycAreas')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('opacity', 0)
+              .transition()
+              .duration(1500)
+              .attr('opacity', function (d) {
+                if (d.properties.year <= 1900) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              })
+              .each('end', function(d, i) {
+                d3.select('#landfills-legend-title').attr('opacity', 1);
+                d3.select('#landfills-legend-0').attr('opacity', 1);
+              })
+              .transition()
+              .duration(1500)
+              .attr('opacity', function (d) {
+                if (d.properties.year <= 1924) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              })
+              .each('end', function(d, i) {
+                d3.select('#landfills-legend-1').attr('opacity', 1);
+              })
+              .transition()
+              .duration(1500)
+              .attr('opacity', function (d) {
+                if (d.properties.year <= 1957) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              })
+              .each('end', function(d, i) {
+                d3.select('#landfills-legend-2').attr('opacity', 1);
+              })
+              .transition()
+              .duration(1500)
+              .attr('opacity', function (d) {
+                if (d.properties.year < 2017) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              })
+              .each('end', function() {
+                d3.select('#landfills-legend-3').attr('opacity', 1);
+                // journeyConfigs.mapEl.landfillsNyc.transitionCircles();
+                journeyConfigs.mapEl.landfillsNyc.animationPlayed = false;
+              });
+          });
+      }
     };
 
     journeyConfigs.mapEl.landfillsNyc.transitionCircles = function() {

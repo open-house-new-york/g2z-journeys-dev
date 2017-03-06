@@ -5,6 +5,9 @@
 - video posters?
 - video subtitles?
 - legend on mobile map overlapping with map
+- click to replay videos
+- add history meta tags
+- concat geojsons
 
 # compatibility
 
