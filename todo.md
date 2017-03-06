@@ -1,3 +1,11 @@
+# history
+
+- do not preload videos
+- on mobile: can't tap to scroll over
+- video posters?
+- video subtitles?
+- legend on mobile map overlapping with map
+
 # compatibility
 
 - modernizr tests:
@@ -39,7 +47,7 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 - explore footer at the end
 - no circles in footer, a single bar?
 - add larger arrow to indicate swipe right
-- remove subtitles for chapters
+<!-- - remove subtitles for chapters -->
 <!-- - ***where will the name of the journey be on the page? besides title tag*** -->
 <!-- - last text margin right looks bad on mobile -->
 <!-- - ***title in each text section?*** -->

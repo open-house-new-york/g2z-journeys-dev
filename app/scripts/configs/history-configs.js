@@ -27,7 +27,7 @@ journeyConfigs.mapEl = {
     slug: 'dumping-wharves'
   },
   landfillsNyc: {
-    id: '2-7',
+    id: '2-8',
     slug: 'landfills-nyc'
   }
 };
