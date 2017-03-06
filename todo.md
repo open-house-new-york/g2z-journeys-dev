@@ -1,13 +1,22 @@
 # history
 
-- do not preload videos
-- on mobile: can't tap to scroll over
-- video posters?
-- video subtitles?
-- legend on mobile map overlapping with map
-- click to replay videos
+- 800px images
+- on mobile: can't tap to scroll over video
+<!-- - video subtitles? -->
 - add history meta tags
 - concat geojsons
+- back and forth transitions
+- modernizr video remove panels
+- crop fresh kills transition image
+- map ts
+- graph landfill + incinerator numberß
+optional
+- old sanitmen
+<!-- - do not preload videos -->
+<!-- - legend on mobile map overlapping with map -->
+<!-- - click to replay maps -->
+<!-- - video.js -->
+<!-- - video posters? -->
 
 # compatibility
 

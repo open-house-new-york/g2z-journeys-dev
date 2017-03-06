@@ -153,6 +153,15 @@ $(window).on('resize', _.debounce(function() {
         $('#transition-' +  imagelNum).css({
             'background-image': bgLoadUrl
         });
+        var imagesArray = [data.imageurl, data. transitionurl];
+        var counter = 0;
+        image.click(function () {
+          var imageIndex = counter % 2;
+          image.css({
+              'background-image': 'url(' + 'images/' + journeyConfigs.meta.slug + '/'  + imageNearestSize + '_' + imagesArray[imageIndex] + ')'
+          });
+          counter++;
+        })
       });
 
       // set the widths of panels and push their widths, ids, and positions to arrays
