@@ -35,5 +35,5 @@ journeyConfigs.mapEl = {
     slug: 'transfer-stations'
   }
 };
-journeyConfigs.mapDataPath = 'data/curb-to-landfill.geojson';
+journeyConfigs.mapDataPath = 'data/history.geojson';
 journeyConfigs.mapConfigs = {};

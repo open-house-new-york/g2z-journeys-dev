@@ -18,37 +18,19 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   };
 
   //Load in GeoJSON data
-  // d3.json(journeyConfigs.mapDataPath, function(geojson) {
-  //   var nycd = geojson.nycd;
-  //   var dumpingLines = geojson.dest_lines;
-  //   var dumpingWharves = geojson.export_points;
-  //   var states = geojson.states_east;
-  //   var nynj = geojson.ny_nj_ct;
-  //
-  //   initOceanDumpingMap(dumpingLines, dumpingWharves, dumpingLocation, states);
-  // });
-  d3.json('data/temp/nycd.geojson', function(nycd) {
-  d3.json('data/temp/ny_nj_ct.geojson', function(nynj) {
-  d3.json('data/temp/states_east.geojson', function(states) {
-  d3.json('data/temp/dumping_lines.geojson', function(dumpingLines) {
-  d3.json('data/temp/dumping_wharves.geojson', function(dumpingWharves) {
-  d3.json('data/temp/dumping_location.geojson', function(dumpingLocation) {
-  d3.json('data/temp/landfills_nyc_areas.geojson', function(landfillsNycAreas) {
-  d3.json('data/temp/landfills_nyc_points.geojson', function(landfillsNycPoints) {
-  d3.json('data/temp/all_transfer_stations.geojson', function(transferStations) {
-  d3.json('data/temp/census_tracts_poverty.geojson', function(censusTractsPoverty) {
+  d3.json(journeyConfigs.mapDataPath, function(geojson) {
+      var nycd = geojson.nycd;
+      var nynj = geojson.ny_nj_ct;
+      var dumpingLines = geojson.dumping_lines;
+      var dumpingWharves = geojson.dumping_wharves;
+      var dumpingLocation = geojson.dumping_location;
+      var landfillsNycAreas = geojson.landfills_nyc_areas;
+      var landfillsNycPoints = geojson.landfills_nyc_points;
+      var transferStations = geojson.all_transfer_stations;
+      var censusTractsPoverty = geojson.census_tracts_poverty;
     initOceanDumpingMap(dumpingLines, dumpingWharves, dumpingLocation, nynj, nycd);
     initLandfillsNycMap(landfillsNycAreas, landfillsNycPoints, nynj, nycd);
     initTransferStationsMap(transferStations, censusTractsPoverty, nynj, nycd);
-  });
-  });
-  });
-  });
-  });
-  });
-  });
-  });
-  });
   });
 
   function initOceanDumpingMap(dumpingLines, dumpingWharves, dumpingLocation, states, nycd) {
