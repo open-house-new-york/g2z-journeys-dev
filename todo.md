@@ -8,10 +8,10 @@
 - back and forth transitions
 - modernizr video remove panels
 - crop fresh kills transition image
-- map ts
-- graph landfill + incinerator numberß
+<!-- - map ts -->
 optional
 - old sanitmen
+- graph landfill + incinerator number
 <!-- - do not preload videos -->
 <!-- - legend on mobile map overlapping with map -->
 <!-- - click to replay maps -->

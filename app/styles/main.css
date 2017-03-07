@@ -217,6 +217,10 @@
     margin-left: -100px;
 }
 
+.tooltip .tooltiptext > a {
+    color: #fff;
+}
+
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }

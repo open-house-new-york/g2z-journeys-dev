@@ -29,6 +29,10 @@ journeyConfigs.mapEl = {
   landfillsNyc: {
     id: '2-8',
     slug: 'landfills-nyc'
+  },
+  transferStations: {
+    id: '4-2',
+    slug: 'transfer-stations'
   }
 };
 journeyConfigs.mapDataPath = 'data/curb-to-landfill.geojson';
