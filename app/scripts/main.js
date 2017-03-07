@@ -249,10 +249,12 @@ $(window).on('resize', _.debounce(function() {
           });
           var videoFrame = $('#video-' + panelNum);
           videoFrame.css({
-            height: panelHeight,
+            // height: videoHeight,
             width: width * 0.9,
             'margin-left': width * 0.05,
-            'margin-right': width * 0.05
+            'margin-right': width * 0.05,
+            position: 'absolute',
+            bottom: 0
           });
           var videoData = videoFrame.data();
           var videoSize;
