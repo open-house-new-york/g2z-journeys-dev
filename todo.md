@@ -1,10 +1,12 @@
 # history
 
-### critical: scroll on videos on android
+<!-- ### critical: scroll on videos on android -->
 - 800px images
-- on mobile: can't tap to scroll over video
+<!-- - on mobile: can't tap to scroll over video -->
+- move video poster title to top
 <!-- - video subtitles? -->
 - add history meta tags
+  - history image for meta
 <!-- - concat geojsons -->
 - back and forth transitions
 - modernizr video remove panels
@@ -12,7 +14,7 @@
 <!-- - map ts -->
 optional
 - old sanitmen
-- graph landfill + incinerator number
+<!-- - graph landfill + incinerator number -->
 - esc on menu
 <!-- - do not preload videos -->
 <!-- - legend on mobile map overlapping with map -->
