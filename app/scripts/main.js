@@ -416,7 +416,7 @@ $(window).on('resize', _.debounce(function() {
       });
 
       // helper
-      // use keyboard to scroll horizontally
+      // use keyboard to scroll horizontally and close menu
       document.onkeydown = function(event) {
         if (!event)
           event = window.event;
@@ -447,6 +447,11 @@ $(window).on('resize', _.debounce(function() {
           case 32: // spacebar
             $('#vis').scrollLeft(currentScroll + scrollFactor * 2);
             break;
+          case 27: // esc
+            if (menuVisible) {
+              closeMenu();
+            }
+            break;
           default:
             //
         }
@@ -469,19 +474,27 @@ $(window).on('resize', _.debounce(function() {
 
       $('#menu-icon').click(function() {
         if (!menuVisible) {
-          $(this).removeClass('fa-bars').addClass('fa-times');
-          $('#menu-cover').fadeTo(500, 1);
-          menuVisible = true;
+          openMenu();
         } else {
-          $(this).removeClass('fa-times').addClass('fa-bars');
-          $('#menu-cover').fadeTo(500, 0, function () {
-            $(this).css({
-              display: 'none'
-            });
-          });
-          menuVisible = false;
+          closeMenu();
         }
       });
+
+      function openMenu() {
+        $('#menu-icon').removeClass('fa-bars').addClass('fa-times');
+        $('#menu-cover').fadeTo(500, 1);
+        menuVisible = true;
+      }
+
+      function closeMenu() {
+        $('#menu-icon').removeClass('fa-times').addClass('fa-bars');
+        $('#menu-cover').fadeTo(500, 0, function () {
+          $('#menu-cover').css({
+            display: 'none'
+          });
+        });
+        menuVisible = false;
+      }
 
       var menuLinksEl = $('#menu > a');
       for (var i = 0; i < menuLinksEl.length; i++) {
