@@ -1,3 +1,9 @@
+# general
+
+- main intro menu
+- analytics
+
+
 # history
 
 - 800px images
