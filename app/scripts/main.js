@@ -390,24 +390,6 @@ $(window).on('resize', _.debounce(function() {
             return linearGradient;
           };
 
-          if (isMobile && horizontalViewport) {
-
-          } else {
-            // fade footer in
-            // if (currentScroll >= steps[0].position - panelWrapperMargin - firstPanelMargin && !footerVisible) {
-            //   $('#footer').fadeTo('slow', 1);
-            // }
-            // for (var i = 0; i < steps.length; i++) {
-            //   setDotsColor('#step-dot-' + steps[i].step, steps[i].position);
-            //   if (i > 0) {
-            //     $('#step-line-' + i).css({
-            //       background: setLinesOpacity(steps[i - 1].position, steps[i].position)
-            //     });
-            //   }
-            // }
-          }
-
-
           // trigger map animations
           for (var i = 0; i < maps.length; i++) {
             if (currentScroll >= maps[i].animationTrigger && !maps[i].played) {
@@ -419,7 +401,7 @@ $(window).on('resize', _.debounce(function() {
 
           // transition images
           for (var i = 0; i < preloadImagesEl.length; i++) {
-            if (currentScroll >= preloadImagesEl[i].triggerPosition - firstPanelMargin && !preloadImagesEl[i].played) {
+            if (currentScroll >= preloadImagesEl[i].triggerPosition && !preloadImagesEl[i].played) {
               var panel = $(preloadImagesEl[i]);
               var initalImage = panel.data().imageurl;
               var newImage = panel.data().transitionurl;
