@@ -548,6 +548,7 @@ $(window).on('resize', _.debounce(function() {
         }, 1500);
       });
 
+      // close modal on click outside of video frame
       $('.video-wrapper').click(function(e) {
         if (e.target === this) {
           $(this).parent().parent().hide();

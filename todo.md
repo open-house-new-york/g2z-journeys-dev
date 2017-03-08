@@ -3,10 +3,10 @@
 <!-- ### critical: scroll on videos on android -->
 - 800px images
 <!-- - on mobile: can't tap to scroll over video -->
-- move video poster title to top
+<!-- - move video poster title to top -->
 <!-- - video subtitles? -->
-- add history meta tags
-  - history image for meta
+<!-- - add history meta tags -->
+  <!-- - history image for meta -->
 <!-- - concat geojsons -->
 - back and forth transitions
 - modernizr video remove panels
@@ -15,7 +15,7 @@
 optional
 - old sanitmen
 <!-- - graph landfill + incinerator number -->
-- esc on menu
+<!-- - esc on menu -->
 <!-- - do not preload videos -->
 <!-- - legend on mobile map overlapping with map -->
 <!-- - click to replay maps -->
@@ -26,7 +26,7 @@ optional
 
 - modernizr tests:
 https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssanimations-cssgradients-cssscrollbar-csstransitions-devicemotion_deviceorientation-es5array-flexbox-flexwrap-hiddenscroll-inlinesvg-json-mediaqueries-opacity-rgba-scrollsnappoints-svgclippaths-touchevents-setclasses
-- sometimes breaking on desktop when resizing small WHY??????
+<!-- - sometimes breaking on desktop when resizing small WHY?????? -->
 <!-- - in horiz mobile, show logo at first screen -->
 <!-- - image is not preloading again... -->
 <!-- - firefox 47 last menu triggers out of nowhere -->
@@ -61,7 +61,7 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 <!-- - Add OHNY to page titles -->
 - explore footer at the end
-- no circles in footer, a single bar?
+<!-- - no circles in footer, a single bar? -->
 - add larger arrow to indicate swipe right
 <!-- - remove subtitles for chapters -->
 <!-- - ***where will the name of the journey be on the page? besides title tag*** -->
@@ -89,8 +89,8 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # photos
 
-- photos are low res on mobile
-- fix some photos
+<!-- - photos are low res on mobile -->
+<!-- - fix some photos -->
 <!-- - uniform treatment for photos -->
 <!-- - person taking out the trash LE (find, crop) -->
 <!-- - different sanitation workers, changes every time? LE (crop) -->
@@ -107,9 +107,9 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # before deploy
 
-- remove history
+<!-- - remove history -->
 - **add google analytics**
-- allow robots
+<!-- - allow robots -->
 <!-- - send IP for A records, CNAME on repo -->
 <!-- - see if favicon cache has updated -->
 <!-- - browserupgrade class? -->
@@ -117,7 +117,7 @@ https://modernizr.com/download?backgroundblendmode-borderradius-boxsizing-cssani
 
 # social
 
-- facebook and other meta tags (twitter)
+<!-- - facebook and other meta tags (twitter) -->
 
 <!-- ### add images
 
