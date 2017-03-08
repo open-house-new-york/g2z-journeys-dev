@@ -209,7 +209,7 @@ $(window).on('resize', _.debounce(function() {
           width = textPanelWidth + textBlockPadding;
           panelTextBlockWidths.push(width);
         } else if (data.type == 'video') {
-          width = viewportWidth > 800 ? 800 : viewportWidth;
+          width = viewportWidth > 800 ? 800 * 0.9 : viewportWidth * 0.9;
         }
 
         // set margin for first panel
@@ -253,11 +253,11 @@ $(window).on('resize', _.debounce(function() {
         } else if (data.type === 'video') {
           var videoPoster = 'url(\'videos/' + journeyConfigs.meta.slug + '/' + data.imageurl + '\')';
           var videoRatio = 240/320;
-          var posterContainerHeight = width * videoRatio * 0.9;
+          var posterContainerHeight = width * videoRatio;
           var posterContainerMargin = (panelHeight - posterContainerHeight)/2;
           panel.css({
             height: posterContainerHeight,
-            width: width * 0.9,
+            width: width,
             'margin-top': posterContainerMargin,
             'background-image': videoPoster
           });
