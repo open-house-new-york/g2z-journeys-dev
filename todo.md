@@ -6,8 +6,8 @@
 
 # history
 
-- 800px images
-- crop fresh kills transition image
+<!-- - 800px images -->
+<!-- - crop fresh kills transition image -->
 - back and forth transitions
 
 optional
