@@ -93,9 +93,9 @@ $(window).on('resize', _.debounce(function() {
       var imageNearestSize = isMobile ? 600 : 800;
 
       // // FIXME:
-      if (journeyConfigs.meta.slug === 'history') {
-        imageNearestSize = 600;
-      }
+      // if (journeyConfigs.meta.slug === 'history') {
+      //   imageNearestSize = 600;
+      // }
       var containerEl = $('.container');
       var visEl = $('#vis');
       var panelsWrapperEl = $('.panels-wrapper');
