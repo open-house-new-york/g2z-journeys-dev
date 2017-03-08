@@ -251,18 +251,21 @@ $(window).on('resize', _.debounce(function() {
             'padding-right': mapSidePadding
           });
         } else if (data.type === 'video') {
+          var videoPoster = 'url(\'videos/' + journeyConfigs.meta.slug + '/' + data.imageurl + '\')';
+          var videoRatio = 240/320;
+          var posterContainerHeight = width * videoRatio * 0.9;
+          var posterContainerMargin = (panelHeight - posterContainerHeight)/2;
           panel.css({
-            height: panelHeight,
-            width: width
+            height: posterContainerHeight,
+            width: width * 0.9,
+            'margin-top': posterContainerMargin,
+            'background-image': videoPoster
           });
+          var videoFrameWidth = isMobile ? width * 0.9 : width;
+          $('.video-container').css({ width: videoFrameWidth });
           var videoFrame = $('#video-' + panelNum);
           videoFrame.css({
-            // height: videoHeight,
-            width: width * 0.9,
-            'margin-left': width * 0.05,
-            'margin-right': width * 0.05,
-            position: 'absolute',
-            bottom: 0
+            width: videoFrameWidth
           });
           var videoData = videoFrame.data();
           var videoSize;
@@ -273,6 +276,10 @@ $(window).on('resize', _.debounce(function() {
           }
           var videoUrl = 'videos/' + journeyConfigs.meta.slug + '/' + videoData.src + '-' + videoSize + '.' + videoData.format;
           videoFrame.attr('src', videoUrl);
+          panel.click(function() {
+            $('#video-cover-' + panelNum).show();
+            document.getElementById('video-' + panelNum).play();
+          });
         } else {
           panel.css({
             height: panelHeight,
@@ -539,6 +546,17 @@ $(window).on('resize', _.debounce(function() {
             display: 'block'
           });
         }, 1500);
+      });
+
+      $('.video-wrapper').click(function(e) {
+        if (e.target === this) {
+          $(this).parent().parent().hide();
+        }
+      });
+      $('.modal-cover').click(function(e) {
+        if (e.target === this) {
+          $(this).hide();
+        }
       });
 
       // helper

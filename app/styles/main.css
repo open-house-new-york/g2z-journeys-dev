@@ -95,7 +95,26 @@
   z-index: 3;
 }
 .panel-video {
-
+  display: table;
+  color: #fff;
+}
+.panel-video-text-center {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.panel-video-caption {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+}
+.video-close {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  color: #fff;
+  font-size: 2em;
+  cursor: pointer !important;
 }
 .pad-left {
   padding-left: 50px;
@@ -234,4 +253,28 @@
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent #333 transparent;
+}
+.video-container {
+  position: fixed;
+  /*width: 90%;*/
+  height: 100%;
+  padding: 0;
+  max-width: 800px;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
+.video-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+  margin: auto;
+}
+.video-frame {
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 9;
 }
