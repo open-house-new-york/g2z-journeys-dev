@@ -261,12 +261,22 @@ $(window).on('resize', _.debounce(function() {
             'margin-top': posterContainerMargin,
             'background-image': videoPoster
           });
-          var videoFrameWidth = isMobile ? width * 0.9 : width;
-          $('.video-container').css({ width: videoFrameWidth });
           var videoFrame = $('#video-' + panelNum);
-          videoFrame.css({
-            width: videoFrameWidth
-          });
+          if (horizontalViewport) {
+            var videoFrameHeight = viewportHeight * 0.9;
+            var videoFrameWidth = videoFrameHeight / videoRatio;
+            $('.video-container').css({ width: videoFrameWidth });
+            videoFrame.css({
+              height: videoFrameHeight
+            });
+          } else {
+              var videoFrameWidth = isMobile ? viewportWidth * 0.9 : viewportWidth;
+              $('.video-container').css({ width: videoFrameWidth });
+              videoFrame.css({
+                width: videoFrameWidth
+              });
+          }
+
           var videoData = videoFrame.data();
           var videoSize;
           if (isMobile) {
