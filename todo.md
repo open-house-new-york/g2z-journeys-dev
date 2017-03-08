@@ -8,7 +8,7 @@
 
 <!-- - 800px images -->
 <!-- - crop fresh kills transition image -->
-- back and forth transitions
+<!-- - back and forth transitions -->
 
 optional
 - old sanitmen
