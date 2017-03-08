@@ -155,13 +155,21 @@ $(window).on('resize', _.debounce(function() {
         });
         var imagesArray = [data.imageurl, data. transitionurl];
         var counter = 0;
+        var running = false;
         image.click(function () {
-          var imageIndex = counter % 2;
-          image.css({
-              'background-image': 'url(' + 'images/' + journeyConfigs.meta.slug + '/'  + imageNearestSize + '_' + imagesArray[imageIndex] + ')'
-          });
-          counter++;
-        })
+          if (!running) {
+            running = true;
+            console.log('here')
+            var imageIndex = counter % 2;
+            image.css({
+                'background-image': 'url(' + 'images/' + journeyConfigs.meta.slug + '/'  + imageNearestSize + '_' + imagesArray[imageIndex] + ')'
+            });
+            counter++;
+            setTimeout(function () {
+              running = false;
+            }, 1000);
+          }
+        });
       });
 
       // set the widths of panels and push their widths, ids, and positions to arrays
@@ -397,6 +405,7 @@ $(window).on('resize', _.debounce(function() {
               panel.css({
                 'background-image': 'url(images/' + journeyConfigs.meta.slug + '/' + imageNearestSize + '_' + panel.data().transitionurl + ')'
               });
+              preloadImagesEl[i].played = true;
             }
           }
 
