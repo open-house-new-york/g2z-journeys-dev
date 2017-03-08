@@ -1,19 +1,21 @@
 # history
 
-<!-- ### critical: scroll on videos on android -->
 - 800px images
+- crop fresh kills transition image
+- back and forth transitions
+
+optional
+- old sanitmen
+- modernizr video remove panels
+
+<!-- ### critical: scroll on videos on android -->
 <!-- - on mobile: can't tap to scroll over video -->
 <!-- - move video poster title to top -->
 <!-- - video subtitles? -->
 <!-- - add history meta tags -->
   <!-- - history image for meta -->
 <!-- - concat geojsons -->
-- back and forth transitions
-- modernizr video remove panels
-- crop fresh kills transition image
 <!-- - map ts -->
-optional
-- old sanitmen
 <!-- - graph landfill + incinerator number -->
 <!-- - esc on menu -->
 <!-- - do not preload videos -->
