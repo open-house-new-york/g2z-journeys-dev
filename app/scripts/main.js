@@ -156,20 +156,21 @@ $(window).on('resize', _.debounce(function() {
         var imagesArray = [data.imageurl, data. transitionurl];
         var counter = 0;
         var running = false;
-        image.click(function () {
-          if (!running) {
-            running = true;
-            console.log('here')
-            var imageIndex = counter % 2;
-            image.css({
-                'background-image': 'url(' + 'images/' + journeyConfigs.meta.slug + '/'  + imageNearestSize + '_' + imagesArray[imageIndex] + ')'
-            });
-            counter++;
-            setTimeout(function () {
-              running = false;
-            }, 1000);
-          }
-        });
+        if (!data.loop) {
+          image.click(function () {
+            if (!running) {
+              running = true;
+              var imageIndex = counter % 2;
+              image.css({
+                  'background-image': 'url(' + 'images/' + journeyConfigs.meta.slug + '/'  + imageNearestSize + '_' + imagesArray[imageIndex] + ')'
+              });
+              counter++;
+              setTimeout(function () {
+                running = false;
+              }, 1500);
+            }
+          });
+        }
       });
 
       // set the widths of panels and push their widths, ids, and positions to arrays
@@ -416,13 +417,20 @@ $(window).on('resize', _.debounce(function() {
           }
 
 
+          // transition images
           for (var i = 0; i < preloadImagesEl.length; i++) {
             if (currentScroll >= preloadImagesEl[i].triggerPosition - firstPanelMargin && !preloadImagesEl[i].played) {
               var panel = $(preloadImagesEl[i]);
-              panel.css({
-                'background-image': 'url(images/' + journeyConfigs.meta.slug + '/' + imageNearestSize + '_' + panel.data().transitionurl + ')'
-              });
-              preloadImagesEl[i].played = true;
+              var initalImage = panel.data().imageurl;
+              var newImage = panel.data().transitionurl;
+              if (panel.data().loop === true) {
+                transitionImage(initalImage, newImage, panel, 2500);
+                preloadImagesEl[i].played = true;
+              } else {
+                panel.css({
+                  'background-image': 'url(images/' + journeyConfigs.meta.slug + '/' + imageNearestSize + '_' + newImage + ')'
+                });
+              }
             }
           }
 
@@ -440,6 +448,24 @@ $(window).on('resize', _.debounce(function() {
         $('#vis').scrollLeft(currentScroll - (event.deltaY * event.deltaFactor));
         event.preventDefault(); //prevents horizontal scroll on trackpad
       });
+
+      // transition images back and forth
+      function transitionImage(oldImage, newImage, panel, duration) {
+        begin();
+
+        function begin() {
+          panel.css({
+            'background-image': 'url(images/' + journeyConfigs.meta.slug + '/' + imageNearestSize + '_' + newImage + ')'
+          });
+          setTimeout(repeat, duration);
+        }
+        function repeat() {
+          panel.css({
+            'background-image': 'url(images/' + journeyConfigs.meta.slug + '/' + imageNearestSize + '_' + oldImage + ')'
+          });
+          setTimeout(begin, duration);
+        }
+      }
 
       // helper
       // use keyboard to scroll horizontally and close menu
