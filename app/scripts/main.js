@@ -338,11 +338,6 @@ $(window).on('resize', _.debounce(function() {
         }
       }
 
-      // calculate positions for vis steps change panels
-      for (var i = 0; i < journeyConfigs.visSteps.length; i++) {
-        journeyConfigs.visSteps[i].position = panelPositionByNum(journeyConfigs.visSteps[i].id);
-      }
-
       function calculatePreloadImagesPosition() {
         var positions = [];
         for (var i = 0; i < preloadImagesEl.length; i++) {
@@ -419,7 +414,7 @@ $(window).on('resize', _.debounce(function() {
         }
       }
       var progressBarThrottle = _.throttle(function () {
-          progressBar(mapsArray, journeyConfigs.visSteps);
+          progressBar(mapsArray);
       }, 200);
       $('#vis').scroll(progressBarThrottle);
 
