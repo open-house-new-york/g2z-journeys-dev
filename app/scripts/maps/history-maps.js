@@ -674,7 +674,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('r', 0)
       .style('stroke', '#fff')
       .style('stroke-width', 1)
-      .attr('opacity', 0.7)
+      .attr('opacity', 1)
       .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
       .attr('class', 'transferStationPoints');
 
