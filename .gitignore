@@ -7,3 +7,4 @@ test/bower_components
 deploy_*
 *.mp4
 app/*.html
+test

@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "_uid_": "1", "disposal": "Lobosco", "j_tot_rec": 47814.889922 }, "geometry": { "type": "Point", "coordinates": [ -73.832738280899974, 40.767273027499996 ] } },
+{ "type": "Feature", "properties": { "_uid_": "2", "disposal": "Sims - Bronx", "j_tot_rec": 112311.578125 }, "geometry": { "type": "Point", "coordinates": [ -73.883302703099972, 40.818490220399987 ] } },
+{ "type": "Feature", "properties": { "_uid_": "3", "disposal": "Sims - Brooklyn", "j_tot_rec": 144584.234375 }, "geometry": { "type": "Point", "coordinates": [ -74.004522053499983, 40.661276547999982 ] } },
+{ "type": "Feature", "properties": { "_uid_": "4", "disposal": "Sims - Jersey", "j_tot_rec": 51112.000000 }, "geometry": { "type": "Point", "coordinates": [ -74.08073, 40.687115 ] } },
+{ "type": "Feature", "properties": { "_uid_": "5", "disposal": "Sims - LIC", "j_tot_rec": 127126.000000 }, "geometry": { "type": "Point", "coordinates": [ -73.938904491499969, 40.734246377699996 ] } },
+{ "type": "Feature", "properties": { "_uid_": "6", "disposal": "Visy", "j_tot_rec": 65135.000000 }, "geometry": { "type": "Point", "coordinates": [ -74.198991149999983, 40.587152483299995 ] } },
+{ "type": "Feature", "properties": { "_uid_": "7", "disposal": "Visy 59th St", "j_tot_rec": 62467.000000 }, "geometry": { "type": "Point", "coordinates": [ -73.99335604689999, 40.772794709499983 ] } }
+]
+}
