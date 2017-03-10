@@ -6,3 +6,4 @@ test/bower_components
 *.DS_Store
 deploy_*
 *.mp4
+app/*.html
