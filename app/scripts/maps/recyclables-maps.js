@@ -9,7 +9,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   };
   journeyConfigs.mapConfigs.scales = {
     circleRadius: function(value) {
-      return Math.sqrt(value / 3.14) * 0.025;
+      return (Math.sqrt(value / 3.14) * 0.025) * 2;
     },
     lineWidth: function(value) {
       return journeyConfigs.mapConfigs.scales.circleRadius(value) / 2;
@@ -25,20 +25,20 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   //   var exportPoints = geojson.export_points;
   //   var states = geojson.states_east;
   //   var nynj = geojson.ny_nj_ct;
-d3.json('data/temp/nycd_bcd.geojson', function(nycd) {
-d3.json('data/temp/ny_nj_ct.geojson', function(nynj) {
-d3.json('data/temp/states_east.geojson', function(statesEast) {
-d3.json('data/temp/recy_barge_lines.geojson', function(recyBargeLinesData) {
-d3.json('data/temp/recy_dest_lines.geojson', function(recyDestLinesData) {
-d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
-    initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
-    // initExportMap(exportLines, exportPoints, states);
-});
-});
-});
-});
-});
-});
+  d3.json('data/temp/nycd_bcd.geojson', function(nycd) {
+    d3.json('data/temp/ny_nj_ct.geojson', function(nynj) {
+      d3.json('data/temp/states_east.geojson', function(statesEast) {
+        d3.json('data/temp/recy_barge_lines.geojson', function(recyBargeLinesData) {
+          d3.json('data/temp/recy_dest_lines.geojson', function(recyDestLinesData) {
+            d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
+              initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
+              initSimsMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
+            });
+          });
+        });
+      });
+    });
+  });
 
   function initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, states) {
     //Width and height
@@ -68,7 +68,7 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
       .attr('width', width)
       .attr('height', height)
       .attr('id', 'map-visy-svg')
-      .on('click', function (d) {
+      .on('click', function(d) {
         journeyConfigs.mapEl.visy.startAnimation();
       });
 
@@ -206,11 +206,19 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
               .attr('r', 0);
           });
 
+        // clear nycd
+        commDist.selectAll('.nycd')
+          .each(function(d, i) {
+            d3.select(this)
+              .style('fill', journeyConfigs.mapConfigs.colors.land)
+              .attr('opacity', 1);
+          });
+
         truckLines.selectAll('.truckLines')
           .each(function(d, i) {
             d3.select(this)
-              .filter( function (d) {
-                 return d.properties.disposal === 'Visy 59th St';
+              .filter(function(d) {
+                return d.properties.disposal === 'Visy 59th St';
               })
               .attr('stroke-dashoffset', function(d) {
                 return this.getTotalLength();
@@ -229,8 +237,8 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
       recyDestPoints.selectAll('.recyDestPoints')
         .each(function(d, i) {
           d3.select(this)
-            .filter( function (d) {
-               return d.properties.disposal === 'Visy 59th St';
+            .filter(function(d) {
+              return d.properties.disposal === 'Visy 59th St';
             })
             .attr('r', 0)
             .transition()
@@ -246,11 +254,29 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
     };
 
     journeyConfigs.mapEl.visy.visyManLinesOut = function() {
+      commDist.selectAll('.nycd')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+              var inArray = $.inArray(bcd, cdServedVisyMan) >= 0;
+              if (inArray) {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .transition()
+            .duration(1500)
+            .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+            .attr('opacity', 0.4);
+        });
+
       truckLines.selectAll('.truckLines')
         .each(function(d, i) {
           d3.select(this)
-            .filter( function (d) {
-               return d.properties.disposal === 'Visy 59th St';
+            .filter(function(d) {
+              return d.properties.disposal === 'Visy 59th St';
             })
             .attr('stroke-dashoffset', 0)
             .transition()
@@ -263,29 +289,14 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
             });
         });
 
-      commDist.selectAll('.nycd')
-        .each(function(d, i) {
-          d3.select(this)
-          .filter( function (d) {
-            var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
-            var inArray = $.inArray(bcd, cdServedVisyMan) >= 0;
-            if (inArray) {
-              return true;
-            } else {
-              return false;
-            }
-          })
-          .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
-          .attr('opacity', 0.4);
-      });
     };
 
     journeyConfigs.mapEl.visy.visyBargeIn = function() {
       bargeLines.selectAll('.bargeLines')
         .each(function(d, i) {
           d3.select(this)
-            .filter( function (d) {
-               return d.properties.id === 1;
+            .filter(function(d) {
+              return d.properties.id === 1;
             })
             .attr('stroke-dashoffset', function(d) {
               return this.getTotalLength();
@@ -303,8 +314,8 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
       recyDestPoints.selectAll('.recyDestPoints')
         .each(function(d, i) {
           d3.select(this)
-            .filter( function (d) {
-               return d.properties.disposal === 'Visy 59th St';
+            .filter(function(d) {
+              return d.properties.disposal === 'Visy 59th St';
             })
             .transition()
             .duration(500)
@@ -314,8 +325,8 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
       recyDestPoints.selectAll('.recyDestPoints')
         .each(function(d, i) {
           d3.select(this)
-            .filter( function (d) {
-               return d.properties.disposal === 'Visy';
+            .filter(function(d) {
+              return d.properties.disposal === 'Visy';
             })
             .attr('r', 0)
             .transition()
@@ -333,8 +344,8 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
       bargeLines.selectAll('.bargeLines')
         .each(function(d, i) {
           d3.select(this)
-            .filter( function (d) {
-               return d.properties.id === 1;
+            .filter(function(d) {
+              return d.properties.id === 1;
             })
             .attr('stroke-dashoffset', 0)
             .transition()
@@ -352,8 +363,8 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
       truckLines.selectAll('.truckLines')
         .each(function(d, i) {
           d3.select(this)
-            .filter( function (d) {
-               return d.properties.disposal === 'Visy';
+            .filter(function(d) {
+              return d.properties.disposal === 'Visy';
             })
             .attr('stroke-dashoffset', function(d) {
               return this.getTotalLength();
@@ -368,11 +379,29 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
     };
 
     journeyConfigs.mapEl.visy.visyTrucksOut = function() {
+      commDist.selectAll('.nycd')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+              var inArray = $.inArray(bcd, cdServedVisySi) >= 0;
+              if (inArray) {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .transition()
+            .duration(1500)
+            .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+            .attr('opacity', 0.4);
+        });
+
       truckLines.selectAll('.truckLines')
         .each(function(d, i) {
           d3.select(this)
-            .filter( function (d) {
-               return d.properties.disposal === 'Visy';
+            .filter(function(d) {
+              return d.properties.disposal === 'Visy';
             })
             .attr('stroke-dashoffset', 0)
             .transition()
@@ -381,30 +410,481 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
               return -this.getTotalLength();
             })
             .each('end', function() {
-
+              journeyConfigs.mapEl.visy.servedCdSiBklyn();
             });
         });
 
-      commDist.selectAll('.nycd')
-        .each(function(d, i) {
-          d3.select(this)
-          .filter( function (d) {
-            var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
-            var inArray = $.inArray(bcd, cdServedVisySi) >= 0;
-            if (inArray) {
-              return true;
-            } else {
-              return false;
-            }
-          })
-          .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
-          .attr('opacity', 0.4);
-      });
 
-      setTimeout(function () {
-        journeyConfigs.mapEl.visy.animationPlayed = false;
-      }, 1600);
 
     };
+
+    journeyConfigs.mapEl.visy.servedCdSiBklyn = function() {
+      setTimeout(function() {
+        journeyConfigs.mapEl.visy.animationPlayed = false;
+      }, 1600);
+    };
   }
-}
+
+    function initSimsMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, states) {
+      //Width and height
+      var width = $('.map-sims').width() * 0.99;
+      var height = viewportHeight;
+
+      var projection = d3.geo.albers()
+        .scale(1)
+        .translate([0, 0]);
+      var path = d3.geo.path()
+        .projection(projection);
+      var b = path.bounds(recyDestLinesData),
+        scaleFactor = 0.8,
+        s = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+        t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+      projection
+        .scale(s)
+        .translate(t);
+
+      // Clear SVG if there is one (on resize)
+      if (d3.select('#map-sims-svg')) {
+        d3.select('#map-sims-svg').remove();
+      }
+      //Create SVG element
+      var svg = d3.select('.map-sims')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height)
+        .attr('id', 'map-sims-svg')
+        .on('click', function(d) {
+          journeyConfigs.mapEl.sims.startAnimation();
+        });
+
+      $('#map-sims-svg').css({
+        position: 'absolute',
+        top: -topVisPadding
+      });
+
+      var clipBackground = svg.append('circle')
+        .attr('cx', width / 2)
+        .attr('cy', height / 2)
+        .attr('r', width / 2)
+        .attr('fill', journeyConfigs.mapConfigs.colors.background)
+        .attr('stroke-width', 0);
+
+      var clip = svg.append('clipPath')
+        .attr('id', 'mapClip')
+        .append('circle')
+        .attr('cx', width / 2)
+        .attr('cy', height / 2)
+        .attr('r', width / 2);
+
+      var mapGroup = svg.append('g')
+        .attr('class', 'mapGroup')
+        .attr('clip-path', 'url(#mapClip)');
+      var usStates = mapGroup.append('g').attr('class', 'usStates');
+      var commDist = mapGroup.append('g').attr('class', 'commDist');
+      var truckLines = mapGroup.append('g').attr('class', 'truckLines');
+      var bargeLines = mapGroup.append('g').attr('class', 'bargeLines');
+      var recyDestPoints = mapGroup.append('g').attr('class', 'recyDestPoints');
+
+      var cdServedJersey = [];
+      var cdServedSunsetPark = [];
+      var cdServedBargeTs = [];
+      for (var i = 0; i < recyDestLinesData.features.length; i++) {
+        if (recyDestLinesData.features[i].properties.disposal === 'Sims - Jersey') {
+          cdServedJersey.push(recyDestLinesData.features[i].properties.d_id);
+        } else if (recyDestLinesData.features[i].properties.disposal === 'Sims - Brooklyn') {
+          cdServedSunsetPark.push(recyDestLinesData.features[i].properties.d_id);
+        } else if (recyDestLinesData.features[i].properties.disposal === 'Sims - LIC' || recyDestLinesData.features[i].properties.disposal === 'Sims - Bronx') {
+          cdServedBargeTs.push(recyDestLinesData.features[i].properties.d_id);
+        }
+      }
+
+      usStates.selectAll('.usStates')
+        .data(states.features)
+        .enter()
+        .append('path')
+        .attr({
+          'd': path
+        })
+        .style('stroke', 'black')
+        .style('stroke-width', 0)
+        .style('fill', journeyConfigs.mapConfigs.colors.land)
+        .attr('class', 'usStates');
+
+      commDist.selectAll('.nycd')
+        .data(nycd.features)
+        .enter()
+        .append('path')
+        .attr({
+          'd': path
+        })
+        .style('stroke', 'black')
+        .style('stroke-width', 0)
+        .style('fill', journeyConfigs.mapConfigs.colors.land)
+        .attr('class', 'nycd');
+
+      truckLines.selectAll('.truckLines')
+        .data(recyDestLinesData.features)
+        .enter()
+        .append('path')
+        .attr({
+          'd': path
+        })
+        .style('stroke', journeyConfigs.mapConfigs.colors.wasteLines)
+        .attr('stroke-width', function(d) {
+          // return journeyConfigs.mapConfigs.scales.lineWidth(d.properties.j_tot_rec);
+          return 2;
+        })
+        .style('fill', 'none')
+        .attr('stroke-dasharray', function(d) {
+          return (this.getTotalLength() + ' ' + this.getTotalLength());
+        })
+        .attr('stroke-dashoffset', function(d) {
+          return this.getTotalLength();
+        })
+        .attr('class', 'truckLines');
+
+      bargeLines.selectAll('.bargeLines')
+        .data(recyBargeLinesData.features)
+        .enter()
+        .append('path')
+        .attr({
+          'd': path
+        })
+        .style('stroke', journeyConfigs.mapConfigs.colors.wasteLines)
+        .attr('stroke-width', function(d) {
+          // return journeyConfigs.mapConfigs.scales.lineWidth(d.properties.j_tot_rec);
+          return 2;
+        })
+        .style('fill', 'none')
+        .attr('stroke-dasharray', function(d) {
+          return (this.getTotalLength() + ' ' + this.getTotalLength());
+        })
+        .attr('stroke-dashoffset', function(d) {
+          return this.getTotalLength();
+        })
+        .attr('class', 'bargeLines');
+
+      recyDestPoints.selectAll('.recyDestPoints')
+        .data(recyDestPointsData.features)
+        .enter()
+        .append('circle')
+        .attr('cx', function(d) {
+          return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+        })
+        .attr('cy', function(d) {
+          return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+        })
+        .attr('r', 0)
+        .style('stroke', '#fff')
+        .style('stroke-width', 1)
+        .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+        .attr('class', 'recyDestPoints');
+
+      journeyConfigs.mapEl.sims.animationPlayed = false;
+
+      journeyConfigs.mapEl.sims.startAnimation = function() {
+
+        if (!journeyConfigs.mapEl.sims.animationPlayed) {
+          journeyConfigs.mapEl.sims.animationPlayed = true;
+
+          //clear circles
+          recyDestPoints.selectAll('.recyDestPoints')
+            .each(function(d, i) {
+              d3.select(this)
+                .attr('r', 0);
+            });
+
+          // clear nycd
+          commDist.selectAll('.nycd')
+            .each(function(d, i) {
+              d3.select(this)
+                .style('fill', journeyConfigs.mapConfigs.colors.land)
+                .attr('opacity', 1);
+            });
+
+          truckLines.selectAll('.truckLines')
+            .each(function(d, i) {
+              d3.select(this)
+                .filter(function(d) {
+                  return d.properties.disposal === 'Sims - Jersey';
+                })
+                .attr('stroke-dashoffset', function(d) {
+                  return this.getTotalLength();
+                })
+                .transition()
+                .duration(1500)
+                .attr('stroke-dashoffset', 0)
+                .each('end', function() {
+                  journeyConfigs.mapEl.sims.jerseyCircle();
+                });
+            });
+        }
+      };
+
+      journeyConfigs.mapEl.sims.jerseyCircle = function() {
+        recyDestPoints.selectAll('.recyDestPoints')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'Sims - Jersey';
+              })
+              .attr('r', 0)
+              .transition()
+              .duration(1500)
+              .attr('r', function(d) {
+                return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.j_tot_rec);
+              })
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.jerseyLinesOut();
+              });
+          });
+      };
+
+      journeyConfigs.mapEl.sims.jerseyLinesOut = function() {
+        commDist.selectAll('.nycd')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+                var inArray = $.inArray(bcd, cdServedJersey) >= 0;
+                if (inArray) {
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+              .transition()
+              .duration(1500)
+              .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+              .attr('opacity', 0.4);
+          });
+
+        truckLines.selectAll('.truckLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'Sims - Jersey';
+              })
+              .attr('stroke-dashoffset', 0)
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', function(d) {
+                return -this.getTotalLength();
+              })
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.truckToBarge();
+              });
+          });
+      };
+
+      journeyConfigs.mapEl.sims.truckToBarge = function() {
+        truckLines.selectAll('.truckLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'Sims - LIC' || d.properties.disposal === 'Sims - Bronx';
+              })
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
+              })
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', 0)
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.bargeTsCircle();
+              });
+          });
+      };
+
+      journeyConfigs.mapEl.sims.bargeTsCircle = function() {
+        recyDestPoints.selectAll('.recyDestPoints')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'Sims - LIC' || d.properties.disposal === 'Sims - Bronx';
+              })
+              .attr('r', 0)
+              .transition()
+              .duration(1500)
+              .attr('r', function(d) {
+                return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.j_tot_rec);
+              })
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.truckToBargeOut();
+              });
+          });
+      };
+
+      journeyConfigs.mapEl.sims.truckToBargeOut = function() {
+        commDist.selectAll('.nycd')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+                var inArray = $.inArray(bcd, cdServedBargeTs) >= 0;
+                if (inArray) {
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+              .transition()
+              .duration(1500)
+              .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+              .attr('opacity', 0.4);
+          });
+
+        truckLines.selectAll('.truckLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'Sims - LIC' || d.properties.disposal === 'Sims - Bronx';
+              })
+              .attr('stroke-dashoffset', 0)
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', function(d) {
+                return -this.getTotalLength();
+              })
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.bargeIn();
+              });
+          });
+      };
+
+      journeyConfigs.mapEl.sims.bargeIn = function() {
+        bargeLines.selectAll('.bargeLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.id !== 1;
+              })
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
+              })
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', 0)
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.sunsetParkCircle();
+              });
+          });
+      };
+
+      journeyConfigs.mapEl.sims.sunsetParkCircle = function() {
+        recyDestPoints.selectAll('.recyDestPoints')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'Sims - LIC' || d.properties.disposal === 'Sims - Bronx';
+              })
+              .transition()
+              .duration(500)
+              .attr('r', 0);
+          });
+
+        recyDestPoints.selectAll('.recyDestPoints')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'Sims - Brooklyn';
+              })
+              .attr('r', 0)
+              .transition()
+              .duration(1500)
+              .attr('r', function(d) {
+                return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.j_tot_rec);
+              })
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.bargeOut();
+              });
+          });
+      };
+
+      journeyConfigs.mapEl.sims.bargeOut = function() {
+        bargeLines.selectAll('.bargeLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.id !== 1;
+              })
+              .attr('stroke-dashoffset', 0)
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', function(d) {
+                return -this.getTotalLength();
+              })
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.sunsetParkTrucksIn();
+              });
+          });
+      };
+
+      journeyConfigs.mapEl.sims.sunsetParkTrucksIn = function() {
+        truckLines.selectAll('.truckLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'Sims - Brooklyn';
+              })
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
+              })
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', 0)
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.sunsetParkTrucksOut();
+              });
+          });
+      };
+
+      journeyConfigs.mapEl.sims.sunsetParkTrucksOut = function() {
+        commDist.selectAll('.nycd')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+                var inArray = $.inArray(bcd, cdServedSunsetPark) >= 0;
+                if (inArray) {
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+              .transition()
+              .duration(1500)
+              .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+              .attr('opacity', 0.4);
+          });
+
+        truckLines.selectAll('.truckLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'Sims - Brooklyn';
+              })
+              .attr('stroke-dashoffset', 0)
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', function(d) {
+                return -this.getTotalLength();
+              })
+              .each('end', function() {
+                journeyConfigs.mapEl.sims.servedSunsetPark();
+              });
+          });
+
+
+
+      };
+
+      journeyConfigs.mapEl.sims.servedSunsetPark = function() {
+        setTimeout(function() {
+          journeyConfigs.mapEl.sims.animationPlayed = false;
+        }, 1600);
+      };
+
+    }
+
+  }

@@ -16,11 +16,10 @@ journeyConfigs.firstPanelId = 'panel-0-1';
 journeyConfigs.mapEl = {
   visy: {
     id: '1-3'
+  },
+  sims: {
+    id: '2-1'
   }
-  // ,
-  // recyExport: {
-    // id: '3-4'
-  // }
 };
 journeyConfigs.mapDataPath = 'data/recyclables.geojson';
 journeyConfigs.mapConfigs = {};
