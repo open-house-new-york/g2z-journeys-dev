@@ -25,7 +25,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   //   var exportPoints = geojson.export_points;
   //   var states = geojson.states_east;
   //   var nynj = geojson.ny_nj_ct;
-d3.json('data/temp/nycd.geojson', function(nycd) {
+d3.json('data/temp/nycd_bcd.geojson', function(nycd) {
 d3.json('data/temp/ny_nj_ct.geojson', function(nynj) {
 d3.json('data/temp/states_east.geojson', function(statesEast) {
 d3.json('data/temp/recy_barge_lines.geojson', function(recyBargeLinesData) {
@@ -99,6 +99,16 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
     var truckLines = mapGroup.append('g').attr('class', 'truckLines');
     var bargeLines = mapGroup.append('g').attr('class', 'bargeLines');
     var recyDestPoints = mapGroup.append('g').attr('class', 'recyDestPoints');
+
+    var cdServedVisyMan = [];
+    var cdServedVisySi = [];
+    for (var i = 0; i < recyDestLinesData.features.length; i++) {
+      if (recyDestLinesData.features[i].properties.disposal === 'Visy 59th St') {
+        cdServedVisyMan.push(recyDestLinesData.features[i].properties.d_id);
+      } else if (recyDestLinesData.features[i].properties.disposal === 'Visy') {
+        cdServedVisySi.push(recyDestLinesData.features[i].properties.d_id);
+      }
+    }
 
     usStates.selectAll('.usStates')
       .data(states.features)
@@ -232,6 +242,7 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
               journeyConfigs.mapEl.visy.visyManLinesOut();
             });
         });
+
     };
 
     journeyConfigs.mapEl.visy.visyManLinesOut = function() {
@@ -251,6 +262,22 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
               journeyConfigs.mapEl.visy.visyBargeIn();
             });
         });
+
+      commDist.selectAll('.nycd')
+        .each(function(d, i) {
+          d3.select(this)
+          .filter( function (d) {
+            var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+            var inArray = $.inArray(bcd, cdServedVisyMan) >= 0;
+            if (inArray) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+          .attr('opacity', 0.4);
+      });
     };
 
     journeyConfigs.mapEl.visy.visyBargeIn = function() {
@@ -273,6 +300,17 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
     };
 
     journeyConfigs.mapEl.visy.visySiCircle = function() {
+      recyDestPoints.selectAll('.recyDestPoints')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter( function (d) {
+               return d.properties.disposal === 'Visy 59th St';
+            })
+            .transition()
+            .duration(500)
+            .attr('r', 0);
+        });
+
       recyDestPoints.selectAll('.recyDestPoints')
         .each(function(d, i) {
           d3.select(this)
@@ -329,7 +367,7 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
         });
     };
 
-    journeyConfigs.mapEl.visy.visyTrucksIn = function() {
+    journeyConfigs.mapEl.visy.visyTrucksOut = function() {
       truckLines.selectAll('.truckLines')
         .each(function(d, i) {
           d3.select(this)
@@ -346,6 +384,22 @@ d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
 
             });
         });
+
+      commDist.selectAll('.nycd')
+        .each(function(d, i) {
+          d3.select(this)
+          .filter( function (d) {
+            var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+            var inArray = $.inArray(bcd, cdServedVisySi) >= 0;
+            if (inArray) {
+              return true;
+            } else {
+              return false;
+            }
+          })
+          .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+          .attr('opacity', 0.4);
+      });
 
       setTimeout(function () {
         journeyConfigs.mapEl.visy.animationPlayed = false;
