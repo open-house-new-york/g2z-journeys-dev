@@ -779,7 +779,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
                 return d.properties.disposal === 'Sims - LIC' || d.properties.disposal === 'Sims - Bronx';
               })
               .transition()
-              .duration(500)
+              .duration(1500)
               .attr('r', 0);
           });
 
