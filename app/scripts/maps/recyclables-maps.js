@@ -31,8 +31,14 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         d3.json('data/temp/recy_barge_lines.geojson', function(recyBargeLinesData) {
           d3.json('data/temp/recy_dest_lines.geojson', function(recyDestLinesData) {
             d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
-              initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
-              initSimsMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
+              d3.json('data/temp/international_export.geojson', function(exportLinesData) {
+              d3.json('data/temp/world.geojson', function(world) {
+
+                initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
+                initSimsMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
+                initRecyExportMap(exportLinesData, nycd, world);
+              });
+              });
             });
           });
         });
@@ -886,5 +892,197 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       };
 
     }
+  function initRecyExportMap(exportLinesData, nycd, world) {
+    //Width and height
+    var width = $('.map-recyexport').width() * 0.99;
+    var height = viewportHeight;
+
+    // var projection = d3.geo.stereographic()
+    //   .scale(1)
+    //   .translate([0, 0]);
+    // var path = d3.geo.path()
+    //   .projection(projection);
+    // var b = path.bounds(world),
+    //   scaleFactor = 0.8,
+    //   s = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+    //   t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+    // projection
+    //   .scale(s)
+    //   .translate(t);
+
+
+    var projection = d3.geo.stereographic()
+        .scale(250)
+        .translate([width / 2, height / 2])
+        .rotate([0, -30])
+        // .clipAngle(180 - 1e-4)
+        // .clipExtent([[0, 0], [width, height]])
+        .precision(.1);
+
+    var path = d3.geo.path()
+      .projection(projection);
+
+    // Clear SVG if there is one (on resize)
+    if (d3.select('#map-recyexport-svg')) {
+      d3.select('#map-recyexport-svg').remove();
+    }
+    //Create SVG element
+    var svg = d3.select('.map-recyexport')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .attr('id', 'map-recyexport-svg')
+      .on('click', function(d) {
+        journeyConfigs.mapEl.recyexport.startAnimation();
+      });
+
+    $('#map-recyexport-svg').css({
+      position: 'absolute',
+      top: -topVisPadding
+    });
+
+    var clipBackground = svg.append('circle')
+      .attr('cx', width / 2)
+      .attr('cy', height / 2)
+      .attr('r', width / 2)
+      .attr('fill', journeyConfigs.mapConfigs.colors.background)
+      .attr('stroke-width', 0);
+
+    var clip = svg.append('clipPath')
+      .attr('id', 'mapClip')
+      .append('circle')
+      .attr('cx', width / 2)
+      .attr('cy', height / 2)
+      .attr('r', width / 2);
+
+    var mapGroup = svg.append('g')
+      .attr('class', 'mapGroup')
+      .attr('clip-path', 'url(#mapClip)');
+    var worldLand = mapGroup.append('g').attr('class', 'worldLand');
+    var commDist = mapGroup.append('g').attr('class', 'commDist');
+    var exportLines = mapGroup.append('g').attr('class', 'truckLines');
+    var bargeLines = mapGroup.append('g').attr('class', 'bargeLines');
+    var recyDestPoints = mapGroup.append('g').attr('class', 'recyDestPoints');
+
+    worldLand.selectAll('.worldLand')
+      .data(world.features)
+      .enter()
+      .append('path')
+      .attr({
+        'd': path
+      })
+      .style('stroke', 'black')
+      .style('stroke-width', 0)
+      .style('fill', journeyConfigs.mapConfigs.colors.land)
+      .attr('class', 'worldLand');
+
+    commDist.selectAll('.nycd')
+      .data(nycd.features)
+      .enter()
+      .append('path')
+      .attr({
+        'd': path
+      })
+      .style('stroke', 'black')
+      .style('stroke-width', 0)
+      .style('fill', journeyConfigs.mapConfigs.colors.land)
+      .attr('class', 'nycd');
+
+    exportLines.selectAll('.exportLines')
+      .data(exportLinesData.features)
+      .enter()
+      .append('path')
+      .attr({
+        'd': path
+      })
+      .style('stroke', journeyConfigs.mapConfigs.colors.wasteLines)
+      .attr('stroke-width', function(d) {
+        // return journeyConfigs.mapConfigs.scales.lineWidth(d.properties.j_tot_rec);
+        return 2;
+      })
+      .style('fill', 'none')
+      .attr('stroke-dasharray', function(d) {
+        return (this.getTotalLength() + ' ' + this.getTotalLength());
+      })
+      .attr('stroke-dashoffset', function(d) {
+        return this.getTotalLength();
+      })
+      .attr('class', 'exportLines');
+
+    // bargeLines.selectAll('.bargeLines')
+    //   .data(recyBargeLinesData.features)
+    //   .enter()
+    //   .append('path')
+    //   .attr({
+    //     'd': path
+    //   })
+    //   .style('stroke', journeyConfigs.mapConfigs.colors.wasteLines)
+    //   .attr('stroke-width', function(d) {
+    //     // return journeyConfigs.mapConfigs.scales.lineWidth(d.properties.j_tot_rec);
+    //     return 2;
+    //   })
+    //   .style('fill', 'none')
+    //   .attr('stroke-dasharray', function(d) {
+    //     return (this.getTotalLength() + ' ' + this.getTotalLength());
+    //   })
+    //   .attr('stroke-dashoffset', function(d) {
+    //     return this.getTotalLength();
+    //   })
+    //   .attr('class', 'bargeLines');
+    //
+    // recyDestPoints.selectAll('.recyDestPoints')
+    //   .data(recyDestPointsData.features)
+    //   .enter()
+    //   .append('circle')
+    //   .attr('cx', function(d) {
+    //     return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+    //   })
+    //   .attr('cy', function(d) {
+    //     return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+    //   })
+    //   .attr('r', 0)
+    //   .style('stroke', '#fff')
+    //   .style('stroke-width', 1)
+    //   .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+    //   .attr('class', 'recyDestPoints');
+
+    journeyConfigs.mapEl.recyexport.animationPlayed = false;
+
+    journeyConfigs.mapEl.recyexport.startAnimation = function() {
+
+      if (!journeyConfigs.mapEl.recyexport.animationPlayed) {
+        journeyConfigs.mapEl.recyexport.animationPlayed = true;
+
+        // //clear circles
+        // recyDestPoints.selectAll('.recyDestPoints')
+        //   .each(function(d, i) {
+        //     d3.select(this)
+        //       .attr('r', 0);
+        //   });
+        //
+        // // clear nycd
+        // commDist.selectAll('.nycd')
+        //   .each(function(d, i) {
+        //     d3.select(this)
+        //       .style('fill', journeyConfigs.mapConfigs.colors.land)
+        //       .attr('opacity', 1);
+        //   });
+
+        exportLines.selectAll('.exportLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
+              })
+              .transition()
+              .duration(3000)
+              .attr('stroke-dashoffset', 0)
+              .each('end', function() {
+                // journeyConfigs.mapEl.recyexport.recyexportManCircle();
+              });
+          });
+      }
+    };
+  }
 
   }

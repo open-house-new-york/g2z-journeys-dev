@@ -19,6 +19,9 @@ journeyConfigs.mapEl = {
   },
   sims: {
     id: '2-1'
+  },
+  recyexport: {
+    id: '3-9'
   }
 };
 journeyConfigs.mapDataPath = 'data/recyclables.geojson';
