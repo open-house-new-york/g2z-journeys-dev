@@ -1,3 +1,8 @@
+# recyclables
+
+- label sims sunset park on map
+- color on map
+
 # general
 
 - main intro menu
