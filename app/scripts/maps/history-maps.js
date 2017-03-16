@@ -6,7 +6,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     land: '#d9d9d9',
     wasteLines: '#f15a29',
     wasteCircles: '#f15a29',
-    scale: ['#FFBDA6', '#FF885E', '#f15a29', '#992D09']
+    scale: ['#FFBDA6', '#FF885E', '#f15a29', '#992D09'],
+    complementary: '#1485CC'
   };
   journeyConfigs.mapConfigs.scales = {
     circleRadius: function(value) {
@@ -656,9 +657,9 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr({
         'd': path
       })
-      .style('stroke', '#1485CC')
+      .style('stroke', journeyConfigs.mapConfigs.colors.complementary)
       .style('stroke-width', 0.5)
-      .style('fill', '#1485CC')
+      .style('fill', journeyConfigs.mapConfigs.colors.complementary)
       .attr('class', 'nycd');
 
     transferStationPoints.selectAll('.transferStationPoints')
@@ -679,7 +680,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('class', 'transferStationPoints');
 
       var povScaleLabels = ['>25% below poverty', 'Transfer station'];
-      var colorScale = ['#1485CC', '#f15a29'];
+      var colorScale = [journeyConfigs.mapConfigs.colors.complementary, '#f15a29'];
       var legendWidth = 20;
       var legendHeight = 20;
       var legendSpacing = 10;

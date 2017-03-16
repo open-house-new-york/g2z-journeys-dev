@@ -6,7 +6,9 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     land: '#d9d9d9',
     wasteLines: '#f15a29',
     wasteCircles: '#f15a29',
-    wasteOpacity: '#e3a793'
+    wasteOpacity: '#e3a793',
+    complementary: '#1485CC',
+    complementaryOpacity: '#8bb8d5'
   };
   journeyConfigs.mapConfigs.scales = {
     circleRadius: function(value) {
@@ -224,6 +226,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               .attr('opacity', 1);
           });
 
+        svg.selectAll('.map-legend').remove();
+
         truckLines.selectAll('.truckLines')
           .each(function(d, i) {
             d3.select(this)
@@ -264,6 +268,24 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     };
 
     journeyConfigs.mapEl.visy.visyManLinesOut = function() {
+      svg.selectAll('text-visy-man')
+          .data(recyDestPointsData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Visy 59th St';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(-15,0)'; })
+          .attr('class', 'visy-man-legend map-legend')
+          .attr('text-anchor', 'end')
+          .text('Marine transfer station at 59th St');
+
       commDist.selectAll('.nycd')
         .each(function(d, i) {
           d3.select(this)
@@ -332,6 +354,13 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
             .attr('r', 0);
         });
 
+        svg.selectAll('.visy-man-legend')//.remove();
+          .attr('opacity', 1)
+          .transition()
+          .duration(1500)
+          .attr('opacity', 0);
+
+
       recyDestPoints.selectAll('.recyDestPoints')
         .each(function(d, i) {
           d3.select(this)
@@ -351,6 +380,24 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     };
 
     journeyConfigs.mapEl.visy.visyBargeOut = function() {
+      svg.selectAll('text-visy-si')
+          .data(recyDestPointsData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Visy';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(-15,0)'; })
+          .attr('class', 'visy-si-legend map-legend')
+          .attr('text-anchor', 'end')
+          .text('Pratt paper mill');
+
       bargeLines.selectAll('.bargeLines')
         .each(function(d, i) {
           d3.select(this)
@@ -612,6 +659,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
                 .attr('opacity', 1);
             });
 
+        svg.selectAll('.map-legend').remove();
+
           truckLines.selectAll('.truckLines')
             .each(function(d, i) {
               d3.select(this)
@@ -621,6 +670,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
                 .attr('stroke-dashoffset', function(d) {
                   return this.getTotalLength();
                 })
+                .style('stroke', journeyConfigs.mapConfigs.colors.complementary)
                 .transition()
                 .duration(1500)
                 .attr('stroke-dashoffset', 0)
@@ -639,6 +689,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
                 return d.properties.disposal === 'Sims - Jersey';
               })
               .attr('r', 0)
+              .style('fill', journeyConfigs.mapConfigs.colors.complementary)
               .transition()
               .duration(1500)
               .attr('r', function(d) {
@@ -651,6 +702,41 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       };
 
       journeyConfigs.mapEl.sims.jerseyLinesOut = function() {
+      svg.selectAll('text-sims-jersey')
+          .data(recyDestPointsData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Sims - Jersey';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(-15,0)'; })
+          .attr('class', 'sims-jersey-legend map-legend')
+          .attr('text-anchor', 'end')
+          .text('Sims – Jersey City');
+      svg.selectAll('text-sims-jersey-below')
+          .data(recyDestPointsData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Sims - Jersey';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(-15,15)'; })
+          .attr('class', 'sims-jersey-legend map-legend')
+          .attr('text-anchor', 'end')
+          .text('Sorting facility');
+
         commDist.selectAll('.nycd')
           .each(function(d, i) {
             d3.select(this)
@@ -665,7 +751,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               })
               .transition()
               .duration(1500)
-              .style('fill', journeyConfigs.mapConfigs.colors.wasteOpacity)
+              .style('fill', journeyConfigs.mapConfigs.colors.complementaryOpacity)
               .attr('opacity', 1);
           });
 
@@ -726,6 +812,24 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       };
 
       journeyConfigs.mapEl.sims.truckToBargeOut = function() {
+      svg.selectAll('text-mts')
+          .data(recyDestPointsData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Sims - LIC' || d.properties.disposal === 'Sims - Bronx';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(15,0)'; })
+          .attr('class', 'mts-legend map-legend')
+          // .attr('text-anchor', 'end')
+          .text('Marine transfer station');
+
         commDist.selectAll('.nycd')
           .each(function(d, i) {
             d3.select(this)
@@ -812,6 +916,47 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       };
 
       journeyConfigs.mapEl.sims.bargeOut = function() {
+        svg.selectAll('.mts-legend')
+          .attr('opacity', 1)
+          .transition()
+          .duration(1500)
+          .attr('opacity', 0);
+
+      svg.selectAll('text-sims-brooklyn')
+          .data(recyDestPointsData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Sims - Brooklyn';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(15,0)'; })
+          .attr('class', 'sims-brooklyn-legend map-legend')
+          // .attr('text-anchor', 'end')
+          .text('Sims – Brooklyn');
+      svg.selectAll('text-sims-brooklyn-below')
+          .data(recyDestPointsData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Sims - Brooklyn';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(15,15)'; })
+          .attr('class', 'sims-brooklyn-legend map-legend')
+          // .attr('text-anchor', 'end')
+          .text('Sorting facility');
+
         bargeLines.selectAll('.bargeLines')
           .each(function(d, i) {
             d3.select(this)
