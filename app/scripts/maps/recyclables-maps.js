@@ -31,13 +31,16 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         d3.json('data/temp/recy_barge_lines.geojson', function(recyBargeLinesData) {
           d3.json('data/temp/recy_dest_lines.geojson', function(recyDestLinesData) {
             d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
-              d3.json('data/temp/international_export.geojson', function(exportLinesData) {
-              d3.json('data/temp/world.geojson', function(world) {
-
-                initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
-                initSimsMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
-                initRecyExportMap(exportLinesData, nycd, world);
-              });
+              d3.json('data/temp/export_international.geojson', function(exportLinesData) {
+                d3.json('data/temp/export_polygons.geojson', function(exportPolygonsData) {
+                  d3.json('data/temp/export_national_lines.geojson', function(exportNationalLinesData) {
+                    d3.json('data/temp/world.geojson', function(world) {
+                      initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
+                      initSimsMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
+                      initRecyExportMap(exportLinesData, exportNationalLinesData, exportPolygonsData, nycd, world);
+                    });
+                  });
+                });
               });
             });
           });
@@ -892,7 +895,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       };
 
     }
-  function initRecyExportMap(exportLinesData, nycd, world) {
+  function initRecyExportMap(exportLinesData, exportNationalLinesData, exportPolygonsData, nycd, world) {
     //Width and height
     var width = $('.map-recyexport').width() * 0.99;
     var height = viewportHeight;
@@ -910,11 +913,12 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     //   .scale(s)
     //   .translate(t);
 
+    var scale = isMobile ? 250 : 325
 
     var projection = d3.geo.stereographic()
-        .scale(250)
+        .scale(scale)
         .translate([width / 2, height / 2])
-        .rotate([0, -30])
+        .rotate([0, -45])
         // .clipAngle(180 - 1e-4)
         // .clipExtent([[0, 0], [width, height]])
         .precision(.1);
@@ -960,7 +964,10 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('clip-path', 'url(#mapClip)');
     var worldLand = mapGroup.append('g').attr('class', 'worldLand');
     var commDist = mapGroup.append('g').attr('class', 'commDist');
-    var exportLines = mapGroup.append('g').attr('class', 'truckLines');
+    var exportNationalLines = mapGroup.append('g').attr('class', 'exportNationalLines');
+    var exportLines = mapGroup.append('g').attr('class', 'exportLines');
+    var exportPolygons = mapGroup.append('g').attr('class', 'exportPolygons');
+    var exportPolygonsLabels = mapGroup.append('g').attr('class', 'exportPolygonsLabels');
     var bargeLines = mapGroup.append('g').attr('class', 'bargeLines');
     var recyDestPoints = mapGroup.append('g').attr('class', 'recyDestPoints');
 
@@ -976,17 +983,68 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .style('fill', journeyConfigs.mapConfigs.colors.land)
       .attr('class', 'worldLand');
 
-    commDist.selectAll('.nycd')
-      .data(nycd.features)
+    // commDist.selectAll('.nycd')
+    //   .data(nycd.features)
+    //   .enter()
+    //   .append('path')
+    //   .attr({
+    //     'd': path
+    //   })
+    //   .style('stroke', 'black')
+    //   .style('stroke-width', 0)
+    //   .style('fill', journeyConfigs.mapConfigs.colors.land)
+    //   .attr('class', 'nycd');
+
+    exportPolygons.selectAll('.exportPolygons')
+      .data(exportPolygonsData.features)
       .enter()
       .append('path')
       .attr({
         'd': path
       })
-      .style('stroke', 'black')
-      .style('stroke-width', 0)
-      .style('fill', journeyConfigs.mapConfigs.colors.land)
-      .attr('class', 'nycd');
+      .style('stroke', '#fff')
+      .style('stroke-width', 0.75)
+      .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+      .attr('opacity', 0)
+      .attr('class', 'exportPolygons');
+
+  exportPolygonsLabels.selectAll(".exportPolygonsLabels")
+      .data(exportPolygonsData.features)
+    .enter().append("text")
+      .attr("class", "exportPolygonsLabels map-label")
+      .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+      .style('font-size', '0.75em')
+      .attr("dy", function (d, i) {
+        if (d.properties.name.length === 2) {
+          var space = 0.35 + (i * 0.2);
+          return space + 'em';
+        } else {
+          return '0.35em';
+        }
+      })
+      .attr('opacity', 0)
+      .text(function(d) { return d.properties.name; });
+
+    exportNationalLines.selectAll('.exportNationalLines')
+      .data(exportNationalLinesData.features)
+      .enter()
+      .append('path')
+      .attr({
+        'd': path
+      })
+      .style('stroke', journeyConfigs.mapConfigs.colors.wasteLines)
+      .attr('stroke-width', function(d) {
+        // return journeyConfigs.mapConfigs.scales.lineWidth(d.properties.j_tot_rec);
+        return 2;
+      })
+      .style('fill', 'none')
+      .attr('stroke-dasharray', function(d) {
+        return (this.getTotalLength() + ' ' + this.getTotalLength());
+      })
+      .attr('stroke-dashoffset', function(d) {
+        return this.getTotalLength();
+      })
+      .attr('class', 'exportNationalLines');
 
     exportLines.selectAll('.exportLines')
       .data(exportLinesData.features)
@@ -1060,14 +1118,73 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         //       .attr('r', 0);
         //   });
         //
-        // // clear nycd
-        // commDist.selectAll('.nycd')
-        //   .each(function(d, i) {
-        //     d3.select(this)
-        //       .style('fill', journeyConfigs.mapConfigs.colors.land)
-        //       .attr('opacity', 1);
-        //   });
 
+        exportPolygons.selectAll('.exportPolygons')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('opacity', 0);
+          });
+        exportPolygonsLabels.selectAll('.exportPolygonsLabels')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('opacity', 0);
+          });
+
+        exportNationalLines.selectAll('.exportNationalLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
+              })
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', 0)
+              .each('end', function() {
+                journeyConfigs.mapEl.recyexport.nationalPolygons();
+              });
+          });
+      }
+    };
+
+    journeyConfigs.mapEl.recyexport.nationalPolygons = function () {
+        exportPolygons.selectAll('.exportPolygons')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.name !== 'India' && d.properties.name !== 'China';
+              })
+              .transition()
+              .duration(1500)
+              .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+              .attr('opacity', 0.4);
+          });
+        exportPolygonsLabels.selectAll('.exportPolygonsLabels')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.name !== 'India' && d.properties.name !== 'China';
+              })
+              .transition()
+              .duration(1500)
+              .attr('opacity', 1);
+          });
+
+        exportNationalLines.selectAll('.exportNationalLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('stroke-dashoffset', 0)
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', function(d) {
+                return -this.getTotalLength();
+              })
+              .each('end', function() {
+                journeyConfigs.mapEl.recyexport.internationalLines();
+              });
+          });
+    };
+
+    journeyConfigs.mapEl.recyexport.internationalLines = function () {
         exportLines.selectAll('.exportLines')
           .each(function(d, i) {
             d3.select(this)
@@ -1078,11 +1195,53 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               .duration(3000)
               .attr('stroke-dashoffset', 0)
               .each('end', function() {
-                // journeyConfigs.mapEl.recyexport.recyexportManCircle();
+                journeyConfigs.mapEl.recyexport.internationalPolygons();
               });
           });
-      }
     };
+
+    journeyConfigs.mapEl.recyexport.internationalPolygons = function () {
+        exportPolygons.selectAll('.exportPolygons')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.name === 'India' || d.properties.name === 'China';
+              })
+              .transition()
+              .duration(1500)
+              .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+              .attr('opacity', 0.4);
+          });
+        exportPolygonsLabels.selectAll('.exportPolygonsLabels')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.name === 'India' || d.properties.name === 'China';
+              })
+              .transition()
+              .duration(1500)
+              .attr('opacity', 1);
+          });
+
+        exportLines.selectAll('.exportLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('stroke-dashoffset', 0)
+              .transition()
+              .duration(3000)
+              .attr('stroke-dashoffset', function(d) {
+                return -this.getTotalLength();
+              })
+              .each('end', function() {
+                // journeyConfigs.mapEl.recyexport.internationalLines();
+              });
+          });
+
+        setTimeout(function() {
+          journeyConfigs.mapEl.recyexport.animationPlayed = false;
+        }, 3000);
+    };
+
   }
 
   }
