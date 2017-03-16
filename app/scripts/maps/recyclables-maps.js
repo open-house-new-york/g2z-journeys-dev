@@ -5,7 +5,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     background: '#edf0ff',
     land: '#d9d9d9',
     wasteLines: '#f15a29',
-    wasteCircles: '#f15a29'
+    wasteCircles: '#f15a29',
+    wasteOpacity: '#e3a793'
   };
   journeyConfigs.mapConfigs.scales = {
     circleRadius: function(value) {
@@ -267,7 +268,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         .each(function(d, i) {
           d3.select(this)
             .filter(function(d) {
-              var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+              var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : 'na';
               var inArray = $.inArray(bcd, cdServedVisyMan) >= 0;
               if (inArray) {
                 return true;
@@ -277,8 +278,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
             })
             .transition()
             .duration(1500)
-            .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
-            .attr('opacity', 0.4);
+            .style('fill', journeyConfigs.mapConfigs.colors.wasteOpacity)
+            .attr('opacity', 1);
         });
 
       truckLines.selectAll('.truckLines')
@@ -392,7 +393,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         .each(function(d, i) {
           d3.select(this)
             .filter(function(d) {
-              var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+              var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : 'na';
               var inArray = $.inArray(bcd, cdServedVisySi) >= 0;
               if (inArray) {
                 return true;
@@ -402,8 +403,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
             })
             .transition()
             .duration(1500)
-            .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
-            .attr('opacity', 0.4);
+            .style('fill', journeyConfigs.mapConfigs.colors.wasteOpacity)
+            .attr('opacity', 1);
         });
 
       truckLines.selectAll('.truckLines')
@@ -654,7 +655,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .each(function(d, i) {
             d3.select(this)
               .filter(function(d) {
-                var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+                var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : 'na';
                 var inArray = $.inArray(bcd, cdServedJersey) >= 0;
                 if (inArray) {
                   return true;
@@ -664,8 +665,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               })
               .transition()
               .duration(1500)
-              .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
-              .attr('opacity', 0.4);
+              .style('fill', journeyConfigs.mapConfigs.colors.wasteOpacity)
+              .attr('opacity', 1);
           });
 
         truckLines.selectAll('.truckLines')
@@ -729,7 +730,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .each(function(d, i) {
             d3.select(this)
               .filter(function(d) {
-                var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+                var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : 'na';
                 var inArray = $.inArray(bcd, cdServedBargeTs) >= 0;
                 if (inArray) {
                   return true;
@@ -739,8 +740,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               })
               .transition()
               .duration(1500)
-              .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
-              .attr('opacity', 0.4);
+              .style('fill', journeyConfigs.mapConfigs.colors.wasteOpacity)
+              .attr('opacity', 1);
           });
 
         truckLines.selectAll('.truckLines')
@@ -853,7 +854,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .each(function(d, i) {
             d3.select(this)
               .filter(function(d) {
-                var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : "na";
+                var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : 'na';
                 var inArray = $.inArray(bcd, cdServedSunsetPark) >= 0;
                 if (inArray) {
                   return true;
@@ -863,8 +864,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               })
               .transition()
               .duration(1500)
-              .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
-              .attr('opacity', 0.4);
+              .style('fill', journeyConfigs.mapConfigs.colors.wasteOpacity)
+              .attr('opacity', 1);
           });
 
         truckLines.selectAll('.truckLines')
@@ -1008,13 +1009,13 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('opacity', 0)
       .attr('class', 'exportPolygons');
 
-  exportPolygonsLabels.selectAll(".exportPolygonsLabels")
+  exportPolygonsLabels.selectAll('.exportPolygonsLabels')
       .data(exportPolygonsData.features)
-    .enter().append("text")
-      .attr("class", "exportPolygonsLabels map-label")
-      .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+    .enter().append('text')
+      .attr('class', 'exportPolygonsLabels map-label')
+      .attr('transform', function(d) { return 'translate(' + path.centroid(d) + ')'; })
       .style('font-size', '0.75em')
-      .attr("dy", function (d, i) {
+      .attr('dy', function (d, i) {
         if (d.properties.name.length === 2) {
           var space = 0.35 + (i * 0.2);
           return space + 'em';
