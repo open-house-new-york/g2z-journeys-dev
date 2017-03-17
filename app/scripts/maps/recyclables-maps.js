@@ -1168,6 +1168,12 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           return '0.35em';
         }
       })
+      // .attr('dx', function (d, i) {
+      //   if (d.properties.name === 'India') {
+      //     return '-1.35em';
+      //   }
+      // })
+      .attr('text-anchor', 'middle')
       .attr('opacity', 0)
       .text(function(d) { return d.properties.name; });
 
@@ -1212,43 +1218,6 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         return this.getTotalLength();
       })
       .attr('class', 'exportLines');
-
-    // bargeLines.selectAll('.bargeLines')
-    //   .data(recyBargeLinesData.features)
-    //   .enter()
-    //   .append('path')
-    //   .attr({
-    //     'd': path
-    //   })
-    //   .style('stroke', journeyConfigs.mapConfigs.colors.wasteLines)
-    //   .attr('stroke-width', function(d) {
-    //     // return journeyConfigs.mapConfigs.scales.lineWidth(d.properties.j_tot_rec);
-    //     return 2;
-    //   })
-    //   .style('fill', 'none')
-    //   .attr('stroke-dasharray', function(d) {
-    //     return (this.getTotalLength() + ' ' + this.getTotalLength());
-    //   })
-    //   .attr('stroke-dashoffset', function(d) {
-    //     return this.getTotalLength();
-    //   })
-    //   .attr('class', 'bargeLines');
-    //
-    // recyDestPoints.selectAll('.recyDestPoints')
-    //   .data(recyDestPointsData.features)
-    //   .enter()
-    //   .append('circle')
-    //   .attr('cx', function(d) {
-    //     return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
-    //   })
-    //   .attr('cy', function(d) {
-    //     return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
-    //   })
-    //   .attr('r', 0)
-    //   .style('stroke', '#fff')
-    //   .style('stroke-width', 1)
-    //   .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
-    //   .attr('class', 'recyDestPoints');
 
     journeyConfigs.mapEl.recyexport.animationPlayed = false;
 
