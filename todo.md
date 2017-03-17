@@ -1,5 +1,6 @@
 # recyclables
 
+- simplify export map
 - label sims sunset park on map
 - color on map
 
