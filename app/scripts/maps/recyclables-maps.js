@@ -38,9 +38,11 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
                 d3.json('data/temp/export_polygons.geojson', function(exportPolygonsData) {
                   d3.json('data/temp/export_national_lines.geojson', function(exportNationalLinesData) {
                     d3.json('data/temp/world.geojson', function(world) {
+                    d3.json('data/temp/nyc_point.geojson', function(nycPointData) {
                       initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
                       initSimsMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
-                      initRecyExportMap(exportLinesData, exportNationalLinesData, exportPolygonsData, nycd, world);
+                      initRecyExportMap(exportLinesData, exportNationalLinesData, exportPolygonsData, nycPointData, nycd, world);
+                    });
                     });
                   });
                 });
@@ -1041,7 +1043,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       };
 
     }
-  function initRecyExportMap(exportLinesData, exportNationalLinesData, exportPolygonsData, nycd, world) {
+  function initRecyExportMap(exportLinesData, exportNationalLinesData, exportPolygonsData, nycPointData, nycd, world) {
     //Width and height
     var width = $('.map-recyexport').width() * 0.99;
     var height = viewportHeight;
@@ -1059,7 +1061,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     //   .scale(s)
     //   .translate(t);
 
-    var scale = isMobile ? 250 : 325
+    var scale = isMobile ? 250 : 375;
 
     var projection = d3.geo.stereographic()
         .scale(scale)
@@ -1067,7 +1069,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         .rotate([0, -45])
         // .clipAngle(180 - 1e-4)
         // .clipExtent([[0, 0], [width, height]])
-        .precision(.1);
+        .precision(0.1);
 
     var path = d3.geo.path()
       .projection(projection);
@@ -1109,13 +1111,27 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('class', 'mapGroup')
       .attr('clip-path', 'url(#mapClip)');
     var worldLand = mapGroup.append('g').attr('class', 'worldLand');
-    var commDist = mapGroup.append('g').attr('class', 'commDist');
     var exportNationalLines = mapGroup.append('g').attr('class', 'exportNationalLines');
     var exportLines = mapGroup.append('g').attr('class', 'exportLines');
     var exportPolygons = mapGroup.append('g').attr('class', 'exportPolygons');
+    var nycPoint = mapGroup.append('g').attr('class', 'nycPoint');
     var exportPolygonsLabels = mapGroup.append('g').attr('class', 'exportPolygonsLabels');
-    var bargeLines = mapGroup.append('g').attr('class', 'bargeLines');
-    var recyDestPoints = mapGroup.append('g').attr('class', 'recyDestPoints');
+
+    nycPoint.selectAll('.nycPoint')
+      .data(nycPointData.features)
+      .enter()
+      .append('circle')
+      .attr('cx', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+      })
+      .attr('cy', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+      })
+      .attr('r', 2)
+      .style('stroke', '#fff')
+      .style('stroke-width', 1)
+      .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+      .attr('class', 'nycPoint');
 
     worldLand.selectAll('.worldLand')
       .data(world.features)
@@ -1160,14 +1176,14 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('class', 'exportPolygonsLabels map-label')
       .attr('transform', function(d) { return 'translate(' + path.centroid(d) + ')'; })
       .style('font-size', '0.75em')
-      .attr('dy', function (d, i) {
-        if (d.properties.name.length === 2) {
-          var space = 0.35 + (i * 0.2);
-          return space + 'em';
-        } else {
-          return '0.35em';
-        }
-      })
+      // .attr('dy', function (d, i) {
+      //   if (d.properties.name.length === 2) {
+      //     var space = 0.35 + (i * 0.2);
+      //     return space + 'em';
+      //   } else {
+      //     return '0.35em';
+      //   }
+      // })
       // .attr('dx', function (d, i) {
       //   if (d.properties.name === 'India') {
       //     return '-1.35em';
