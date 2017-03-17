@@ -15,7 +15,7 @@ journeyConfigs.firstPanelId = 'panel-0-1';
 // ];
 journeyConfigs.mapEl = {
   visy: {
-    id: '1-3'
+    id: '1-2'
   },
   sims: {
     id: '2-1'
