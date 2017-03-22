@@ -29,7 +29,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   //   var states = geojson.states_east;
   //   var nynj = geojson.ny_nj_ct;
   d3.json('data/temp/nycd_bcd.geojson', function(nycd) {
-    d3.json('data/temp/ny_nj_ct.geojson', function(nynj) {
+    d3.json('data/temp/ny_nj_ct_refined.geojson', function(nynj) {
       d3.json('data/temp/states_east.geojson', function(statesEast) {
         d3.json('data/temp/recy_barge_lines.geojson', function(recyBargeLinesData) {
           d3.json('data/temp/recy_dest_lines.geojson', function(recyDestLinesData) {
