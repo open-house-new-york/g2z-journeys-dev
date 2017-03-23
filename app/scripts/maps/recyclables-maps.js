@@ -20,39 +20,23 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   };
 
   //Load in GeoJSON data
-  // d3.json(journeyConfigs.mapDataPath, function(geojson) {
-  //   var recyDestLinesData = geojson.od_lines_refuse;
-  //   var destPointsData = geojson.dest_points_refuse;
-  //   var nycd = geojson.nycd;
-  //   var exportLines = geojson.dest_lines;
-  //   var exportPoints = geojson.export_points;
-  //   var states = geojson.states_east;
-  //   var nynj = geojson.ny_nj_ct;
-  d3.json('data/temp/nycd_bcd.geojson', function(nycd) {
-    d3.json('data/temp/ny_nj_ct_refined.geojson', function(nynj) {
-      d3.json('data/temp/states_east.geojson', function(statesEast) {
-        d3.json('data/temp/recy_barge_lines.geojson', function(recyBargeLinesData) {
-          d3.json('data/temp/recy_dest_lines.geojson', function(recyDestLinesData) {
-            d3.json('data/temp/recy_dest_points.geojson', function(recyDestPointsData) {
-              d3.json('data/temp/export_international.geojson', function(exportLinesData) {
-                d3.json('data/temp/export_polygons.geojson', function(exportPolygonsData) {
-                  d3.json('data/temp/export_national_lines.geojson', function(exportNationalLinesData) {
-                    d3.json('data/temp/world.geojson', function(world) {
-                    d3.json('data/temp/nyc_point.geojson', function(nycPointData) {
-                      initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
-                      initSimsMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
-                      initRecyExportMap(exportLinesData, exportNationalLinesData, exportPolygonsData, nycPointData, nycd, world);
-                    });
-                    });
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+  d3.json(journeyConfigs.mapDataPath, function(geojson) {
+    var nycd = geojson.nycd_bcd;
+    var nynj = geojson.ny_nj_ct_refined;
+    var statesEast = geojson.states_east;
+    var recyBargeLinesData = geojson.recy_barge_lines;
+    var recyDestLinesData = geojson.recy_dest_lines;
+    var recyDestPointsData = geojson.recy_dest_points;
+    var exportLinesData = geojson.export_international;
+    var exportPolygonsData = geojson.export_polygons;
+    var exportNationalLinesData = geojson.export_national_lines;
+    var world = geojson.world;
+    var nycPointData = geojson.nyc_point;
+
+    initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
+    initSimsMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, nynj);
+    initRecyExportMap(exportLinesData, exportNationalLinesData, exportPolygonsData, nycPointData, nycd, world);
+});
 
   function initVisyMap(recyBargeLinesData, recyDestLinesData, recyDestPointsData, nycd, states) {
     //Width and height
