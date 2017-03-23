@@ -1,9 +1,9 @@
 # recyclables
 
-- simplify export map
+<!-- - simplify export map -->
 - google analytics
 - concatenate GEOJSON
-- export map: nyc point
+<!-- - export map: nyc point -->
 <!-- - label sims sunset park on map -->
 <!-- - color on map -->
 
