@@ -100,6 +100,14 @@ $(window).on('resize', _.debounce(function() {
       var visEl = $('#vis');
       var panelsWrapperEl = $('.panels-wrapper');
       var panelsGroupEl = $('.panels-group', visEl);
+
+      // delete panels according to screen size
+      if (viewportHeight < 480) {
+        $('.not-mobile', panelsGroupEl).remove();
+      } else {
+        $('.mobile', panelsGroupEl).remove();
+      }
+
       var panelsEl = $('.panel', panelsGroupEl);
       var imagePanelsEl = $('.panel-image', panelsGroupEl);
       var textPanelsEl = $('.panel-text', panelsGroupEl);

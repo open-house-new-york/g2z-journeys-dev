@@ -1061,7 +1061,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     //   .scale(s)
     //   .translate(t);
 
-    var scale = isMobile ? 250 : 375;
+    // var scale = isMobile ? 210 : 375;
+    var scale = (viewportHeight / 1.85);
 
     var projection = d3.geo.stereographic()
         .scale(scale)

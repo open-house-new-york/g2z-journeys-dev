@@ -93,6 +93,7 @@
 }
 .panel-text {
   z-index: 3;
+  hyphens: manual;
 }
 .panel-video {
   display: table;
