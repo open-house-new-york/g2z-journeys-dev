@@ -92,10 +92,10 @@ $(window).on('resize', _.debounce(function() {
 
       var imageNearestSize = isMobile ? 600 : 800;
 
-      // FIXME:
-      if (journeyConfigs.meta.slug === 'recyclables') {
-        imageNearestSize = 800;
-      }
+      // // FIXME:
+      // if (journeyConfigs.meta.slug === 'recyclables') {
+      //   imageNearestSize = 800;
+      // }
       var containerEl = $('.container');
       var visEl = $('#vis');
       var panelsWrapperEl = $('.panels-wrapper');
