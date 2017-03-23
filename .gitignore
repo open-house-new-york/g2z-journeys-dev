@@ -8,3 +8,4 @@ deploy_*
 *.mp4
 app/*.html
 test
+*-sizes.js
