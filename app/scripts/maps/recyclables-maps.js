@@ -270,7 +270,24 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .attr('transform', function(d) { return 'translate(-15,0)'; })
           .attr('class', 'visy-man-legend map-legend')
           .attr('text-anchor', 'end')
-          .text('Marine transfer station at 59th St');
+          .text('Marine transfer station');
+      svg.selectAll('text-visy-man-below')
+          .data(recyDestPointsData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Visy 59th St';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(-15,15)'; })
+          .attr('class', 'visy-man-legend map-legend')
+          .attr('text-anchor', 'end')
+          .text('at 59th st');
 
       commDist.selectAll('.nycd')
         .each(function(d, i) {
@@ -379,9 +396,10 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .attr('y', function(d){
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
           })
-          .attr('transform', function(d) { return 'translate(-15,0)'; })
+          .attr('transform', function(d) { return 'translate(15,0)'; })
           .attr('class', 'visy-si-legend map-legend')
-          .attr('text-anchor', 'end')
+          // .attr('text-anchor', 'end')
+          .attr('alignment-baseline', 'middle')
           .text('Pratt paper mill');
 
       bargeLines.selectAll('.bargeLines')
