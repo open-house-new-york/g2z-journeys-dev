@@ -1064,7 +1064,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     //   .translate(t);
 
     // var scale = isMobile ? 210 : 375;
-    var scale = (viewportHeight / 1.85);
+    var scale = (viewportHeight / 1.95);
 
     var projection = d3.geo.stereographic()
         .scale(scale)
@@ -1194,7 +1194,13 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       // })
       .attr('text-anchor', 'middle')
       .attr('opacity', 0)
-      .text(function(d) { return d.properties.name; });
+      .text(function(d) {
+        if (viewportHeight < 480 && d.properties.name.length === 2) {
+          return '';
+        } else {
+          return d.properties.name;
+        }
+      });
 
     exportNationalLines.selectAll('.exportNationalLines')
       .data(exportNationalLinesData.features)
@@ -1264,6 +1270,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               .attr('opacity', 0);
           });
 
+        svg.selectAll('.map-legend').remove();
+
         exportNationalLines.selectAll('.exportNationalLines')
           .each(function(d, i) {
             d3.select(this)
@@ -1302,6 +1310,24 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               .duration(1500)
               .attr('opacity', 1);
           });
+
+          if (viewportHeight < 480) {
+            var statesLabels = ['IL', 'AL', 'IN', 'OH', 'NC', 'PA'];
+            var statesLegend = svg.selectAll('text-states')
+                .data(statesLabels)
+                .enter()
+                .append('text')
+                .attr('transform', function(d, i) { return 'translate(' + (width / 8) + ',' + ((height / 3) + (i * 12.5)) + ')'; })
+                .attr('class', 'text-states-legend map-legend')
+                .style('font-size', '0.75em')
+                .text(function (d,i) {
+                  return statesLabels[i];
+                })
+                .attr('opacity', 0)
+                .transition()
+                .duration(1500)
+                .attr('opacity', 0.2);
+          }
 
         exportNationalLines.selectAll('.exportNationalLines')
           .each(function(d, i) {
