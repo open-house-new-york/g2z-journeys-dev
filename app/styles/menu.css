@@ -44,7 +44,7 @@
 }
 
 .footer {
-  padding: 0 0 5px;
+  padding: 0 0 10px;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -76,4 +76,13 @@
 }
 .credits p {
   margin-bottom: 0;
+}
+#journeys-button {
+  background-color: #f15a29;
+  color: #fff;
+  border: 0;
+  padding: 15px 0;
+}
+.btn-wrapper {
+  margin: 0 10px;
 }

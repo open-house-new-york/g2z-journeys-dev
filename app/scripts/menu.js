@@ -16,7 +16,7 @@ $(document).ready(function() {
     var caret = $('#journeys-caret');
     if (!active) {
       body.css({ overflow: 'hidden' });
-      footer.animate({height: document.documentElement.clientHeight - mastheadHeight}, 500, function() {
+      footer.animate({height: document.documentElement.clientHeight - mastheadHeight - 10}, 500, function() {
         // Animation complete.
         footerMenu.show();
         caret.removeClass('fa-caret-up');
