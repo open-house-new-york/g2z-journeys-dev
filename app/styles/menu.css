@@ -5,7 +5,7 @@
   margin-right: auto;
   display: block;
   overflow: auto;
-  padding-bottom: 40px;
+  padding-bottom: 85px;
 }
 .buttons-container {
   display: block;
@@ -20,7 +20,7 @@
     height: 50px;
   }
 }
-@media only screen and (min-width: 768px) {
+@@media only screen and (min-width: 768px) {
   .footer {
     height: 70px;
   }
@@ -76,61 +76,4 @@
 }
 .credits p {
   margin-bottom: 0;
-  font-size: 0.8em;
-}
-.full-btn {
-  font-size: 1em;
-  border: none;
-  padding: 1em 0.5em;
-  text-decoration: none;
-  width: 100%;
-  box-shadow: 0;
-  font-size: 1em;
-
-}
-
-.btn-read-more {
-  color: #333;
-  background: #fff;
-  border: 2px solid #f15a29;
-}
-.btn-read-more:hover {
-  background: #f1754d;
-  color: #ffffff;
-  cursor: pointer;
-}
-.btn-explore {
-  color: #ffffff;
-  background: #f15a29;
-  border: none;
-}
-.btn-explore:hover {
-  background: #f1754d;
-  text-decoration: none;
-  cursor: pointer;
-}
-.read-more-text {
-  display: none;
-}
-
-@media only screen and (min-width: 768px) {
-  .mobile {
-    display: none;
-  }
-}
-@media only screen and (max-width: 768px) {
-  .not-mobile {
-    display: none;
-  }
-  .full-btn {
-    font-size: 0.8em;
-  }
-}
-.menu-icon-container {
-  position: fixed !important;
-}
-@media only screen and (max-height: 480px) {
-  h3 {
-    font-size: 1em !important;
-  }
 }
