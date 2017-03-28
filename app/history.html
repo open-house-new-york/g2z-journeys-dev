@@ -471,8 +471,9 @@
       e.src = 'https://www.google-analytics.com/analytics.js';
       r.parentNode.insertBefore(e, r)
     }(window, document, 'script', 'ga'));
-    ga('create', 'UA-91186450-1');
-    ga('send', 'pageview');
+    ga('create', 'UA-91186450-1', 'auto', {'allowLinker': true});
+    ga('require', 'linker');
+    ga('linker:autoLink', ['www.gettingtozero.nyc'] );
   </script>
 
   <!-- build:js scripts/vendor.js -->
