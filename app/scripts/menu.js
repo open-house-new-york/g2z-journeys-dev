@@ -6,7 +6,7 @@ $(document).ready(function() {
     footerHeight = 40;
   }
   var active = false;
-  var footerInitialHeight = $('#footer').outerHeight();
+  var footerInitialHeight = $('.steps-container').outerHeight();
   var mastheadHeight = $('.masthead').outerHeight();
   $('#journeys-button').click(function() {
     var link = $(this);
@@ -25,7 +25,7 @@ $(document).ready(function() {
       active = true;
     } else {
       body.css({ overflow: 'auto' });
-      footer.animate({height: footerHeight}, 500, function () {
+      footer.animate({height: footerInitialHeight}, 500, function () {
         caret.removeClass('fa-caret-down');
         caret.addClass('fa-caret-up');
       });
