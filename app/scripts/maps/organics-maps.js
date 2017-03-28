@@ -8,7 +8,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     wasteCircles: '#f15a29',
     wasteOpacity: '#e3a793',
     complementary: '#1485CC',
-    complementaryOpacity: '#8bb8d5'
+    complementaryOpacity: '#8bb8d5',
+    scale: ['#992D09', '#FF885E', '#FFBDA6', '#8bb8d5']
   };
   journeyConfigs.mapConfigs.scales = {
     circleRadius: function(value) {
@@ -117,20 +118,67 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .style('stroke', 'black')
       .style('stroke-width', 0)
       .style('fill', function (d, i) {
-        if (d.properties.upcoming === 'existing') {
-          return journeyConfigs.mapConfigs.colors.wasteCircles;
-        } else if (d.properties.upcoming === 'bldg') {
-          return journeyConfigs.mapConfigs.colors.wasteOpacity;
-        } else if (d.properties.upcoming == '2017') {
-          return journeyConfigs.mapConfigs.colors.complementary;
-        } else if (d.properties.upcoming == '2018') {
-          return journeyConfigs.mapConfigs.colors.complementaryOpacity;
-        } else {
+        // if (d.properties.upcoming === 'existing') {
+        //   return journeyConfigs.mapConfigs.colors.wasteCircles;
+        // } else if (d.properties.upcoming === 'bldg') {
+        //   return journeyConfigs.mapConfigs.colors.wasteOpacity;
+        // } else if (d.properties.upcoming == '2017') {
+        //   return journeyConfigs.mapConfigs.colors.complementary;
+        // } else if (d.properties.upcoming == '2018') {
+        //   return journeyConfigs.mapConfigs.colors.complementaryOpacity;
+        // } else {
           return journeyConfigs.mapConfigs.colors.land;
-        }
+        // }
       })
-      .attr('opacity', 0)
+      // .attr('opacity', 0)
       .attr('class', 'nycd');
+
+      var organicsLegendTitleText = ['Residential organics collection:'];
+      var organicsLegendLabels = ['Has curbside collection', 'Coming in 2017', 'Coming in 2018', 'Buildings can enroll'];
+      var legendWidth = 20;
+      var legendHeight = 20;
+      var legendSpacing = 10;
+      var legendStartingX = isMobile ? 0 : 60;
+      var legendStartingY = height/4;
+
+      var organicsLegendTitle = svg.selectAll('organicsLegendTitle')
+          .data(organicsLegendTitleText)
+          .enter()
+          .append('text')
+          .attr('class', 'map-legend legend-organics')
+          .attr('id', 'organics-legend-title')
+          .attr('x', legendStartingX)
+          .attr('y', legendStartingY - legendSpacing)
+          .text(function(d, i){ return organicsLegendTitleText[i]; })
+          .attr('opacity', 0);
+
+      var organicsLegend = svg.selectAll('organicsLegend')
+          .data(journeyConfigs.mapConfigs.colors.scale)
+          .enter()
+          .append('g')
+          .attr('class', 'map-legend legend-organics')
+          .attr('id', function (d, i) {
+            return 'organics-legend-' + i;
+          })
+          .attr('opacity', 0);
+
+      organicsLegend.append('rect')
+        .attr('class', 'legend-organics')
+        .attr('x', legendStartingX)
+        .attr('y', function(d, i) {
+          return legendStartingY + (i*legendHeight) + (i*legendSpacing);
+        })
+        .attr('width', legendWidth)
+        .attr('height', legendHeight)
+        .style('fill', function(d, i) { return d; });
+
+      organicsLegend.append('text')
+        .attr('class', 'legend-organics')
+        .attr('x', legendStartingX + legendWidth + legendSpacing)
+        .attr('y', function(d, i) {
+          return legendStartingY + (i*legendHeight) + 13 + (i*legendSpacing);
+        })
+        .text(function(d, i){ return organicsLegendLabels[i]; });
 
     journeyConfigs.mapEl.organicsColl.animationPlayed = false;
 
@@ -144,10 +192,12 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .each(function(d, i) {
             d3.select(this)
               .style('fill', journeyConfigs.mapConfigs.colors.land)
-              .attr('opacity', 0);
+              // .attr('opacity', 0);
           });
 
-        svg.selectAll('.map-legend').remove();
+        svg.selectAll('.map-legend').attr('opacity', 0);
+        d3.select('#organics-legend-title').attr('opacity', 1);
+        d3.select('#organics-legend-0').attr('opacity', 1);
 
         commDist.selectAll('.nycd')
           .each(function(d, i) {
@@ -157,35 +207,16 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               })
               .transition()
               .duration(1500)
-              // .style('fill', function(d) {
-                // return journeyConfigs.mapConfigs.colors.wasteCircles;
-              // })
-              .attr('opacity', 1);
-              .each('end', function() {
-                journeyConfigs.mapEl.organicsColl.bldg();
-              });
-          });
-      }
-    };
-
-    journeyConfigs.mapEl.organicsColl.bldg = function() {
-        commDist.selectAll('.nycd')
-          .each(function(d, i) {
-            d3.select(this)
-              .filter(function(d) {
-                return d.properties.upcoming === 'bldg';
+              .style('fill', function(d) {
+                return journeyConfigs.mapConfigs.colors.scale[0];
               })
-              .transition()
-              .duration(1500)
-              // .style('fill', function(d) {
-              //   return journeyConfigs.mapConfigs.colors.wasteOpacity;
-              // })
-              .attr('opacity', 1);
+              // .attr('opacity', 1)
               .each('end', function() {
+                d3.select('#organics-legend-1').attr('opacity', 1);
                 journeyConfigs.mapEl.organicsColl.thisYear();
               });
           });
-
+      }
     };
 
     journeyConfigs.mapEl.organicsColl.thisYear = function() {
@@ -197,11 +228,12 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               })
               .transition()
               .duration(1500)
-              // .style('fill', function(d) {
-              //   return journeyConfigs.mapConfigs.colors.complementary;
-              // })
-              .attr('opacity', 1);
+              .style('fill', function(d) {
+                return journeyConfigs.mapConfigs.colors.scale[1];
+              })
+              // .attr('opacity', 1)
               .each('end', function() {
+                d3.select('#organics-legend-2').attr('opacity', 1);
                 journeyConfigs.mapEl.organicsColl.nextYear();
               });
           });
@@ -217,10 +249,31 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               })
               .transition()
               .duration(1500)
-              // .style('fill', function(d) {
-              //   return journeyConfigs.mapConfigs.colors.complementaryOpacity;
-              // })
-              .attr('opacity', 1);
+              .style('fill', function(d) {
+                return journeyConfigs.mapConfigs.colors.scale[2];
+              })
+              // .attr('opacity', 1)
+              .each('end', function() {
+                d3.select('#organics-legend-3').attr('opacity', 1);
+                journeyConfigs.mapEl.organicsColl.bldg();
+              });
+          });
+
+    };
+
+    journeyConfigs.mapEl.organicsColl.bldg = function() {
+        commDist.selectAll('.nycd')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.upcoming === 'bldg';
+              })
+              .transition()
+              .duration(1500)
+              .style('fill', function(d) {
+                return journeyConfigs.mapConfigs.colors.scale[3];
+              })
+              // .attr('opacity', 1)
               .each('end', function() {
                 journeyConfigs.mapEl.organicsColl.out();
               });
