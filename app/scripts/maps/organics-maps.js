@@ -9,7 +9,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     wasteOpacity: '#e3a793',
     complementary: '#1485CC',
     complementaryOpacity: '#8bb8d5',
-    scale: ['#992D09', '#FF885E', '#FFBDA6', '#8bb8d5']
+    scale: ['#992D09', '#FF885E', '#FFBDA6', '#8bb8d5'],
+    scaleDropOff: ['#f15a29', '#8bb8d5']
   };
   journeyConfigs.mapConfigs.scales = {
     circleRadius: function(value) {
@@ -35,9 +36,11 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   //   var nycPointData = geojson.nyc_point;
   d3.json('data/temp/nycd_organics_collection.geojson', function(nycdOrganicsCollection) {
   d3.json('data/temp/nyc_organics_drop_off.geojson', function(nycOrganicsDropOff) {
+  d3.json('data/temp/nyc_community_gardens.geojson', function(nycCommunityGardens) {
   d3.json('data/temp/ny_nj_ct_refined.geojson', function(nynj) {
     initOrganicsCollMap(nycdOrganicsCollection, nynj);
-    initOrganicsDropOffMap(nycOrganicsDropOff, nycdOrganicsCollection, nynj);
+    initOrganicsDropOffMap(nycOrganicsDropOff, nycdOrganicsCollection, nycCommunityGardens, nynj);
+  });
   });
   });
   });
@@ -291,7 +294,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     };
   }
 
-  function initOrganicsDropOffMap(nycOrganicsDropOff, nycd, states) {
+  function initOrganicsDropOffMap(nycOrganicsDropOff, nycd, nycCommunityGardens, states) {
     //Width and height
     var width = $('.map-dropoff').width() * 0.99;
     var height = viewportHeight;
@@ -347,6 +350,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('clip-path', 'url(#mapClip)');
     var usStates = mapGroup.append('g').attr('class', 'usStates');
     var commDist = mapGroup.append('g').attr('class', 'commDist');
+    var communityGardens = mapGroup.append('g').attr('class', 'communityGardens');
     var dropOffSites = mapGroup.append('g').attr('class', 'dropOffSites');
 
     usStates.selectAll('.usStates')
@@ -391,68 +395,91 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
       .attr('class', 'dropOffSites');
 
-      var organicsLegendTitleText = ['Organics drop-off sites'];
-      var organicsLegendLabels = ['Has curbside collection', 'Coming in 2017', 'Coming in 2018', 'Buildings can enroll'];
+    communityGardens.selectAll('.communityGardens')
+      .data(nycCommunityGardens.features)
+      .enter()
+      .append('circle')
+      .attr('cx', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+      })
+      .attr('cy', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+      })
+      .attr('r', 0)
+      .style('stroke', '#fff')
+      .style('stroke-width', 1)
+      .style('fill', journeyConfigs.mapConfigs.colors.complementaryOpacity)
+      .attr('class', 'communityGardens');
+
+      var dropOffLegendTitleText = ['Organics drop-off sites'];
+      var dropOffLegendLabels = ['Organics drop-off sites', 'Community gardens'];
       var legendWidth = 20;
       var legendHeight = 20;
       var legendSpacing = 10;
       var legendStartingX = isMobile ? 0 : 60;
       var legendStartingY = height/2;
 
-      var organicsLegendTitle = svg.selectAll('organicsLegendTitle')
-          .data(organicsLegendTitleText)
+      var dropOffLegendTitle = svg.selectAll('dropOffLegendTitle')
+          .data(dropOffLegendTitleText)
           .enter()
           .append('text')
           .attr('class', 'map-legend legend-dropoff')
           .attr('id', 'dropoff-legend-title')
           .attr('x', legendStartingX)
           .attr('y', legendStartingY - legendSpacing)
-          .text(function(d, i){ return organicsLegendTitleText[i]; })
-          .attr('opacity', 1);
+          .text(function(d, i){ return dropOffLegendTitleText[i]; })
+          .attr('opacity', 0);
 
-      // var organicsLegend = svg.selectAll('organicsLegend')
-      //     .data(journeyConfigs.mapConfigs.colors.scale)
-      //     .enter()
-      //     .append('g')
-      //     .attr('class', 'map-legend legend-dropoff')
-      //     .attr('id', function (d, i) {
-      //       return 'dropoff-legend-' + i;
-      //     })
-      //     .attr('opacity', 0);
-      //
-      // organicsLegend.append('rect')
-      //   .attr('class', 'legend-dropoff')
-      //   .attr('x', legendStartingX)
-      //   .attr('y', function(d, i) {
-      //     return legendStartingY + (i*legendHeight) + (i*legendSpacing);
-      //   })
-      //   .attr('width', legendWidth)
-      //   .attr('height', legendHeight)
-      //   .style('fill', function(d, i) { return d; });
-      //
-      // organicsLegend.append('text')
-      //   .attr('class', 'legend-dropoff')
-      //   .attr('x', legendStartingX + legendWidth + legendSpacing)
-      //   .attr('y', function(d, i) {
-      //     return legendStartingY + (i*legendHeight) + 13 + (i*legendSpacing);
-      //   })
-      //   .text(function(d, i){ return organicsLegendLabels[i]; });
+      var dropOffLegend = svg.selectAll('dropOffLegend')
+          .data(journeyConfigs.mapConfigs.colors.scaleDropOff)
+          .enter()
+          .append('g')
+          .attr('class', 'map-legend legend-dropoff')
+          .attr('id', function (d, i) {
+            return 'dropoff-legend-' + i;
+          })
+          .attr('opacity', 0);
+
+      dropOffLegend.append('rect')
+        .attr('class', 'legend-dropoff')
+        .attr('x', legendStartingX)
+        .attr('y', function(d, i) {
+          return legendStartingY + (i*legendHeight) + (i*legendSpacing);
+        })
+        .attr('width', legendWidth)
+        .attr('height', legendHeight)
+        .style('fill', function(d, i) { return d; });
+
+      dropOffLegend.append('text')
+        .attr('class', 'legend-dropoff')
+        .attr('x', legendStartingX + legendWidth + legendSpacing)
+        .attr('y', function(d, i) {
+          return legendStartingY + (i*legendHeight) + 13 + (i*legendSpacing);
+        })
+        .text(function(d, i){ return dropOffLegendLabels[i]; });
 
     journeyConfigs.mapEl.dropOff.animationPlayed = false;
+
+    journeyConfigs.mapEl.dropOff.gardensPlayed = false;
 
     journeyConfigs.mapEl.dropOff.startAnimation = function() {
 
       if (!journeyConfigs.mapEl.dropOff.animationPlayed) {
         journeyConfigs.mapEl.dropOff.animationPlayed = true;
 
-        // clear nycd
+        // clear
         dropOffSites.selectAll('.dropOffSites')
           .each(function(d, i) {
             d3.select(this)
-              .attr('r', 0)
+              .attr('r', 0);
+          });
+        communityGardens.selectAll('.dropOffSites')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('r', 0);
           });
 
-        // svg.selectAll('.map-legend').attr('opacity', 0);
+        svg.selectAll('.map-legend').attr('opacity', 0);
         // d3.select('#dropoff-legend-title').attr('opacity', 1);
         // d3.select('#dropoff-legend-0').attr('opacity', 1);
 
@@ -461,20 +488,39 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
             d3.select(this)
               .transition()
               .duration(1500)
-              .attr('r', 4)
+              .attr('r', 3)
               .each('end', function() {
-                d3.select('#organics-legend-1').attr('opacity', 1);
-                journeyConfigs.mapEl.dropOff.out();
+                d3.select('#dropoff-legend-0').attr('opacity', 1);
+                journeyConfigs.mapEl.dropOff.gardens();
+                journeyConfigs.mapEl.dropOff.gardensPlayed = true;
               });
           });
+      }
+    };
+
+    journeyConfigs.mapEl.dropOff.gardens = function() {
+      if (journeyConfigs.mapEl.dropOff.gardensPlayed === false) {
+            communityGardens.selectAll('.communityGardens')
+              .each(function(d, i) {
+                d3.select(this)
+                  .transition()
+                  .duration(1500)
+                  .attr('r', 3)
+                  .each('end', function() {
+                    d3.select('#dropoff-legend-1').attr('opacity', 1);
+                    journeyConfigs.mapEl.dropOff.out();
+                  });
+              });
       }
     };
 
     journeyConfigs.mapEl.dropOff.out = function() {
       setTimeout(function() {
         journeyConfigs.mapEl.dropOff.animationPlayed = false;
+        journeyConfigs.mapEl.dropOff.gardensPlayed = false;
       }, 1600);
     };
+
   }
 
 }
