@@ -473,7 +473,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
             d3.select(this)
               .attr('r', 0);
           });
-        communityGardens.selectAll('.dropOffSites')
+        communityGardens.selectAll('.communityGardens')
           .each(function(d, i) {
             d3.select(this)
               .attr('r', 0);
