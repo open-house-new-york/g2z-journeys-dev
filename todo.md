@@ -4,10 +4,10 @@
 - meta tags and images
 - links me and ohny at credits
 - concat geojson
-- compost sites map
-- anaerobic digestors?
+<!-- - compost sites map -->
+<!-- - anaerobic digestors? -->
 - earth matter pics
-- SI compost machine pic
+<!-- - SI compost machine pic -->
 
 # recyclables
 

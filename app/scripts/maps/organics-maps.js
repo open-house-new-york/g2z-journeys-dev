@@ -10,7 +10,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     complementary: '#1485CC',
     complementaryOpacity: '#8bb8d5',
     scale: ['#992D09', '#FF885E', '#FFBDA6', '#8bb8d5'],
-    scaleDropOff: ['#f15a29', '#8bb8d5']
+    scaleDropOff: ['#f15a29', '#1485CC']
   };
   journeyConfigs.mapConfigs.scales = {
     circleRadius: function(value) {
@@ -35,7 +35,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   //   var world = geojson.world;
   //   var nycPointData = geojson.nyc_point;
   d3.json('data/temp/nycd_organics_collection.geojson', function(nycdOrganicsCollection) {
-  d3.json('data/temp/nyc_organics_drop_off.geojson', function(nycOrganicsDropOff) {
+  d3.json('data/temp/nyc_organics_drop_off_by_type.geojson', function(nycOrganicsDropOff) {
   d3.json('data/temp/nyc_community_gardens.geojson', function(nycCommunityGardens) {
   d3.json('data/temp/organics_destinations.geojson', function(organicsDestinations) {
   d3.json('data/temp/ny_nj_ct_refined.geojson', function(nynj) {
@@ -144,7 +144,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       // .attr('opacity', 0)
       .attr('class', 'nycd');
 
-      var organicsLegendTitleText = ['Residential organics collection:'];
+      var organicsLegendTitleText = ['Residential organics collection'];
       var organicsLegendLabels = ['Has curbside collection', 'Coming in 2017', 'Coming in 2018', 'Buildings can enroll'];
       var legendWidth = 20;
       var legendHeight = 20;
@@ -528,7 +528,40 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
                 .attr('class', 'legend-organics map-legend')
                 // .text('off Sandy Hook');
                 .text(function (d, i) {
-                  return d.properties.name + ', ' + d.properties.state;
+                  return d.properties.name;
+                });
+
+            svg.selectAll('text-labels-below')
+                .data(organicsDestinations.features)
+                .enter()
+                .append('text')
+                .attr('x', function(d){
+                    return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+                })
+                .attr('y', function(d){
+                    return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+                })
+                .attr('transform', function(d) {
+                  if (d.properties.id == 3) {
+                    return 'translate(-10,15)';
+                  } else {
+                    return 'translate(10,15)';
+                  }
+                })
+                .attr('text-anchor', function (d, i) {
+                  if (d.properties.id == 3) {
+                    return 'end';
+                  } else {
+                    return 'beginning'
+                  }
+                })
+                .attr('alignment-baseline', 'middle')
+                .attr('class', 'legend-organics map-legend')
+                // .text('off Sandy Hook');
+                .text(function (d, i) {
+                  if (d.properties.long_name) {
+                    return d.properties.long_name;
+                  }
                 });
 
                 journeyConfigs.mapEl.organicsDest.out();
@@ -649,7 +682,13 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('r', 0)
       .style('stroke', '#fff')
       .style('stroke-width', 1)
-      .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+      .style('fill', function (d,i) {
+        if (d.properties.type === 'market') {
+          return journeyConfigs.mapConfigs.colors.wasteCircles;
+        } else {
+          return journeyConfigs.mapConfigs.colors.complementary;
+        }
+      })
       .attr('class', 'dropOffSites');
 
     communityGardens.selectAll('.communityGardens')
@@ -669,7 +708,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('class', 'communityGardens');
 
       var dropOffLegendTitleText = ['Organics drop-off sites'];
-      var dropOffLegendLabels = ['Organics drop-off sites', 'Community gardens'];
+      var dropOffLegendLabels = ['Markets', 'Other'];
       var legendWidth = 20;
       var legendHeight = 20;
       var legendSpacing = 10;
@@ -748,7 +787,9 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               .attr('r', 3)
               .each('end', function() {
                 d3.select('#dropoff-legend-0').attr('opacity', 1);
-                journeyConfigs.mapEl.dropOff.gardens();
+                d3.select('#dropoff-legend-title').attr('opacity', 1);
+                d3.select('#dropoff-legend-1').attr('opacity', 1);
+                journeyConfigs.mapEl.dropOff.out();
                 journeyConfigs.mapEl.dropOff.gardensPlayed = true;
               });
           });
@@ -764,6 +805,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
                   .duration(1500)
                   .attr('r', 3)
                   .each('end', function() {
+                    d3.select('#dropoff-legend-title').attr('opacity', 1);
                     d3.select('#dropoff-legend-1').attr('opacity', 1);
                     journeyConfigs.mapEl.dropOff.out();
                   });
