@@ -6,8 +6,9 @@
 - concat geojson
 <!-- - compost sites map -->
 <!-- - anaerobic digestors? -->
-- earth matter pics
+<!-- - earth matter pics -->
 <!-- - SI compost machine pic -->
+<!-- - 600px images -->
 
 # recyclables
 
