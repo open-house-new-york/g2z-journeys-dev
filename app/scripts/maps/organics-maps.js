@@ -37,9 +37,14 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   d3.json('data/temp/nycd_organics_collection.geojson', function(nycdOrganicsCollection) {
   d3.json('data/temp/nyc_organics_drop_off.geojson', function(nycOrganicsDropOff) {
   d3.json('data/temp/nyc_community_gardens.geojson', function(nycCommunityGardens) {
+  d3.json('data/temp/organics_destinations.geojson', function(organicsDestinations) {
   d3.json('data/temp/ny_nj_ct_refined.geojson', function(nynj) {
+  d3.json('data/temp/states_east_census.geojson', function(statesEast) {
     initOrganicsCollMap(nycdOrganicsCollection, nynj);
+    initOrganicsDestMap(nycdOrganicsCollection, organicsDestinations, statesEast);
     initOrganicsDropOffMap(nycOrganicsDropOff, nycdOrganicsCollection, nycCommunityGardens, nynj);
+  });
+  });
   });
   });
   });
@@ -292,6 +297,258 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         journeyConfigs.mapEl.organicsColl.animationPlayed = false;
       }, 1600);
     };
+  }
+
+  function initOrganicsDestMap(nycd, organicsDestinations, states) {
+    //Width and height
+    var width = $('.map-organicsdest').width() * 0.99;
+    var height = viewportHeight;
+
+    var projection = d3.geo.albers()
+      .scale(1)
+      .translate([0, 0]);
+    var path = d3.geo.path()
+      .projection(projection);
+    var b = path.bounds(organicsDestinations),
+      scaleFactor = 0.75,
+      s = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+      t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+    projection
+      .scale(s)
+      .translate(t);
+
+    // Clear SVG if there is one (on resize)
+    if (d3.select('#map-organicsdest-svg')) {
+      d3.select('#map-organicsdest-svg').remove();
+    }
+    //Create SVG element
+    var svg = d3.select('.map-organicsdest')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .attr('id', 'map-organicsdest-svg')
+      .on('click', function(d) {
+        journeyConfigs.mapEl.organicsDest.startAnimation();
+      });
+
+    $('#map-organicsdest-svg').css({
+      position: 'absolute',
+      top: -topVisPadding
+    });
+
+    var clipBackground = svg.append('circle')
+      .attr('cx', width / 2)
+      .attr('cy', height / 2)
+      .attr('r', width / 2)
+      .style('fill', journeyConfigs.mapConfigs.colors.background)
+      .attr('stroke-width', 0);
+
+    var clip = svg.append('clipPath')
+      .attr('id', 'mapClip')
+      .append('circle')
+      .attr('cx', width / 2)
+      .attr('cy', height / 2)
+      .attr('r', width / 2);
+
+    var mapGroup = svg.append('g')
+      .attr('class', 'mapGroup')
+      .attr('clip-path', 'url(#mapClip)');
+    var usStates = mapGroup.append('g').attr('class', 'usStates');
+    var commDist = mapGroup.append('g').attr('class', 'commDist');
+    var organicsDestSites = mapGroup.append('g').attr('class', 'organicsDestSites');
+
+    usStates.selectAll('.usStates')
+      .data(states.features)
+      .enter()
+      .append('path')
+      .attr({
+        'd': path
+      })
+      .style('stroke', '#fff')
+      .style('stroke-width', 0.8)
+      .style('fill', journeyConfigs.mapConfigs.colors.land)
+      .attr('class', 'usStates');
+
+    commDist.selectAll('.nycd')
+      .data(nycd.features)
+      .enter()
+      .append('path')
+      .attr({
+        'd': path
+      })
+      .style('stroke', 'black')
+      .style('stroke-width', 0)
+      .style('fill', function (d, i) {
+        return journeyConfigs.mapConfigs.colors.land;
+      })
+      .attr('class', 'nycd');
+
+    organicsDestSites.selectAll('.organicsDestSites')
+      .data(organicsDestinations.features)
+      .enter()
+      .append('circle')
+      .attr('cx', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+      })
+      .attr('cy', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+      })
+      .attr('r', 0)
+      .style('stroke', '#fff')
+      .style('stroke-width', 1)
+      .style('fill', function (d, i) {
+        if (d.properties.type === 'compost') {
+          return journeyConfigs.mapConfigs.colors.wasteCircles;
+        } else {
+          return journeyConfigs.mapConfigs.colors.complementary;
+        }
+      })
+      .attr('class', 'organicsDestSites');
+
+      // var destinationLegendTitleText = [''];
+      var destinationLegendLabels = ['Composting facility', 'Anaerobic digester'];
+      var legendWidth = 20;
+      var legendHeight = 20;
+      var legendSpacing = 10;
+      var legendStartingX = isMobile ? 0 : 60;
+      var legendStartingY = height/4;
+      var colorScale = ['#f15a29', '#1485CC'];
+
+      // var destinationLegendTitle = svg.selectAll('destinationLegendTitle')
+      //     .data(destinationLegendTitleText)
+      //     .enter()
+      //     .append('text')
+      //     .attr('class', 'map-legend legend-destination')
+      //     .attr('id', 'destination-legend-title')
+      //     .attr('x', legendStartingX)
+      //     .attr('y', legendStartingY - legendSpacing)
+      //     .text(function(d, i){ return destinationLegendTitleText[i]; })
+      //     .attr('opacity', 0);
+
+      var destinationLegend = svg.selectAll('destinationLegend')
+          .data(colorScale)
+          .enter()
+          .append('g')
+          .attr('class', 'map-legend legend-destination')
+          .attr('id', function (d, i) {
+            return 'destination-legend-' + i;
+          })
+          .attr('opacity', 0);
+
+      destinationLegend.append('rect')
+        .attr('class', 'legend-destination')
+        .attr('x', legendStartingX)
+        .attr('y', function(d, i) {
+          return legendStartingY + (i*legendHeight) + (i*legendSpacing);
+        })
+        .attr('width', legendWidth)
+        .attr('height', legendHeight)
+        .style('fill', function(d, i) { return d; });
+
+      destinationLegend.append('text')
+        .attr('class', 'legend-destination')
+        .attr('x', legendStartingX + legendWidth + legendSpacing)
+        .attr('y', function(d, i) {
+          return legendStartingY + (i*legendHeight) + 13 + (i*legendSpacing);
+        })
+        .text(function(d, i){ return destinationLegendLabels[i]; });
+
+    journeyConfigs.mapEl.organicsDest.animationPlayed = false;
+
+    journeyConfigs.mapEl.organicsDest.zoom = false;
+    journeyConfigs.mapEl.organicsDest.initial = false;
+
+    journeyConfigs.mapEl.organicsDest.startAnimation = function() {
+
+      if (!journeyConfigs.mapEl.organicsDest.animationPlayed) {
+        journeyConfigs.mapEl.organicsDest.animationPlayed = true;
+
+        // clear
+        organicsDestSites.selectAll('.organicsDestSites')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('r', 0);
+          });
+
+        svg.selectAll('.map-legend').attr('opacity', 0);
+        svg.selectAll('.legend-destination').attr('opacity', 0);
+
+        organicsDestSites.selectAll('.organicsDestSites')
+          .each(function(d, i) {
+            d3.select(this)
+              .transition()
+              .duration(1500)
+              .attr('r', function (d,i) {
+                if (isMobile) {
+                  return 3;
+                } else {
+                  return 5;
+                }
+              })
+              .each('end', function() {
+                journeyConfigs.mapEl.organicsDest.nycLabels();
+                journeyConfigs.mapEl.organicsDest.initial = true;
+              });
+          });
+      }
+    };
+
+    journeyConfigs.mapEl.organicsDest.nycLabels = function() {
+      if (journeyConfigs.mapEl.organicsDest.initial === false) {
+            svg.selectAll('.legend-destination')
+              .transition()
+              .duration(1500)
+              .attr('opacity', 1);
+
+            svg.selectAll('text-labels')
+                .data(organicsDestinations.features)
+                .enter()
+                .append('text')
+                .attr('x', function(d){
+                    return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+                })
+                .attr('y', function(d){
+                    return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+                })
+                .attr('transform', function(d) {
+                  if (d.properties.id == 3) {
+                    return 'translate(-10,0)';
+                  } else {
+                    return 'translate(10,0)';
+                  }
+                })
+                .attr('text-anchor', function (d, i) {
+                  if (d.properties.id == 3) {
+                    return 'end';
+                  } else {
+                    return 'beginning'
+                  }
+                })
+                .attr('alignment-baseline', 'middle')
+                .attr('class', 'legend-organics map-legend')
+                // .text('off Sandy Hook');
+                .text(function (d, i) {
+                  return d.properties.name + ', ' + d.properties.state;
+                });
+
+                journeyConfigs.mapEl.organicsDest.out();
+                journeyConfigs.mapEl.organicsDest.zoom = true;
+              }
+    };
+
+    journeyConfigs.mapEl.organicsDest.out = function() {
+      if (journeyConfigs.mapEl.organicsDest.zoom === false) {
+
+      setTimeout(function() {
+        journeyConfigs.mapEl.organicsDest.animationPlayed = false;
+        journeyConfigs.mapEl.organicsDest.initial = false;
+        journeyConfigs.mapEl.organicsDest.zoom = false;
+      }, 1600);
+    }
+  }
+
+
+
   }
 
   function initOrganicsDropOffMap(nycOrganicsDropOff, nycd, nycCommunityGardens, states) {

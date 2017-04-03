@@ -490,7 +490,7 @@ $(window).on('resize', _.debounce(function() {
             }
             break;
           default:
-            //
+            return;
         }
         event.preventDefault();
       };

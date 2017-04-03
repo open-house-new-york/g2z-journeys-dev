@@ -10,6 +10,9 @@ journeyConfigs.mapEl = {
   organicsColl: {
     id: '0-3'
   },
+  organicsDest: {
+    id: '0-7'
+  },
   dropOff: {
     id: '2-1'
   }

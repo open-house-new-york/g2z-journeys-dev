@@ -1,8 +1,19 @@
+# organics
+
+- GA
+- meta tags and images
+- links me and ohny at credits
+- concat geojson
+- compost sites map
+- anaerobic digestors?
+- earth matter pics
+- SI compost machine pic
+
 # recyclables
 
 <!-- - simplify export map -->
-- google analytics
-- concatenate GEOJSON
+<!-- - google analytics -->
+<!-- - concatenate GEOJSON -->
 <!-- - export map: nyc point -->
 <!-- - label sims sunset park on map -->
 <!-- - color on map -->
