@@ -8,13 +8,13 @@ journeyConfigs.meta = {
 journeyConfigs.firstPanelId = 'panel-0-1';
 journeyConfigs.mapEl = {
   organicsColl: {
-    id: '0-3'
+    id: '0-4'
   },
   organicsDest: {
-    id: '0-7'
+    id: '0-8'
   },
   dropOff: {
-    id: '2-1'
+    id: '3-1'
   }
 };
 journeyConfigs.mapDataPath = 'data/organics.geojson';

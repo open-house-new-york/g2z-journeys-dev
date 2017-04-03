@@ -411,7 +411,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       var legendHeight = 20;
       var legendSpacing = 10;
       var legendStartingX = isMobile ? 0 : 60;
-      var legendStartingY = height/4;
+      var legendStartingY = height/2;
       var colorScale = ['#f15a29', '#1485CC'];
 
       // var destinationLegendTitle = svg.selectAll('destinationLegendTitle')
@@ -542,17 +542,18 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
                     return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
                 })
                 .attr('transform', function(d) {
+                  var verticalSpacing = isMobile ? 10 : 15;
                   if (d.properties.id == 3) {
-                    return 'translate(-10,15)';
+                    return 'translate(-10,' + verticalSpacing + ')';
                   } else {
-                    return 'translate(10,15)';
+                    return 'translate(10,' + verticalSpacing + ')';
                   }
                 })
                 .attr('text-anchor', function (d, i) {
                   if (d.properties.id == 3) {
                     return 'end';
                   } else {
-                    return 'beginning'
+                    return 'beginning';
                   }
                 })
                 .attr('alignment-baseline', 'middle')
