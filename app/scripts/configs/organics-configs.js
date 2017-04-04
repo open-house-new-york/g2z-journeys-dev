@@ -8,10 +8,10 @@ journeyConfigs.meta = {
 journeyConfigs.firstPanelId = 'panel-0-1';
 journeyConfigs.mapEl = {
   organicsColl: {
-    id: '0-4'
+    id: '0-5'
   },
   organicsDest: {
-    id: '0-8'
+    id: '0-9'
   },
   dropOff: {
     id: '3-1'
