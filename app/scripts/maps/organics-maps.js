@@ -22,32 +22,16 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   };
 
   //Load in GeoJSON data
-  // d3.json(journeyConfigs.mapDataPath, function(geojson) {
-  //   var nycd = geojson.nycd_bcd;
-  //   var nynj = geojson.ny_nj_ct_refined;
-  //   var statesEast = geojson.states_east;
-  //   var recyBargeLinesData = geojson.recy_barge_lines;
-  //   var recyDestLinesData = geojson.recy_dest_lines;
-  //   var recyDestPointsData = geojson.recy_dest_points;
-  //   var exportLinesData = geojson.export_international;
-  //   var exportPolygonsData = geojson.export_polygons;
-  //   var exportNationalLinesData = geojson.export_national_lines;
-  //   var world = geojson.world;
-  //   var nycPointData = geojson.nyc_point;
-  d3.json('data/temp/nycd_organics_collection.geojson', function(nycdOrganicsCollection) {
-  d3.json('data/temp/nyc_organics_drop_off_by_type.geojson', function(nycOrganicsDropOff) {
-  d3.json('data/temp/nyc_community_gardens.geojson', function(nycCommunityGardens) {
-  d3.json('data/temp/organics_destinations.geojson', function(organicsDestinations) {
-  d3.json('data/temp/ny_nj_ct_refined.geojson', function(nynj) {
-  d3.json('data/temp/states_east_census.geojson', function(statesEast) {
+  d3.json(journeyConfigs.mapDataPath, function(geojson) {
+    var nycdOrganicsCollection = geojson.nycd_organics_collection;
+    var nycOrganicsDropOff = geojson.nyc_organics_drop_off_by_type;
+    var nycCommunityGardens = geojson.nyc_community_gardens;
+    var organicsDestinations = geojson.organics_destinations;
+    var nynj = geojson.ny_nj_ct_refined;
+    var statesEast = geojson.states_east_census;
     initOrganicsCollMap(nycdOrganicsCollection, nynj);
     initOrganicsDestMap(nycdOrganicsCollection, organicsDestinations, statesEast);
     initOrganicsDropOffMap(nycOrganicsDropOff, nycdOrganicsCollection, nycCommunityGardens, nynj);
-  });
-  });
-  });
-  });
-  });
   });
 
   function initOrganicsCollMap(nycdOrganicsCollection, states) {
