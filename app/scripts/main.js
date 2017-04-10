@@ -510,6 +510,17 @@ $(window).on('resize', _.debounce(function() {
         menuVisible = true;
       });
 
+      $('#menu-link-from-action').click(function() {
+        $('#action-cover').fadeTo(500, 0, function () {
+          $('#action-cover').css({
+            display: 'none'
+          });
+        });
+        $('#menu-cover').fadeTo(500, 1);
+        actionVisible = false;
+        menuVisible = true;
+      });
+
       $('#action-link').click(function() {
         $('#action-cover').fadeTo(500, 1);
         $('#menu-icon').removeClass('fa-bars').addClass('fa-times');
