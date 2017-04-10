@@ -692,7 +692,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .style('fill', journeyConfigs.mapConfigs.colors.complementaryOpacity)
       .attr('class', 'communityGardens');
 
-      var dropOffLegendTitleText = ['Organics drop-off sites'];
+      var dropOffLegendTitleText = ['DSNY-funded drop-off sites'];
       var dropOffLegendLabels = ['Markets', 'Other'];
       var legendWidth = 20;
       var legendHeight = 20;

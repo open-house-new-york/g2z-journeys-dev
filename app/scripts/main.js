@@ -361,6 +361,7 @@ $(window).on('resize', _.debounce(function() {
       // trigger events based on scrolling
       var footerVisible = false;
       var menuVisible = false;
+      var actionVisible = false;
       var visLimit = Math.floor(visWidth - viewportWidth + panelWrapperMargin);
       var currentScroll = 0;
       function progressBar(maps, steps) {
@@ -509,11 +510,19 @@ $(window).on('resize', _.debounce(function() {
         menuVisible = true;
       });
 
+      $('#action-link').click(function() {
+        $('#action-cover').fadeTo(500, 1);
+        $('#menu-icon').removeClass('fa-bars').addClass('fa-times');
+        actionVisible = true;
+      });
+
       $('#menu-icon').click(function() {
-        if (!menuVisible) {
-          openMenu();
-        } else {
+        if (menuVisible) {
           closeMenu();
+        } else if (actionVisible) {
+          closeAction();
+        } else {
+          openMenu();
         }
       });
 
@@ -531,6 +540,16 @@ $(window).on('resize', _.debounce(function() {
           });
         });
         menuVisible = false;
+      }
+
+      function closeAction() {
+        $('#menu-icon').removeClass('fa-times').addClass('fa-bars');
+        $('#action-cover').fadeTo(500, 0, function () {
+          $('#action-cover').css({
+            display: 'none'
+          });
+        });
+        actionVisible = false;
       }
 
       var menuLinksEl = $('#menu > a');
