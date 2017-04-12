@@ -173,6 +173,13 @@
 .menu-link:active, .menu-link:focus {
   color: #333;
 }
+.menu-link-action:hover {
+  cursor: pointer;
+  color: #f15a29;
+}
+.menu-link-action:active, .menu-link-action:focus {
+  color: #333;
+}
 .menu-link-arrow {
   /*position: absolute;*/
   /*bottom: 50%;*/
@@ -184,6 +191,9 @@
   background-size: cover;
 }
 .menu-link:hover .menu-link-arrow {
+  background: url("../images/icons/arrow-right-2.png") no-repeat center center;
+}
+.menu-link-action:hover .menu-link-arrow {
   background: url("../images/icons/arrow-right-2.png") no-repeat center center;
 }
 

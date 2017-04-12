@@ -93,7 +93,7 @@ $(window).on('resize', _.debounce(function() {
       var imageNearestSize = isMobile ? 600 : 800;
 
       // // FIXME:
-      // if (journeyConfigs.meta.slug === 'recyclables') {
+      // if (journeyConfigs.meta.slug === 'organics') {
       //   imageNearestSize = 800;
       // }
       var containerEl = $('.container');
@@ -361,6 +361,7 @@ $(window).on('resize', _.debounce(function() {
       // trigger events based on scrolling
       var footerVisible = false;
       var menuVisible = false;
+      var actionVisible = false;
       var visLimit = Math.floor(visWidth - viewportWidth + panelWrapperMargin);
       var currentScroll = 0;
       function progressBar(maps, steps) {
@@ -490,7 +491,7 @@ $(window).on('resize', _.debounce(function() {
             }
             break;
           default:
-            //
+            return;
         }
         event.preventDefault();
       };
@@ -509,11 +510,30 @@ $(window).on('resize', _.debounce(function() {
         menuVisible = true;
       });
 
+      $('#menu-link-from-action').click(function() {
+        $('#action-cover').fadeTo(500, 0, function () {
+          $('#action-cover').css({
+            display: 'none'
+          });
+        });
+        $('#menu-cover').fadeTo(500, 1);
+        actionVisible = false;
+        menuVisible = true;
+      });
+
+      $('#action-link').click(function() {
+        $('#action-cover').fadeTo(500, 1);
+        $('#menu-icon').removeClass('fa-bars').addClass('fa-times');
+        actionVisible = true;
+      });
+
       $('#menu-icon').click(function() {
-        if (!menuVisible) {
-          openMenu();
-        } else {
+        if (menuVisible) {
           closeMenu();
+        } else if (actionVisible) {
+          closeAction();
+        } else {
+          openMenu();
         }
       });
 
@@ -531,6 +551,16 @@ $(window).on('resize', _.debounce(function() {
           });
         });
         menuVisible = false;
+      }
+
+      function closeAction() {
+        $('#menu-icon').removeClass('fa-times').addClass('fa-bars');
+        $('#action-cover').fadeTo(500, 0, function () {
+          $('#action-cover').css({
+            display: 'none'
+          });
+        });
+        actionVisible = false;
       }
 
       var menuLinksEl = $('#menu > a');
