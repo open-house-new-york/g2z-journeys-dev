@@ -1,9 +1,15 @@
-# organics
+# incineration
 
 - GA
-- meta tags and images
-- links me and ohny at credits
+- meta
 - concat geojson
+
+# organics
+
+<!-- - GA -->
+<!-- - links me and ohny at credits -->
+<!-- - meta tags and images -->
+<!-- - concat geojson -->
 <!-- - compost sites map -->
 <!-- - anaerobic digestors? -->
 <!-- - earth matter pics -->
@@ -21,8 +27,8 @@
 
 # general
 
-- main intro menu
-- analytics
+<!-- - main intro menu
+- analytics -->
 
 
 # history
