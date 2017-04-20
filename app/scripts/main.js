@@ -154,11 +154,11 @@ $(window).on('resize', _.debounce(function() {
       preloadImagesEl.each(function () {
         var image = $(this);
         var imagelId = image.attr('id');
-        var imagelNum = imagelId.substring(imagelId.length - 3);
+        var imageNum = extractPanelId(imagelId);
         var data = image.data();
         var loadUrl = 'images/' + journeyConfigs.meta.slug + '/'  + imageNearestSize + '_' + image.data().transitionurl;
         var bgLoadUrl = 'url(' + loadUrl + ')';
-        $('#transition-' +  imagelNum).css({
+        $('#transition-' +  imageNum).css({
             'background-image': bgLoadUrl
         });
         var imagesArray = [data.imageurl, data. transitionurl];
@@ -186,7 +186,7 @@ $(window).on('resize', _.debounce(function() {
         var panel = $(this);
         var data = panel.data();
         var panelId = panel.attr('id');
-        var panelNum = panelId.substring(panelId.length - 3);
+        var panelNum = extractPanelId(panelId);
         var width;
 
         if (data.type == 'image') {
@@ -311,7 +311,7 @@ $(window).on('resize', _.debounce(function() {
       for (var i = 0; i < textPanelsEl.length; i++) {
         var textPanel = $(textPanelsEl[i]);
         var textPanelId = textPanel.attr('id');
-        var textPanelNum = textPanelId.substring(textPanelId.length - 3);
+        var textPanelNum = extractPanelId(textPanelId)
         if (textPanel.data().type == 'text-overlay') {
           var marginLeft = panelPositionByNum(textPanelNum) - panelWrapperMargin;
           if (i === 0) {
@@ -338,7 +338,7 @@ $(window).on('resize', _.debounce(function() {
       for (var map in journeyConfigs.mapEl) {
         if (journeyConfigs.mapEl.hasOwnProperty(map)) {
           var thisMap = journeyConfigs.mapEl[map];
-          var position = panelPositionByNum((thisMap.id));
+          var position = panelPositionByNum(thisMap.id);
           thisMap.position = position;
           thisMap.animationTrigger = isMobile ? position : position - (viewportWidth / 2);
           thisMap.played = false;
@@ -626,11 +626,20 @@ $(window).on('resize', _.debounce(function() {
       // helper
       function panelPositionByNum(panelId) {
         var f;
-        var found = panelIds.some(function(item, index) { f = index; return item.substring(item.length - 3) == panelId; });
+        var found = panelIds.some(function(item, index) {
+          f = index;
+          var id = extractPanelId(item);
+          return id == panelId;
+        });
         if (!found) {
             return false;
         }
         return panelPositions[f];
+      }
+
+      function extractPanelId(idString) {
+        var idArray = idString.split('-');
+        return idArray[1] + '-' + idArray[2];
       }
 
       // FIXME:
