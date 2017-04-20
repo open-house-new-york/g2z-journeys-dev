@@ -7,9 +7,9 @@ journeyConfigs.meta = {
 };
 journeyConfigs.firstPanelId = 'panel-0-1';
 journeyConfigs.mapEl = {
-  // incinerationColl: {
-  //   id: '0-0'
-  // },
+  inciColl: {
+    id: '2-1'
+  }
   // incinerationDest: {
   //   id: '0-0'
   // }

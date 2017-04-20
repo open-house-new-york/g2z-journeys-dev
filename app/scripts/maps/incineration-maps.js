@@ -9,35 +9,39 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     wasteOpacity: '#e3a793',
     complementary: '#1485CC',
     complementaryOpacity: '#8bb8d5',
-    scale: ['#992D09', '#FF885E', '#FFBDA6', '#8bb8d5'],
+    scale: ['#f15a29', '#8bb8d5'],
     scaleDropOff: ['#f15a29', '#1485CC']
   };
   journeyConfigs.mapConfigs.scales = {
     circleRadius: function(value) {
-      return (Math.sqrt(value / 3.14) * 0.025) * 2;
+      return (Math.sqrt(value / 3.14) * 0.025) * 1.5;
     },
     lineWidth: function(value) {
-      return journeyConfigs.mapConfigs.scales.circleRadius(value) / 2;
+      return journeyConfigs.mapConfigs.scales.circleRadius(value) / 1.5;
     }
   };
 
   //Load in GeoJSON data
   // d3.json(journeyConfigs.mapDataPath, function(geojson) {
-    // var nycdOrganicsCollection = geojson.nycd_organics_collection;
-    // var nycOrganicsDropOff = geojson.nyc_organics_drop_off_by_type;
+    // var nycdOrganicsCollection = geojson.nycd_inci_collection;
+    // var nycOrganicsDropOff = geojson.nyc_inci_drop_off_by_type;
     // var nycCommunityGardens = geojson.nyc_community_gardens;
-    // var organicsDestinations = geojson.organics_destinations;
+    // var inciDestinations = geojson.inci_destinations;
     // var nynj = geojson.ny_nj_ct_refined;
     // var statesEast = geojson.states_east_census;
   d3.json('data/temp/nycd_bcd.geojson', function(nycdBcd) {
   d3.json('data/temp/ny_nj_ct_refined.geojson', function(nyNjCt) {
-    // initIncCollMap(nycdBcd, nyNjCt);
+  d3.json('data/temp/od_lines_refuse.geojson', function(odLinesData) {
+  d3.json('data/temp/dest_points_refuse.geojson', function(destPointsRefuseData) {
+    initInciCollMap(nycdBcd, odLinesData, destPointsRefuseData, nyNjCt);
+  });
+  });
   });
   });
 
-  function initIncCollMap(nycdBcdData, states) {
+  function initInciCollMap(nycdBcdData, odLinesData, destPointsRefuseData, states) {
     //Width and height
-    var width = $('.map-organics-coll').width() * 0.99;
+    var width = $('.map-inci-coll').width() * 0.99;
     var height = viewportHeight;
 
     var projection = d3.geo.albers()
@@ -45,7 +49,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .translate([0, 0]);
     var path = d3.geo.path()
       .projection(projection);
-    var b = path.bounds(nycdOrganicsCollection),
+    var b = path.bounds(nycdBcdData),
       scaleFactor = 0.8,
       s = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
       t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
@@ -54,20 +58,20 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .translate(t);
 
     // Clear SVG if there is one (on resize)
-    if (d3.select('#map-organics-coll-svg')) {
-      d3.select('#map-organics-coll-svg').remove();
+    if (d3.select('#map-inci-coll-svg')) {
+      d3.select('#map-inci-coll-svg').remove();
     }
     //Create SVG element
-    var svg = d3.select('.map-organics-coll')
+    var svg = d3.select('.map-inci-coll')
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .attr('id', 'map-organics-coll-svg')
+      .attr('id', 'map-inci-coll-svg')
       .on('click', function(d) {
-        journeyConfigs.mapEl.organicsColl.startAnimation();
+        journeyConfigs.mapEl.inciColl.startAnimation();
       });
 
-    $('#map-organics-coll-svg').css({
+    $('#map-inci-coll-svg').css({
       position: 'absolute',
       top: -topVisPadding
     });
@@ -91,6 +95,18 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('clip-path', 'url(#mapClip)');
     var usStates = mapGroup.append('g').attr('class', 'usStates');
     var commDist = mapGroup.append('g').attr('class', 'commDist');
+    var truckLines = mapGroup.append('g').attr('class', 'truckLines');
+    var tsPoints = mapGroup.append('g').attr('class', 'tsPoints');
+
+    var cdServedCovanta = [];
+    var cdServedOther = [];
+    for (var i = 0; i < odLinesData.features.length; i++) {
+      if (odLinesData.features[i].properties.disposal === 'Covanta - Essex') {
+        cdServedCovanta.push(odLinesData.features[i].properties.d_id);
+      } else {
+        cdServedOther.push(odLinesData.features[i].properties.d_id);
+      }
+    }
 
     usStates.selectAll('.usStates')
       .data(states.features)
@@ -105,7 +121,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('class', 'usStates');
 
     commDist.selectAll('.nycd')
-      .data(nycdOrganicsCollection.features)
+      .data(nycdBcdData.features)
       .enter()
       .append('path')
       .attr({
@@ -114,175 +130,322 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .style('stroke', 'black')
       .style('stroke-width', 0)
       .style('fill', function (d, i) {
-        // if (d.properties.upcoming === 'existing') {
-        //   return journeyConfigs.mapConfigs.colors.wasteCircles;
-        // } else if (d.properties.upcoming === 'bldg') {
-        //   return journeyConfigs.mapConfigs.colors.wasteOpacity;
-        // } else if (d.properties.upcoming == '2017') {
-        //   return journeyConfigs.mapConfigs.colors.complementary;
-        // } else if (d.properties.upcoming == '2018') {
-        //   return journeyConfigs.mapConfigs.colors.complementaryOpacity;
-        // } else {
-          return journeyConfigs.mapConfigs.colors.land;
-        // }
+        return journeyConfigs.mapConfigs.colors.land;
       })
-      // .attr('opacity', 0)
       .attr('class', 'nycd');
 
-      var organicsLegendTitleText = ['Residential organics collection'];
-      var organicsLegendLabels = ['Has curbside collection', 'Coming in 2017', 'Coming in 2018', 'Buildings can enroll'];
+      truckLines.selectAll('.truckLines')
+        .data(odLinesData.features)
+        .enter()
+        .append('path')
+        .attr({
+          'd': path
+        })
+        .style('stroke', journeyConfigs.mapConfigs.colors.wasteLines)
+        .attr('stroke-width', function(d) {
+          // return journeyConfigs.mapConfigs.scales.lineWidth(d.properties.j_tot_rec);
+          return 2;
+        })
+        .style('fill', 'none')
+        .attr('stroke-dasharray', function(d) {
+          return (this.getTotalLength() + ' ' + this.getTotalLength());
+        })
+        .attr('stroke-dashoffset', function(d) {
+          return this.getTotalLength();
+        })
+        .attr('class', 'truckLines');
+
+      tsPoints.selectAll('.tsPoints')
+        .data(destPointsRefuseData.features)
+        .enter()
+        .append('circle')
+        .attr('cx', function(d) {
+          return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+        })
+        .attr('cy', function(d) {
+          return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+        })
+        .attr('r', 0)
+        .style('stroke', '#fff')
+        .style('stroke-width', 1)
+        .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+        .attr('class', 'tsPoints');
+
+      var inciLegendTitleText = ['Waste destination'];
+      var inciLegendLabels = ['Incinerator', 'Transfer Station'];
       var legendWidth = 20;
       var legendHeight = 20;
       var legendSpacing = 10;
       var legendStartingX = isMobile ? 0 : 60;
       var legendStartingY = height/4;
 
-      var organicsLegendTitle = svg.selectAll('organicsLegendTitle')
-          .data(organicsLegendTitleText)
+      var inciLegendTitle = svg.selectAll('inciLegendTitle')
+          .data(inciLegendTitleText)
           .enter()
           .append('text')
-          .attr('class', 'map-legend legend-organics')
-          .attr('id', 'organics-legend-title')
+          .attr('class', 'map-legend legend-inci')
+          .attr('id', 'inci-legend-title')
           .attr('x', legendStartingX)
           .attr('y', legendStartingY - legendSpacing)
-          .text(function(d, i){ return organicsLegendTitleText[i]; })
+          .text(function(d, i){ return inciLegendTitleText[i]; })
           .attr('opacity', 0);
 
-      var organicsLegend = svg.selectAll('organicsLegend')
+      var inciLegend = svg.selectAll('inciLegend')
           .data(journeyConfigs.mapConfigs.colors.scale)
           .enter()
           .append('g')
-          .attr('class', 'map-legend legend-organics')
+          .attr('class', 'map-legend legend-inci')
           .attr('id', function (d, i) {
-            return 'organics-legend-' + i;
+            return 'inci-legend-' + i;
           })
           .attr('opacity', 0);
 
-      organicsLegend.append('rect')
-        .attr('class', 'legend-organics')
-        .attr('x', legendStartingX)
-        .attr('y', function(d, i) {
-          return legendStartingY + (i*legendHeight) + (i*legendSpacing);
+      inciLegend.append('circle')
+        .attr('class', 'legend-inci')
+        .attr('cx', legendStartingX + (legendWidth/2))
+        .attr('cy', function(d, i) {
+          return (legendStartingY + (i*legendHeight) + (i*legendSpacing) + legendWidth/2);
         })
-        .attr('width', legendWidth)
-        .attr('height', legendHeight)
+        // .attr('width', legendWidth)
+        // .attr('height', legendHeight)
+        .attr('r', legendWidth/2)
+        .style('stroke', '#fff')
+        .style('stroke-width', 1)
         .style('fill', function(d, i) { return d; });
 
-      organicsLegend.append('text')
-        .attr('class', 'legend-organics')
+      inciLegend.append('text')
+        .attr('class', 'legend-inci')
         .attr('x', legendStartingX + legendWidth + legendSpacing)
         .attr('y', function(d, i) {
           return legendStartingY + (i*legendHeight) + 13 + (i*legendSpacing);
         })
-        .text(function(d, i){ return organicsLegendLabels[i]; });
+        .text(function(d, i){ return inciLegendLabels[i]; });
 
-    journeyConfigs.mapEl.organicsColl.animationPlayed = false;
+    journeyConfigs.mapEl.inciColl.animationPlayed = false;
 
-    journeyConfigs.mapEl.organicsColl.startAnimation = function() {
+    journeyConfigs.mapEl.inciColl.startAnimation = function() {
 
-      if (!journeyConfigs.mapEl.organicsColl.animationPlayed) {
-        journeyConfigs.mapEl.organicsColl.animationPlayed = true;
+      if (!journeyConfigs.mapEl.inciColl.animationPlayed) {
+        journeyConfigs.mapEl.inciColl.animationPlayed = true;
+
+        //clear circles
+        tsPoints.selectAll('.tsPoints')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('r', 0);
+          });
 
         // clear nycd
         commDist.selectAll('.nycd')
           .each(function(d, i) {
             d3.select(this)
               .style('fill', journeyConfigs.mapConfigs.colors.land)
-              // .attr('opacity', 0);
+              .attr('opacity', 1);
           });
 
         svg.selectAll('.map-legend').attr('opacity', 0);
-        d3.select('#organics-legend-title').attr('opacity', 1);
-        d3.select('#organics-legend-0').attr('opacity', 1);
 
-        commDist.selectAll('.nycd')
+        truckLines.selectAll('.truckLines')
           .each(function(d, i) {
             d3.select(this)
               .filter(function(d) {
-                return d.properties.upcoming === 'existing';
+                return d.properties.disposal === 'Covanta - Essex';
+              })
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
               })
               .transition()
               .duration(1500)
-              .style('fill', function(d) {
-                return journeyConfigs.mapConfigs.colors.scale[0];
-              })
-              // .attr('opacity', 1)
+              .attr('stroke-dashoffset', 0)
               .each('end', function() {
-                d3.select('#organics-legend-1').attr('opacity', 1);
-                journeyConfigs.mapEl.organicsColl.thisYear();
+                journeyConfigs.mapEl.inciColl.covantaCircle();
               });
           });
       }
     };
 
-    journeyConfigs.mapEl.organicsColl.thisYear = function() {
-        commDist.selectAll('.nycd')
-          .each(function(d, i) {
-            d3.select(this)
-              .filter(function(d) {
-                return d.properties.upcoming == '2017';
-              })
-              .transition()
-              .duration(1500)
-              .style('fill', function(d) {
-                return journeyConfigs.mapConfigs.colors.scale[1];
-              })
-              // .attr('opacity', 1)
-              .each('end', function() {
-                d3.select('#organics-legend-2').attr('opacity', 1);
-                journeyConfigs.mapEl.organicsColl.nextYear();
-              });
-          });
+    journeyConfigs.mapEl.inciColl.covantaCircle = function() {
+      tsPoints.selectAll('.tsPoints')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              return d.properties.disposal === 'Covanta - Essex';
+            })
+            .attr('r', 0)
+            .transition()
+            .duration(1500)
+            .attr('r', function(d) {
+              return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.j_tot_rec);
+            })
+            .each('end', function() {
+              journeyConfigs.mapEl.inciColl.covantaLinesOut();
+              d3.select('#inci-legend-title').attr('opacity', 1);
+              d3.select('#inci-legend-0').attr('opacity', 1);
+            });
+        });
 
     };
 
-    journeyConfigs.mapEl.organicsColl.nextYear = function() {
-        commDist.selectAll('.nycd')
-          .each(function(d, i) {
-            d3.select(this)
-              .filter(function(d) {
-                return d.properties.upcoming == '2018';
-              })
-              .transition()
-              .duration(1500)
-              .style('fill', function(d) {
-                return journeyConfigs.mapConfigs.colors.scale[2];
-              })
-              // .attr('opacity', 1)
-              .each('end', function() {
-                d3.select('#organics-legend-3').attr('opacity', 1);
-                journeyConfigs.mapEl.organicsColl.bldg();
-              });
-          });
+    journeyConfigs.mapEl.inciColl.covantaLinesOut = function() {
+      // svg.selectAll('text-covanta')
+      //     .data(destPointsRefuseData.features)
+      //     .enter()
+      //     .append('text')
+      //     .filter(function(d) {
+      //       return d.properties.disposal === 'Covanta - Essex';
+      //     })
+      //     .attr('x', function(d){
+      //         return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+      //     })
+      //     .attr('y', function(d){
+      //         return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+      //     })
+      //     .attr('transform', function(d) { return 'translate(-20,0)'; })
+      //     .attr('class', 'covanta-legend map-legend')
+      //     .attr('text-anchor', 'end')
+      //     .text('Waste incinerator');
+      // svg.selectAll('text-covanta-below')
+      //     .data(destPointsRefuseData.features)
+      //     .enter()
+      //     .append('text')
+      //     .filter(function(d) {
+      //       return d.properties.disposal === 'Covanta - Essex';
+      //     })
+      //     .attr('x', function(d){
+      //         return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+      //     })
+      //     .attr('y', function(d){
+      //         return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+      //     })
+      //     .attr('transform', function(d) { return 'translate(-20,15)'; })
+      //     .attr('class', 'covanta-legend map-legend')
+      //     .attr('text-anchor', 'end')
+      //     .text('Newark, NJ');
+
+      commDist.selectAll('.nycd')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : 'na';
+              var inArray = $.inArray(bcd, cdServedCovanta) >= 0;
+              if (inArray) {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .transition()
+            .duration(1500)
+            .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+            .attr('opacity', 1);
+        });
+
+      truckLines.selectAll('.truckLines')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              return d.properties.disposal === 'Covanta - Essex';
+            })
+            .attr('stroke-dashoffset', 0)
+            .transition()
+            .duration(1500)
+            .attr('stroke-dashoffset', function(d) {
+              return -this.getTotalLength();
+            })
+            .each('end', function() {
+              journeyConfigs.mapEl.inciColl.otherLinesIn();
+            });
+        });
 
     };
 
-    journeyConfigs.mapEl.organicsColl.bldg = function() {
-        commDist.selectAll('.nycd')
-          .each(function(d, i) {
-            d3.select(this)
-              .filter(function(d) {
-                return d.properties.upcoming === 'bldg';
-              })
-              .transition()
-              .duration(1500)
-              .style('fill', function(d) {
-                return journeyConfigs.mapConfigs.colors.scale[3];
-              })
-              // .attr('opacity', 1)
-              .each('end', function() {
-                journeyConfigs.mapEl.organicsColl.out();
-              });
-          });
+    journeyConfigs.mapEl.inciColl.otherLinesIn = function() {
+      truckLines.selectAll('.truckLines')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              return d.properties.disposal !== 'Covanta - Essex';
+            })
+            .attr('stroke-dashoffset', function(d) {
+              return this.getTotalLength();
+            })
+            .style('stroke', journeyConfigs.mapConfigs.colors.complementaryOpacity)
+            .transition()
+            .duration(1500)
+            .attr('stroke-dashoffset', 0)
+            .each('end', function() {
+              journeyConfigs.mapEl.inciColl.otherCircles();
+            });
+        });
+    };
+
+    journeyConfigs.mapEl.inciColl.otherCircles = function() {
+      tsPoints.selectAll('.tsPoints')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              return d.properties.disposal !== 'Covanta - Essex';
+            })
+            .attr('r', 0)
+            .style('fill', journeyConfigs.mapConfigs.colors.complementaryOpacity)
+            .transition()
+            .duration(1500)
+            .attr('r', function(d) {
+              return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.j_tot_rec);
+            })
+            .each('end', function() {
+              journeyConfigs.mapEl.inciColl.otherLinesOut();
+              d3.select('#inci-legend-1').attr('opacity', 1);
+            });
+        });
 
     };
 
-    journeyConfigs.mapEl.organicsColl.out = function() {
+    journeyConfigs.mapEl.inciColl.otherLinesOut = function() {
+      commDist.selectAll('.nycd')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : 'na';
+              var inArray = $.inArray(bcd, cdServedOther) >= 0;
+              if (inArray) {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .transition()
+            .duration(1500)
+            .style('fill', journeyConfigs.mapConfigs.colors.complementaryOpacity)
+            .attr('opacity', 1);
+        });
+
+      truckLines.selectAll('.truckLines')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              return d.properties.disposal !== 'Covanta - Essex';
+            })
+            .attr('stroke-dashoffset', 0)
+            .transition()
+            .duration(1500)
+            .attr('stroke-dashoffset', function(d) {
+              return -this.getTotalLength();
+            })
+            .each('end', function() {
+              journeyConfigs.mapEl.inciColl.out();
+            });
+        });
+    };
+
+    journeyConfigs.mapEl.inciColl.out = function() {
       setTimeout(function() {
-        journeyConfigs.mapEl.organicsColl.animationPlayed = false;
+        journeyConfigs.mapEl.inciColl.animationPlayed = false;
       }, 1600);
     };
+
   }
+  // end of inciColl
 
 // end of init
 }

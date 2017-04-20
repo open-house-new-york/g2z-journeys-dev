@@ -3,6 +3,7 @@
 - GA
 - meta
 - concat geojson
+- check TS quantities received in map circle sizes
 
 # organics
 
