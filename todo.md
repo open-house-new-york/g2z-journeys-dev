@@ -4,13 +4,14 @@
 - meta
 - concat geojson
 - check TS quantities received in map circle sizes
-- credits
-- initial stat
-- final text
-- crop claw photo
+<!-- - credits -->
+<!-- - initial stat -->
+<!-- - final text -->
+<!-- - crop claw photo -->
 <!-- - ash landfill seam -->
 <!-- - crop ironbound photo -->
 - 600px images
+- mobile and not mobile panels
 
 # organics
 
