@@ -287,40 +287,40 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     };
 
     journeyConfigs.mapEl.inciColl.covantaLinesOut = function() {
-      // svg.selectAll('text-covanta')
-      //     .data(destPointsRefuseData.features)
-      //     .enter()
-      //     .append('text')
-      //     .filter(function(d) {
-      //       return d.properties.disposal === 'Covanta - Essex';
-      //     })
-      //     .attr('x', function(d){
-      //         return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
-      //     })
-      //     .attr('y', function(d){
-      //         return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
-      //     })
-      //     .attr('transform', function(d) { return 'translate(-20,0)'; })
-      //     .attr('class', 'covanta-legend map-legend')
-      //     .attr('text-anchor', 'end')
-      //     .text('Waste incinerator');
-      // svg.selectAll('text-covanta-below')
-      //     .data(destPointsRefuseData.features)
-      //     .enter()
-      //     .append('text')
-      //     .filter(function(d) {
-      //       return d.properties.disposal === 'Covanta - Essex';
-      //     })
-      //     .attr('x', function(d){
-      //         return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
-      //     })
-      //     .attr('y', function(d){
-      //         return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
-      //     })
-      //     .attr('transform', function(d) { return 'translate(-20,15)'; })
-      //     .attr('class', 'covanta-legend map-legend')
-      //     .attr('text-anchor', 'end')
-      //     .text('Newark, NJ');
+      svg.selectAll('text-covanta')
+          .data(destPointsRefuseData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Covanta - Essex';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(-20,0)'; })
+          .attr('class', 'covanta-legend map-legend')
+          .attr('text-anchor', 'end')
+          .text('Waste incinerator');
+      svg.selectAll('text-covanta-below')
+          .data(destPointsRefuseData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'Covanta - Essex';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(-20,15)'; })
+          .attr('class', 'covanta-legend map-legend')
+          .attr('text-anchor', 'end')
+          .text('Newark, NJ');
 
       commDist.selectAll('.nycd')
         .each(function(d, i) {

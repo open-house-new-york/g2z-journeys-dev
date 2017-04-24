@@ -11,7 +11,8 @@
 <!-- - ash landfill seam -->
 <!-- - crop ironbound photo -->
 - 600px images
-- mobile and not mobile panels
+<!-- - mobile and not mobile panels -->
+- remove comments
 
 # organics
 
