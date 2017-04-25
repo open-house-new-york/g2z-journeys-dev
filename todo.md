@@ -1,18 +1,20 @@
 # incineration
 
-- GA
-- meta
-- concat geojson
-- check TS quantities received in map circle sizes
+<!-- - GA -->
+<!-- - meta -->
+<!-- - concat geojson -->
+<!-- - check TS quantities received in map circle sizes -->
 <!-- - credits -->
 <!-- - initial stat -->
 <!-- - final text -->
 <!-- - crop claw photo -->
 <!-- - ash landfill seam -->
 <!-- - crop ironbound photo -->
-- 600px images
+<!-- - 600px images -->
 <!-- - mobile and not mobile panels -->
-- remove comments
+<!-- - remove comments -->
+<!-- - mobile texts -->
+<!-- - powers X homes -->
 
 # organics
 
