@@ -23,26 +23,28 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   };
 
   //Load in GeoJSON data
-  // d3.json(journeyConfigs.mapDataPath, function(geojson) {
-    // var nycdOrganicsCollection = geojson.nycd_inci_collection;
-    // var nycOrganicsDropOff = geojson.nyc_inci_drop_off_by_type;
-    // var nycCommunityGardens = geojson.nyc_community_gardens;
-    // var inciDestinations = geojson.inci_destinations;
-    // var nynj = geojson.ny_nj_ct_refined;
-    // var statesEast = geojson.states_east_census;
-  d3.json('data/temp/nycd_bcd.geojson', function(nycdBcd) {
-  d3.json('data/temp/ny_nj_ct_refined.geojson', function(nyNjCt) {
-  d3.json('data/temp/od_lines_refuse.geojson', function(odLinesData) {
-  d3.json('data/temp/north_shore_export.geojson', function(NSExportData) {
-  d3.json('data/temp/north_shore_export_point.geojson', function(NSExportPointData) {
-  d3.json('data/temp/dest_points_refuse.geojson', function(destPointsRefuseData) {
+  d3.json(journeyConfigs.mapDataPath, function(geojson) {
+    var nycdBcd = geojson.nycd_bcd;
+    var nyNjCt = geojson.ny_nj_ct_refined;
+    var odLinesData = geojson.od_lines_refuse;
+    var NSExportData = geojson.north_shore_export;
+    var NSExportPointData = geojson.north_shore_export_point;
+    var destPointsRefuseData = geojson.dest_points_refuse;
     initInciCollMap(nycdBcd, odLinesData, destPointsRefuseData, nyNjCt, NSExportData, NSExportPointData);
   });
-  });
-  });
-  });
-  });
-  });
+  // d3.json('data/temp/nycd_bcd.geojson', function(nycdBcd) {
+  // d3.json('data/temp/ny_nj_ct_refined.geojson', function(nyNjCt) {
+  // d3.json('data/temp/od_lines_refuse.geojson', function(odLinesData) {
+  // d3.json('data/temp/north_shore_export.geojson', function(NSExportData) {
+  // d3.json('data/temp/north_shore_export_point.geojson', function(NSExportPointData) {
+  // d3.json('data/temp/dest_points_refuse.geojson', function(destPointsRefuseData) {
+  //   initInciCollMap(nycdBcd, odLinesData, destPointsRefuseData, nyNjCt, NSExportData, NSExportPointData);
+  // });
+  // });
+  // });
+  // });
+  // });
+  // });
 
   function initInciCollMap(nycdBcdData, odLinesData, destPointsRefuseData, states, NSExportData, NSExportPointData) {
     //Width and height
