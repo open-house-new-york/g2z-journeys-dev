@@ -1,5 +1,6 @@
 function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, panelWidthPercent, panelHeightPercent, panelWrapperMargin, topVisPadding, footerPadding, textBlockPadding, mapSidePadding, maximumTextPanelWidth, panelHeight, textPanelWidth) {
 
+  var scaleFactor = isMobile ? 1 : 1.5
   //color configs
   journeyConfigs.mapConfigs.colors = {
     background: '#edf0ff',
@@ -9,15 +10,15 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     wasteOpacity: '#e3a793',
     complementary: '#1485CC',
     complementaryOpacity: '#8bb8d5',
-    scale: ['#f15a29', '#8bb8d5'],
+    scale: ['#f15a29', '#e3a793', '#8bb8d5'],
     scaleDropOff: ['#f15a29', '#1485CC']
   };
   journeyConfigs.mapConfigs.scales = {
     circleRadius: function(value) {
-      return (Math.sqrt(value / 3.14) * 0.025) * 1.5;
+      return (Math.sqrt(value / 3.14) * 0.025) * scaleFactor;
     },
     lineWidth: function(value) {
-      return journeyConfigs.mapConfigs.scales.circleRadius(value) / 1.5;
+      return journeyConfigs.mapConfigs.scales.circleRadius(value) * scaleFactor;
     }
   };
 
@@ -32,14 +33,18 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   d3.json('data/temp/nycd_bcd.geojson', function(nycdBcd) {
   d3.json('data/temp/ny_nj_ct_refined.geojson', function(nyNjCt) {
   d3.json('data/temp/od_lines_refuse.geojson', function(odLinesData) {
+  d3.json('data/temp/north_shore_export.geojson', function(NSExportData) {
+  d3.json('data/temp/north_shore_export_point.geojson', function(NSExportPointData) {
   d3.json('data/temp/dest_points_refuse.geojson', function(destPointsRefuseData) {
-    initInciCollMap(nycdBcd, odLinesData, destPointsRefuseData, nyNjCt);
+    initInciCollMap(nycdBcd, odLinesData, destPointsRefuseData, nyNjCt, NSExportData, NSExportPointData);
+  });
+  });
   });
   });
   });
   });
 
-  function initInciCollMap(nycdBcdData, odLinesData, destPointsRefuseData, states) {
+  function initInciCollMap(nycdBcdData, odLinesData, destPointsRefuseData, states, NSExportData, NSExportPointData) {
     //Width and height
     var width = $('.map-inci-coll').width() * 0.99;
     var height = viewportHeight;
@@ -97,16 +102,22 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     var commDist = mapGroup.append('g').attr('class', 'commDist');
     var truckLines = mapGroup.append('g').attr('class', 'truckLines');
     var tsPoints = mapGroup.append('g').attr('class', 'tsPoints');
+    var NSExport = mapGroup.append('g').attr('class', 'NSExport');
+    var NSExportPoint = mapGroup.append('g').attr('class', 'NSExportPoint');
 
     var cdServedCovanta = [];
+    var cdServedNSMTS = [];
     var cdServedOther = [];
     for (var i = 0; i < odLinesData.features.length; i++) {
       if (odLinesData.features[i].properties.disposal === 'Covanta - Essex') {
         cdServedCovanta.push(odLinesData.features[i].properties.d_id);
+      } else if (odLinesData.features[i].properties.disposal === 'North Shore MTS') {
+        cdServedNSMTS.push(odLinesData.features[i].properties.d_id);
       } else {
         cdServedOther.push(odLinesData.features[i].properties.d_id);
       }
     }
+
 
     usStates.selectAll('.usStates')
       .data(states.features)
@@ -155,6 +166,27 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         })
         .attr('class', 'truckLines');
 
+      NSExport.selectAll('.NSExport')
+        .data(NSExportData.features)
+        .enter()
+        .append('path')
+        .attr({
+          'd': path
+        })
+        .style('stroke', journeyConfigs.mapConfigs.colors.wasteLines)
+        .attr('stroke-width', function(d) {
+          // return journeyConfigs.mapConfigs.scales.lineWidth(d.properties.j_tot_rec);
+          return 2;
+        })
+        .style('fill', 'none')
+        .attr('stroke-dasharray', function(d) {
+          return (this.getTotalLength() + ' ' + this.getTotalLength());
+        })
+        .attr('stroke-dashoffset', function(d) {
+          return this.getTotalLength();
+        })
+        .attr('class', 'NSExport');
+
       tsPoints.selectAll('.tsPoints')
         .data(destPointsRefuseData.features)
         .enter()
@@ -172,7 +204,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         .attr('class', 'tsPoints');
 
       var inciLegendTitleText = ['Waste destination'];
-      var inciLegendLabels = ['Incinerator', 'Transfer Station'];
+      var inciLegendLabels = ['Collection truck to incinerator', 'Transfer Station to incinerator', 'Transfer Station to landfill'];
       var legendWidth = 20;
       var legendHeight = 20;
       var legendSpacing = 10;
@@ -243,6 +275,18 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               .attr('opacity', 1);
           });
 
+      NSExport.selectAll('.NSExport')
+          .each(function(d, i) {
+            d3.select(this)
+              .style('fill', 'none')
+              .attr('stroke-dasharray', function(d) {
+                return (this.getTotalLength() + ' ' + this.getTotalLength());
+              })
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
+              });
+          });
+
         svg.selectAll('.map-legend').attr('opacity', 0);
 
         truckLines.selectAll('.truckLines')
@@ -279,8 +323,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
             })
             .each('end', function() {
               journeyConfigs.mapEl.inciColl.covantaLinesOut();
-              d3.select('#inci-legend-title').attr('opacity', 1);
-              d3.select('#inci-legend-0').attr('opacity', 1);
+              // d3.select('#inci-legend-title').attr('opacity', 1);
+              // d3.select('#inci-legend-0').attr('opacity', 1);
             });
         });
 
@@ -300,7 +344,9 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .attr('y', function(d){
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
           })
-          .attr('transform', function(d) { return 'translate(-20,0)'; })
+          .attr('transform', function(d) {
+            var x = isMobile ? -8 : -20
+            return 'translate('+x+',0)'; })
           .attr('class', 'covanta-legend map-legend')
           .attr('text-anchor', 'end')
           .text('Waste incinerator');
@@ -317,7 +363,9 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .attr('y', function(d){
               return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
           })
-          .attr('transform', function(d) { return 'translate(-20,15)'; })
+          .attr('transform', function(d) {
+            var x = isMobile ? -8 : -20
+            return 'translate('+x+',15)'; })
           .attr('class', 'covanta-legend map-legend')
           .attr('text-anchor', 'end')
           .text('Newark, NJ');
@@ -353,10 +401,148 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               return -this.getTotalLength();
             })
             .each('end', function() {
-              journeyConfigs.mapEl.inciColl.otherLinesIn();
+              journeyConfigs.mapEl.inciColl.NSMTSLinesIn();
+              // sub for otherlinesin
             });
         });
 
+    };
+
+    journeyConfigs.mapEl.inciColl.NSMTSLinesIn = function() {
+
+        truckLines.selectAll('.truckLines')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.disposal === 'North Shore MTS';
+              })
+              .attr('stroke-dashoffset', function(d) {
+                return this.getTotalLength();
+              })
+              .style('stroke', journeyConfigs.mapConfigs.colors.wasteOpacity)
+              .transition()
+              .duration(1500)
+              .attr('stroke-dashoffset', 0)
+              .each('end', function() {
+                journeyConfigs.mapEl.inciColl.NSMTSCircle();
+              });
+          });
+        };
+
+    journeyConfigs.mapEl.inciColl.NSMTSCircle = function() {
+      tsPoints.selectAll('.tsPoints')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              return d.properties.disposal === 'North Shore MTS';
+            })
+            .attr('r', 0)
+            .style('fill', journeyConfigs.mapConfigs.colors.wasteOpacity)
+            .transition()
+            .duration(1500)
+            .attr('r', function(d) {
+              return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.j_tot_rec);
+            })
+            .each('end', function() {
+              journeyConfigs.mapEl.inciColl.NSMTSLinesOut();
+              // d3.select('#inci-legend-1').attr('opacity', 1);
+            });
+        });
+
+    };
+
+    journeyConfigs.mapEl.inciColl.NSMTSLinesOut = function() {
+      svg.selectAll('text-covanta')
+          .data(destPointsRefuseData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'North Shore MTS';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(20,0)'; })
+          .attr('class', 'covanta-legend map-legend')
+          // .attr('text-anchor', 'end')
+          .text('North Shore MTS');
+      svg.selectAll('text-covanta-below')
+          .data(destPointsRefuseData.features)
+          .enter()
+          .append('text')
+          .filter(function(d) {
+            return d.properties.disposal === 'North Shore MTS';
+          })
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d) { return 'translate(20,15)'; })
+          .attr('class', 'covanta-legend map-legend')
+          // .attr('text-anchor', 'end')
+          .text('Queens');
+
+      commDist.selectAll('.nycd')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              var bcd = d.properties.BoroCD !== null ? d.properties.BoroCD.toString() : 'na';
+              var inArray = $.inArray(bcd, cdServedNSMTS) >= 0;
+              if (inArray) {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .transition()
+            .duration(1500)
+            .style('fill', journeyConfigs.mapConfigs.colors.wasteOpacity)
+            .attr('opacity', 1);
+        });
+
+      truckLines.selectAll('.truckLines')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              return d.properties.disposal === 'North Shore MTS';
+            })
+            .attr('stroke-dashoffset', 0)
+            .style('fill', journeyConfigs.mapConfigs.colors.wasteOpacity)
+            .transition()
+            .duration(1500)
+            .attr('stroke-dashoffset', function(d) {
+              return -this.getTotalLength();
+            })
+            .each('end', function() {
+              journeyConfigs.mapEl.inciColl.NSExportLinesIn();
+            });
+        });
+
+    };
+
+    journeyConfigs.mapEl.inciColl.NSExportLinesIn = function() {
+      NSExport.selectAll('.NSExport')
+        .each(function(d, i) {
+          d3.select(this)
+            .filter(function(d) {
+              return d.properties.id !== 0 && d.properties.id !== 2;
+            })
+            .attr('stroke-dashoffset', function(d) {
+              return this.getTotalLength();
+            })
+            .style('stroke', journeyConfigs.mapConfigs.colors.wasteOpacity)
+            .transition()
+            .duration(1500)
+            .attr('stroke-dashoffset', 0)
+            .each('end', function() {
+              journeyConfigs.mapEl.inciColl.out();
+            });
+        });
     };
 
     journeyConfigs.mapEl.inciColl.otherLinesIn = function() {
@@ -364,7 +550,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         .each(function(d, i) {
           d3.select(this)
             .filter(function(d) {
-              return d.properties.disposal !== 'Covanta - Essex';
+              return d.properties.disposal !== 'Covanta - Essex' && d.properties.disposal !== 'North Shore MTS';
             })
             .attr('stroke-dashoffset', function(d) {
               return this.getTotalLength();
@@ -384,7 +570,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         .each(function(d, i) {
           d3.select(this)
             .filter(function(d) {
-              return d.properties.disposal !== 'Covanta - Essex';
+              return d.properties.disposal !== 'Covanta - Essex' && d.properties.disposal !== 'North Shore MTS';
             })
             .attr('r', 0)
             .style('fill', journeyConfigs.mapConfigs.colors.complementaryOpacity)
@@ -395,7 +581,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
             })
             .each('end', function() {
               journeyConfigs.mapEl.inciColl.otherLinesOut();
-              d3.select('#inci-legend-1').attr('opacity', 1);
+              // d3.select('#inci-legend-2').attr('opacity', 1);
             });
         });
 
@@ -424,7 +610,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         .each(function(d, i) {
           d3.select(this)
             .filter(function(d) {
-              return d.properties.disposal !== 'Covanta - Essex';
+              return d.properties.disposal !== 'Covanta - Essex' && d.properties.disposal !== 'North Shore MTS';
             })
             .attr('stroke-dashoffset', 0)
             .transition()
@@ -433,12 +619,51 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               return -this.getTotalLength();
             })
             .each('end', function() {
-              journeyConfigs.mapEl.inciColl.out();
+              journeyConfigs.mapEl.inciColl.NSMTSLinesIn();
             });
         });
     };
 
     journeyConfigs.mapEl.inciColl.out = function() {
+      svg.selectAll('text-export-points-above')
+          .data(NSExportPointData.features)
+          .enter()
+          .append('text')
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d, i) {
+            var y = i == 0 ? -15 : 0;
+            return 'translate(10,' + y + ')';
+          })
+          .attr('class', 'export-legend map-legend')
+          // .attr('text-anchor', 'end')
+          .text(function (d, i) {
+            return 'To incinerator in';
+          });
+      svg.selectAll('text-export-points')
+          .data(NSExportPointData.features)
+          .enter()
+          .append('text')
+          .attr('x', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+          })
+          .attr('y', function(d){
+              return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+          })
+          .attr('transform', function(d, i) {
+            var y = i == 0 ? 0 : 15;
+            return 'translate(10,' + y + ')';
+          })
+          .attr('class', 'export-legend map-legend')
+          // .attr('text-anchor', 'end')
+          .text(function (d, i) {
+            return d.properties.route;
+          });
+
       setTimeout(function() {
         journeyConfigs.mapEl.inciColl.animationPlayed = false;
       }, 1600);

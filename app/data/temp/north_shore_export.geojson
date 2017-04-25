@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "id": 0, "route": "To Chester, PA", "text": "To PA" }, "geometry": { "type": "LineString", "coordinates": [ [ -73.848373988523619, 40.770127856119196 ], [ -74.280318039180997, 40.517134891675845 ] ] } },
+{ "type": "Feature", "properties": { "id": 1, "route": "To Chester, PA", "text": "To PA" }, "geometry": { "type": "LineString", "coordinates": [ [ -73.848373988523619, 40.770127856119196 ], [ -74.280318039180997, 40.517134891675859 ], [ -74.273449012865782, 40.516810664792459 ], [ -74.280318039180997, 40.517134891675845 ], [ -74.279690783549327, 40.521790082713338 ] ] } },
+{ "type": "Feature", "properties": { "id": 2, "route": "To upstate NY", "text": "To NY" }, "geometry": { "type": "LineString", "coordinates": [ [ -73.848373988523619, 40.770127856119196 ], [ -74.234810217316578, 40.914504367606256 ] ] } },
+{ "type": "Feature", "properties": { "id": 3, "route": "To upstate NY", "text": "To NY" }, "geometry": { "type": "LineString", "coordinates": [ [ -73.848459898876257, 40.770181072267192 ], [ -74.234810217316578, 40.914504367606256 ], [ -74.228730197181335, 40.91559213048324 ], [ -74.234810217316578, 40.914504367606256 ], [ -74.232431399665089, 40.910118456554827 ] ] } }
+]
+}
