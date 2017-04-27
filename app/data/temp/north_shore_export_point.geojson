@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+
+"features": [
+{ "type": "Feature", "properties": { "id": 1, "route": "upstate NY" }, "geometry": { "type": "Point", "coordinates": [ -74.234773673363961, 40.914458445413125 ] } },
+{ "type": "Feature", "properties": { "id": 0, "route": "PA" }, "geometry": { "type": "Point", "coordinates": [ -74.280336839797087, 40.517127520866438 ] } }
+]
+}

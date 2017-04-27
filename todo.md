@@ -1,9 +1,27 @@
+# incineration
+
+<!-- - GA -->
+<!-- - meta -->
+<!-- - concat geojson -->
+<!-- - check TS quantities received in map circle sizes -->
+<!-- - credits -->
+<!-- - initial stat -->
+<!-- - final text -->
+<!-- - crop claw photo -->
+<!-- - ash landfill seam -->
+<!-- - crop ironbound photo -->
+<!-- - 600px images -->
+<!-- - mobile and not mobile panels -->
+<!-- - remove comments -->
+<!-- - mobile texts -->
+<!-- - powers X homes -->
+
 # organics
 
-- GA
-- meta tags and images
-- links me and ohny at credits
-- concat geojson
+<!-- - GA -->
+<!-- - links me and ohny at credits -->
+<!-- - meta tags and images -->
+<!-- - concat geojson -->
 <!-- - compost sites map -->
 <!-- - anaerobic digestors? -->
 <!-- - earth matter pics -->
@@ -21,8 +39,8 @@
 
 # general
 
-- main intro menu
-- analytics
+<!-- - main intro menu
+- analytics -->
 
 
 # history

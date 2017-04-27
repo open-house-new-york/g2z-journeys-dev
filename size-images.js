@@ -2,7 +2,7 @@ const fs = require('fs');
 const sizeOf = require('image-size');
 const junk = require('junk');
 
-var journeySlugs = ['curb-to-landfill', 'history', 'recyclables', 'organics'];
+var journeySlugs = ['curb-to-landfill', 'history', 'recyclables', 'organics', 'incineration'];
 
 for (var j = 0; j < journeySlugs.length; j++) {
   var folderPath = 'app/images/' + journeySlugs[j] + '/';
