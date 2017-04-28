@@ -11,6 +11,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     complementary: '#1485CC',
     complementaryOpacity: '#8bb8d5',
     scale: ['#8bb8d5', '#1485CC', '#f15a29'],
+    scaleTS: ['#8bb8d5', '#f15a29'],
     scaleDropOff: ['#f15a29', '#1485CC']
   };
   journeyConfigs.mapConfigs.scales = {
@@ -38,7 +39,10 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   d3.json('data/temp/comm_truck_routes_lines.geojson', function(truckRoutesLinesData) {
   d3.json('data/temp/comm_truck_routes_points.geojson', function(truckRoutesPointsData) {
   d3.json('data/temp/route_roads.geojson', function(routeRoadsData) {
+  d3.json('data/temp/all_transfer_stations.geojson', function(allTSData) {
+    initCommTSMap(nycdBcdData, nyNjCt, allTSData);
     initCommCollMap(nycdBcdData, nyNjCt, routeRoadsData, truckRoutesLinesData, truckRoutesPointsData);
+  });
   });
   });
   });
@@ -191,7 +195,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         })
         .attr('class', 'truckPoints');
 
-      var routeLegendTitleText = ['Legend'];
+      var routeLegendTitleText = ['A commecial pickup route'];
       var routeLegendLabels = ['Garage', 'Transfer Station', 'Customer'];
       // var legendWidth = 20;
       var legendWidth = 10;
@@ -437,6 +441,270 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
 
   }
   // end of commColl
+
+  function initCommTSMap(nycdBcdData, states, allTSData) {
+    //Width and height
+    var width = $('.map-comm-ts').width() * 0.99;
+    var height = viewportHeight;
+
+    var projection = d3.geo.albers()
+      .scale(1)
+      .translate([0, 0]);
+    var path = d3.geo.path()
+      .projection(projection);
+    var b = path.bounds(allTSData),
+      scaleFactor = 0.8,
+      s = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height),
+      t = [(width - s * (b[1][0] + b[0][0])) / 2, (height - s * (b[1][1] + b[0][1])) / 2];
+    projection
+      .scale(s)
+      .translate(t);
+
+    // Clear SVG if there is one (on resize)
+    if (d3.select('#map-comm-ts-svg')) {
+      d3.select('#map-comm-ts-svg').remove();
+    }
+    //Create SVG element
+    var svg = d3.select('.map-comm-ts')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .attr('id', 'map-comm-ts-svg')
+      .on('click', function(d) {
+        journeyConfigs.mapEl.commTS.startAnimation();
+      });
+
+    $('#map-comm-ts-svg').css({
+      position: 'absolute',
+      top: -topVisPadding
+    });
+
+    var clipBackground = svg.append('circle')
+      .attr('cx', width / 2)
+      .attr('cy', height / 2)
+      .attr('r', width / 2)
+      .style('fill', journeyConfigs.mapConfigs.colors.background)
+      .attr('stroke-width', 0);
+
+    var clip = svg.append('clipPath')
+      .attr('id', 'mapClip')
+      .append('circle')
+      .attr('cx', width / 2)
+      .attr('cy', height / 2)
+      .attr('r', width / 2);
+
+    var mapGroup = svg.append('g')
+      .attr('class', 'mapGroup')
+      .attr('clip-path', 'url(#mapClip)');
+    var usStates = mapGroup.append('g').attr('class', 'usStates');
+    var commDist = mapGroup.append('g').attr('class', 'commDist');
+    var tsCity = mapGroup.append('g').attr('class', 'tsCity');
+    var tsPrivate = mapGroup.append('g').attr('class', 'tsPrivate');
+
+    usStates.selectAll('.usStates')
+      .data(states.features)
+      .enter()
+      .append('path')
+      .attr({
+        'd': path
+      })
+      .style('stroke', 'black')
+      .style('stroke-width', 0)
+      .style('fill', journeyConfigs.mapConfigs.colors.land)
+      .attr('class', 'usStates');
+
+    commDist.selectAll('.nycd')
+      .data(nycdBcdData.features)
+      .enter()
+      .append('path')
+      .attr({
+        'd': path
+      })
+      .style('stroke', 'black')
+      .style('stroke-width', 0)
+      .style('fill', function(d, i) {
+        return journeyConfigs.mapConfigs.colors.land;
+      })
+      .attr('class', 'nycd');
+
+    tsCity.selectAll('.tsCity')
+      .data(allTSData.features)
+      .enter()
+      .append('circle')
+      .filter(function(d) {
+        return d.properties.ac_desc_si !== 'C&D';
+      })
+      .attr('cx', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+      })
+      .attr('cy', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+      })
+      .attr('r', function(d, i) {
+        // return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.rec_2014 - d.properties.rec_privat);
+        return 0;
+      })
+      .style('stroke', '#fff')
+      .style('stroke-width', 1)
+      .style('fill', journeyConfigs.mapConfigs.colors.complementaryOpacity)
+      .attr('opacity', 0.7)
+      .attr('class', 'tsCity');
+
+    tsPrivate.selectAll('.tsPrivate')
+      .data(allTSData.features)
+      .enter()
+      .append('circle')
+      .filter(function(d) {
+        return d.properties.ac_desc_si !== 'C&D';
+      })
+      .attr('cx', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+      })
+      .attr('cy', function(d) {
+        return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+      })
+      .attr('r', function(d, i) {
+        // return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.rec_privat);
+        return 0;
+      })
+      .style('stroke', '#fff')
+      .style('stroke-width', 1)
+      .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+      .attr('opacity', 0.7)
+      .attr('class', 'tsPrivate');
+
+    var tsLegendTitleText = ['Transfer station by waste received'];
+    var tsLegendLabels = ['Residential and instituional', 'Commercial'];
+    // var legendWidth = 20;
+    var legendWidth = 10;
+    var legendHeight = 10;
+    var legendSpacing = 10;
+    var legendStartingX = isMobile ? 8 : 30;
+    var legendStartingY = height * 0.4;
+
+    var routeLegendTitle = svg.selectAll('routeLegendTitle')
+        .data(tsLegendTitleText)
+        .enter()
+        .append('text')
+        .attr('class', 'map-legend legend-route')
+        .attr('id', 'legend-route-title')
+        .attr('x', legendStartingX)
+        .attr('y', legendStartingY - legendSpacing)
+        .text(function(d, i){ return tsLegendTitleText[i]; })
+        .attr('opacity', 1);
+
+    var tsLegend = svg.selectAll('tsLegend')
+        .data(journeyConfigs.mapConfigs.colors.scaleTS)
+        .enter()
+        .append('g')
+        .attr('class', 'map-legend legend-ts')
+        .attr('id', function (d, i) {
+          return 'legend-ts-' + i;
+        })
+        .attr('opacity', 1);
+
+    tsLegend.append('circle')
+      .attr('class', 'legend-ts')
+      .attr('cx', legendStartingX + (legendWidth/2))
+      .attr('cy', function(d, i) {
+        return (legendStartingY + (i*legendHeight) + (i*legendSpacing) + legendWidth/2);
+      })
+      .attr('r', legendWidth/2)
+      .style('stroke', '#fff')
+      .style('stroke-width', 1)
+      .style('fill', function(d, i) { return d; });
+
+    tsLegend.append('text')
+      .attr('class', 'legend-ts')
+      .attr('x', legendStartingX + legendWidth + legendSpacing)
+      .attr('y', function(d, i) {
+        return legendStartingY + (i*legendHeight) + 10 + (i*legendSpacing);
+      })
+      .text(function(d, i){ return tsLegendLabels[i]; });
+
+    journeyConfigs.mapEl.commTS.animationPlayed = false;
+    journeyConfigs.mapEl.commTS.otherPointsPlayed = false;
+    journeyConfigs.mapEl.commTS.outPlayed = false;
+
+    journeyConfigs.mapEl.commTS.startAnimation = function() {
+
+      if (!journeyConfigs.mapEl.commTS.animationPlayed) {
+        journeyConfigs.mapEl.commTS.animationPlayed = true;
+
+        //clear circles
+        tsCity.selectAll('.tsCity')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('r', 0);
+          });
+        tsPrivate.selectAll('.tsPrivate')
+          .each(function(d, i) {
+            d3.select(this)
+              .attr('r', 0);
+          });
+
+        // svg.selectAll('.map-legend').attr('opacity', 0);
+        // svg.selectAll('.map-legend').remove();
+
+        tsCity.selectAll('.tsCity')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.ac_desc_si !== 'C&D';
+              })
+              .attr('r', 0)
+              .transition()
+              .duration(1500)
+              .attr('r', function(d) {
+                return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.rec_2014 - d.properties.rec_privat);
+              })
+              .each('end', function(d, i) {
+                journeyConfigs.mapEl.commTS.otherPoints();
+                journeyConfigs.mapEl.commTS.otherPointsPlayed = true;
+              });
+          });
+
+      }
+    };
+
+    journeyConfigs.mapEl.commTS.otherPoints = function() {
+      if (!journeyConfigs.mapEl.commTS.otherPointsPlayed) {
+        d3.select('#legend-ts-title').attr('opacity', 1);
+        d3.select('#legend-ts-0').attr('opacity', 1);
+        d3.select('#legend-ts-1').attr('opacity', 1);
+
+        tsPrivate.selectAll('.tsPrivate')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.ac_desc_si !== 'C&D';
+              })
+              .attr('r', 0)
+              .transition()
+              .duration(1500)
+              .attr('r', function(d) {
+                return journeyConfigs.mapConfigs.scales.circleRadius(d.properties.rec_privat);
+              })
+              .each('end', function(d, i) {
+                journeyConfigs.mapEl.commTS.out();
+                journeyConfigs.mapEl.commTS.outPlayed = true;
+              });
+          });
+      }
+    };
+
+    journeyConfigs.mapEl.commTS.out = function() {
+      if (!journeyConfigs.mapEl.commTS.outPlayed) {
+        setTimeout(function() {
+          journeyConfigs.mapEl.commTS.animationPlayed = false;
+          journeyConfigs.mapEl.commTS.otherPointsPlayed = false;
+          journeyConfigs.mapEl.commTS.outPlayed = false;
+        }, 1600);
+      }
+    };
+
+  }
+  // end of commTS
 
 // end of init
 }
