@@ -1,3 +1,10 @@
+# commercial
+
+- GA
+- meta
+- concat geojson
+- talk about long hours and worker situations? (after long routes)
+
 # incineration
 
 <!-- - GA -->

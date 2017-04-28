@@ -12,7 +12,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     complementaryOpacity: '#8bb8d5',
     scale: ['#8bb8d5', '#1485CC', '#f15a29'],
     scaleTS: ['#8bb8d5', '#f15a29'],
-    scaleExport: ['#e3a793', '#f15a29', '#8bb8d5'],
+    scaleExport: ['#e3a793', '#f15a29'],
     scaleDropOff: ['#f15a29', '#1485CC']
   };
   journeyConfigs.mapConfigs.scales = {
@@ -727,7 +727,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     // remove non landfill and other lines from dataset
     var exportLinesLength = exportLines.features.length;
     while (exportLinesLength--) {
-      if (exportLines.features[exportLinesLength].properties.sent_fac_t !== 'Landfill' && exportLines.features[exportLinesLength].properties.sent_fac_t !== 'WTE' && exportLines.features[exportLinesLength].properties.sent_fac_t !== 'Transfer Station' ) {
+      if (!filterByType(exportLines.features[exportLinesLength].properties.sent_fac_t)) {
         exportLines.features.splice(exportLinesLength, 1);
       }
     }
@@ -797,6 +797,13 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         return journeyConfigs.mapConfigs.colors.complementaryOpacity;
       }
     }
+    function filterByType(attribute) {
+      if (attribute === 'Landfill' || attribute === 'WTE') {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
     usStates.selectAll('.usStates')
       .data(states.features)
@@ -821,7 +828,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         return colorByType(d.properties.sent_fac_t);
       })
       .attr('stroke-width', function(d) {
-        if (d.properties.sent_fac_t === 'Landfill' || d.properties.sent_fac_t === 'WTE' || d.properties.sent_fac_t === 'Transfer Station') {
+        if (filterByType(d.properties.sent_fac_t)) {
           return journeyConfigs.mapConfigs.scales.lineWidth(d.properties.sent_tons_)/2;
         } else {
           return 0;
@@ -853,7 +860,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         return colorByType(d.properties.sent_fac_t);
       })
       .attr('opacity', function(d) {
-        if (d.properties.sent_fac_t === 'Landfill' || d.properties.sent_fac_t === 'WTE' || d.properties.sent_fac_t === 'Transfer Station') {
+        if (filterByType(d.properties.sent_fac_t)) {
           return 1;
         } else {
           return 0;
@@ -862,7 +869,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('class', 'exportPoints');
 
       var exportLegendTitleText = ['Destination type'];
-      var exportLegendLabels = ['Landfill', 'Incinerator', 'Transfer station'];
+      var exportLegendLabels = ['Landfill', 'Incinerator'];
       // var legendWidth = 20;
       var legendWidth = 10;
       var legendHeight = 10;
