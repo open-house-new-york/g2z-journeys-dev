@@ -1,6 +1,6 @@
 function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, panelWidthPercent, panelHeightPercent, panelWrapperMargin, topVisPadding, footerPadding, textBlockPadding, mapSidePadding, maximumTextPanelWidth, panelHeight, textPanelWidth) {
 
-  var scaleFactor = isMobile ? 1 : 1.5
+  var scaleFactor = isMobile ? 1 : 1.5;
   //color configs
   journeyConfigs.mapConfigs.colors = {
     background: '#edf0ff',
@@ -10,7 +10,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     wasteOpacity: '#e3a793',
     complementary: '#1485CC',
     complementaryOpacity: '#8bb8d5',
-    scale: ['#f15a29', '#e3a793', '#8bb8d5'],
+    scale: ['#8bb8d5', '#1485CC', '#f15a29'],
     scaleDropOff: ['#f15a29', '#1485CC']
   };
   journeyConfigs.mapConfigs.scales = {
@@ -155,7 +155,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         })
         .style('stroke', journeyConfigs.mapConfigs.colors.wasteLines)
         .attr('stroke-width', function(d) {
-          return 2;
+          return isMobile ? 1 : 2;
         })
         .style('fill', 'none')
         // .attr('stroke-dasharray', function(d) {
@@ -180,60 +180,73 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         .attr('r', 0)
         .style('stroke', '#fff')
         .style('stroke-width', 1)
-        .style('fill', journeyConfigs.mapConfigs.colors.wasteCircles)
+        .style('fill', function (d, i) {
+          if (d.properties.route == 'start') {
+            return journeyConfigs.mapConfigs.colors.complementaryOpacity;
+          } else if (d.properties.route == 'end') {
+            return journeyConfigs.mapConfigs.colors.complementary;
+          } else {
+            return journeyConfigs.mapConfigs.colors.wasteCircles;
+          }
+        })
         .attr('class', 'truckPoints');
 
-      // var inciLegendTitleText = ['Waste destination'];
-      // var inciLegendLabels = ['Collection truck to incinerator', 'Transfer Station to incinerator', 'Transfer Station to landfill'];
+      var routeLegendTitleText = ['Legend'];
+      var routeLegendLabels = ['Garage', 'Transfer Station', 'Customer'];
       // var legendWidth = 20;
-      // var legendHeight = 20;
-      // var legendSpacing = 10;
-      // var legendStartingX = isMobile ? 0 : 60;
-      // var legendStartingY = height/4;
-      //
-      // var inciLegendTitle = svg.selectAll('inciLegendTitle')
-      //     .data(inciLegendTitleText)
-      //     .enter()
-      //     .append('text')
-      //     .attr('class', 'map-legend legend-inci')
-      //     .attr('id', 'inci-legend-title')
-      //     .attr('x', legendStartingX)
-      //     .attr('y', legendStartingY - legendSpacing)
-      //     .text(function(d, i){ return inciLegendTitleText[i]; })
-      //     .attr('opacity', 0);
-      //
-      // var inciLegend = svg.selectAll('inciLegend')
-      //     .data(journeyConfigs.mapConfigs.colors.scale)
-      //     .enter()
-      //     .append('g')
-      //     .attr('class', 'map-legend legend-inci')
-      //     .attr('id', function (d, i) {
-      //       return 'inci-legend-' + i;
-      //     })
-      //     .attr('opacity', 0);
-      //
-      // inciLegend.append('circle')
-      //   .attr('class', 'legend-inci')
-      //   .attr('cx', legendStartingX + (legendWidth/2))
-      //   .attr('cy', function(d, i) {
-      //     return (legendStartingY + (i*legendHeight) + (i*legendSpacing) + legendWidth/2);
-      //   })
-      //   // .attr('width', legendWidth)
-      //   // .attr('height', legendHeight)
-      //   .attr('r', legendWidth/2)
-      //   .style('stroke', '#fff')
-      //   .style('stroke-width', 1)
-      //   .style('fill', function(d, i) { return d; });
-      //
-      // inciLegend.append('text')
-      //   .attr('class', 'legend-inci')
-      //   .attr('x', legendStartingX + legendWidth + legendSpacing)
-      //   .attr('y', function(d, i) {
-      //     return legendStartingY + (i*legendHeight) + 13 + (i*legendSpacing);
-      //   })
-      //   .text(function(d, i){ return inciLegendLabels[i]; });
+      var legendWidth = 10;
+      var legendHeight = 10;
+      var legendSpacing = 10;
+      var legendStartingX = isMobile ? 8 : 30;
+      var legendStartingY = height * 0.4;
+
+      var routeLegendTitle = svg.selectAll('routeLegendTitle')
+          .data(routeLegendTitleText)
+          .enter()
+          .append('text')
+          .attr('class', 'map-legend legend-route')
+          .attr('id', 'legend-route-title')
+          .attr('x', legendStartingX)
+          .attr('y', legendStartingY - legendSpacing)
+          .text(function(d, i){ return routeLegendTitleText[i]; })
+          .attr('opacity', 1);
+
+      var routeLegend = svg.selectAll('routeLegend')
+          .data(journeyConfigs.mapConfigs.colors.scale)
+          .enter()
+          .append('g')
+          .attr('class', 'map-legend legend-route')
+          .attr('id', function (d, i) {
+            return 'legend-route-' + i;
+          })
+          .attr('opacity', 1);
+
+      routeLegend.append('circle')
+        .attr('class', 'legend-route')
+        .attr('cx', legendStartingX + (legendWidth/2))
+        .attr('cy', function(d, i) {
+          return (legendStartingY + (i*legendHeight) + (i*legendSpacing) + legendWidth/2);
+        })
+        // .attr('width', legendWidth)
+        // .attr('height', legendHeight)
+        .attr('r', legendWidth/2)
+        .style('stroke', '#fff')
+        .style('stroke-width', 1)
+        .style('fill', function(d, i) { return d; });
+
+      routeLegend.append('text')
+        .attr('class', 'legend-route')
+        .attr('x', legendStartingX + legendWidth + legendSpacing)
+        .attr('y', function(d, i) {
+          return legendStartingY + (i*legendHeight) + 10 + (i*legendSpacing);
+        })
+        .text(function(d, i){ return routeLegendLabels[i]; });
 
     journeyConfigs.mapEl.commColl.animationPlayed = false;
+    journeyConfigs.mapEl.commColl.legendPointsPlayed = false;
+    journeyConfigs.mapEl.commColl.otherPointsPlayed = false;
+    journeyConfigs.mapEl.commColl.routeLinesInPlayed = false;
+    journeyConfigs.mapEl.commColl.outPlayed = false;
 
     journeyConfigs.mapEl.commColl.startAnimation = function() {
 
@@ -268,47 +281,158 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
               .attr('opacity', 0);
           });
 
-        svg.selectAll('.map-legend').attr('opacity', 0);
+        // svg.selectAll('.map-legend').attr('opacity', 0);
+        // svg.selectAll('.map-legend').remove();
 
       truckPoints.selectAll('.truckPoints')
         .each(function(d, i) {
           d3.select(this)
+            .filter(function(d) {
+              return d.properties.route == 'start' || d.properties.route == 'end';
+            })
             .attr('r', 0)
             .transition()
             .duration(1500)
             .attr('r', function(d) {
-              return 5;
+              var radius = isMobile ? 3 : 5;
+              return radius;
             })
-            .each('end', function() {
-              journeyConfigs.mapEl.commColl.routeLinesIn();
+            .each('end', function(d, i) {
+              // journeyConfigs.mapEl.commColl.legendPoints();
+              // journeyConfigs.mapEl.commColl.legendPointsPlayed = true;
+              journeyConfigs.mapEl.commColl.otherPoints();
+              journeyConfigs.mapEl.commColl.otherPointsPlayed = true;
             });
         });
 
       }
     };
 
-    journeyConfigs.mapEl.commColl.routeLinesIn = function() {
-      truckLines.selectAll('.truckLines')
-        .each(function(d, i) {
-          d3.select(this)
-            // .attr('stroke-dashoffset', function(d) {
-            //   return this.getTotalLength();
-            // })
-            .transition()
-            .duration(1500)
-            // .attr('stroke-dashoffset', 0)
-            .attr('opacity', 1)
-            .each('end', function() {
-              journeyConfigs.mapEl.commColl.out();
-            });
-        });
+    journeyConfigs.mapEl.commColl.legendPoints = function() {
+      if (!journeyConfigs.mapEl.commColl.legendPointsPlayed) {
+        svg.selectAll('text-garage')
+            .data(truckRoutesPointsData.features)
+            .enter()
+            .append('text')
+            .filter(function(d) {
+              return d.properties.route == 'start';
+            })
+            .attr('x', function(d){
+                return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+            })
+            .attr('y', function(d){
+                return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+            })
+            .attr('transform', function(d) {
+              var x = isMobile ? -8 : -12;
+              return 'translate('+x+',4)'; })
+            .attr('class', 'routes-legend map-legend')
+            .attr('text-anchor', 'end')
+            .text('Garage');
 
+        svg.selectAll('text-ts')
+            .data(truckRoutesPointsData.features)
+            .enter()
+            .append('text')
+            .filter(function(d) {
+              return d.properties.route == 'end';
+            })
+            .attr('x', function(d){
+                return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[0];
+            })
+            .attr('y', function(d){
+                return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+            })
+            .attr('transform', function(d) {
+              var x = isMobile ? 8 : 12;
+              return 'translate('+x+',4)'; })
+            .attr('class', 'routes-legend map-legend')
+            .text('Transfer Station');
+
+        journeyConfigs.mapEl.commColl.legendOut();
+
+      }
+    };
+
+    journeyConfigs.mapEl.commColl.legendOut = function() {
+      setTimeout(function() {
+        svg.selectAll('.routes-legend')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.route == 'start';
+              })
+              .attr('opacity', 1)
+              .transition()
+              .duration(1500)
+              .attr('opacity', 0)
+              .each('end', function(d, i) {
+                journeyConfigs.mapEl.commColl.otherPoints();
+                journeyConfigs.mapEl.commColl.otherPointsPlayed = true;
+              });
+            });
+        }, 1000);
+    };
+
+    journeyConfigs.mapEl.commColl.otherPoints = function() {
+      if (!journeyConfigs.mapEl.commColl.otherPointsPlayed) {
+        d3.select('#legend-route-title').attr('opacity', 1);
+        d3.select('#legend-route-0').attr('opacity', 1);
+        d3.select('#legend-route-1').attr('opacity', 1);
+
+        truckPoints.selectAll('.truckPoints')
+          .each(function(d, i) {
+            d3.select(this)
+              .filter(function(d) {
+                return d.properties.route !== 'start' && d.properties.route !== 'end';
+              })
+              .attr('r', 0)
+              .transition()
+              .duration(1500)
+              .attr('r', function(d) {
+                var radius = isMobile ? 3 : 5;
+                return radius;
+              })
+              .each('end', function(d, i) {
+                journeyConfigs.mapEl.commColl.routeLinesIn();
+                journeyConfigs.mapEl.commColl.routeLinesInPlayed = true;
+              });
+          });
+      }
+    };
+
+    journeyConfigs.mapEl.commColl.routeLinesIn = function() {
+      if (!journeyConfigs.mapEl.commColl.routeLinesInPlayed) {
+        d3.select('#legend-route-2').attr('opacity', 1);
+
+        truckLines.selectAll('.truckLines')
+          .each(function(d, i) {
+            d3.select(this)
+              // .attr('stroke-dashoffset', function(d) {
+              //   return this.getTotalLength();
+              // })
+              .transition()
+              .duration(1500)
+              // .attr('stroke-dashoffset', 0)
+              .attr('opacity', 1)
+              .each('end', function(d, i) {
+                journeyConfigs.mapEl.commColl.out();
+                journeyConfigs.mapEl.commColl.outPlayed = true;
+              });
+            });
+      }
     };
 
     journeyConfigs.mapEl.commColl.out = function() {
-      setTimeout(function() {
-        journeyConfigs.mapEl.commColl.animationPlayed = false;
-      }, 1600);
+      if (!journeyConfigs.mapEl.commColl.outPlayed) {
+        setTimeout(function() {
+          journeyConfigs.mapEl.commColl.animationPlayed = false;
+          journeyConfigs.mapEl.commColl.legendPointsPlayed = false;
+          journeyConfigs.mapEl.commColl.otherPointsPlayed = false;
+          journeyConfigs.mapEl.commColl.routeLinesInPlayed = false;
+          journeyConfigs.mapEl.commColl.outPlayed = false;
+        }, 1600);
+      }
     };
 
   }
