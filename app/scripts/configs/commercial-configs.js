@@ -12,6 +12,9 @@ journeyConfigs.mapEl = {
   },
   commTS: {
     id: '2-2'
+  },
+  wasteExport: {
+    id: '3-50'
   }
 };
 journeyConfigs.mapDataPath = 'data/commercial.geojson';
