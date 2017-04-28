@@ -874,8 +874,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       var legendWidth = 10;
       var legendHeight = 10;
       var legendSpacing = 10;
-      var legendStartingX = width - (width * 0.2);
-      var legendStartingY = height * 0.4;
+      var legendStartingX = isMobile ? width - (width * 0.30) : width - (width * 0.2);
+      var legendStartingY = height * 0.6;
 
       var exportLegendTitle = svg.selectAll('exportLegendTitle')
           .data(exportLegendTitleText)
