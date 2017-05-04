@@ -100,9 +100,6 @@
 
 "features": [
 { "type": "Feature", "properties": { "id": 0, "type": "compost", "name": "McEnroe Farm, NY", "state": "NY", "lat": 41.902505, "lon": -73.522655, "from_name": "Brooklyn Transfer" }, "geometry": { "type": "Point", "coordinates": [ -73.522655, 41.902505 ] } },
-{ "type": "Feature", "properties": { "id": 1, "type": "compost", "name": "New Millford Farms, CT", "state": "CT", "lat": 41.589104, "lon": -73.438991, "from_name": null }, "geometry": { "type": "Point", "coordinates": [ -73.438991, 41.589104 ] } },
-{ "type": "Feature", "properties": { "id": 2, "type": "compost", "name": "AgChoice, NJ", "state": "NJ", "lat": 40.992583, "lon": -74.752524, "from_name": null }, "geometry": { "type": "Point", "coordinates": [ -74.752524, 40.992583 ] } },
-{ "type": "Feature", "properties": { "id": 3, "type": "compost", "name": "Bedminster-Marlborough Inc., MA", "state": "MA", "lat": 42.354280, "lon": -71.494654, "from_name": null }, "geometry": { "type": "Point", "coordinates": [ -71.494654, 42.35428 ] } },
 { "type": "Feature", "properties": { "id": 4, "type": "compost", "name": "Staten Island", "long_name": "Compost Facility, NYC", "state": "NY", "lat": 40.582316, "lon": -74.195994, "from_name": null }, "geometry": { "type": "Point", "coordinates": [ -74.195994, 40.582316 ] } },
 { "type": "Feature", "properties": { "id": 5, "type": "anaerobic digester", "name": "Newtown Creek Wastewater", "long_name": "Treatment Plant, NYC", "state": "NY", "lat": 40.733222, "lon": -73.944349, "from_name": "WM Varick I" }, "geometry": { "type": "Point", "coordinates": [ -73.944349, 40.733222 ] } }
 ]
