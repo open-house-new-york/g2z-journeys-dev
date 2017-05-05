@@ -3,7 +3,8 @@
 - GA
 - meta
 - concat geojson
-- talk about long hours and worker situations? (after long routes)
+- add links to photo credits
+<!-- - talk about long hours and worker situations? (after long routes) -->
 <!-- - recycling? -->
 
 # incineration

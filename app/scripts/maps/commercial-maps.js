@@ -582,7 +582,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('class', 'tsPrivate');
 
     var tsLegendTitleText = ['Transfer station by waste received'];
-    var tsLegendLabels = ['Residential and instituional', 'Commercial'];
+    var tsLegendLabels = ['Residential and instituional (DSNY)', 'Commercial'];
     // var legendWidth = 20;
     var legendWidth = 10;
     var legendHeight = 10;
