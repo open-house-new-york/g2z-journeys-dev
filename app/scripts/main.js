@@ -5,6 +5,11 @@ function calculateViewportDimensions() {
   var viewportHeight = document.documentElement.clientHeight;
   var horizontalViewport = viewportWidth >= viewportHeight ? true : false;
   var isMobile = viewportWidth < 768 && horizontalViewport || viewportHeight < 768 && !horizontalViewport ? true : false;
+  if (isMobile !== journeyConfigs.isMobile && journeyConfigs.isMobile !== undefined) {
+    // status has changed
+    location.reload();
+  }
+  journeyConfigs.isMobile = isMobile;
   console.log('vh:' + viewportHeight, 'vw:' + viewportWidth, 'mobile:' + isMobile, 'horizontal:' + horizontalViewport);
   if (horizontalViewport && isMobile) {
     $('#change-orientation').show();
