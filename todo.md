@@ -1,9 +1,9 @@
 # commercial
 
-- GA
-- meta
-- concat geojson
-- add links to photo credits
+<!-- - GA -->
+<!-- - meta -->
+<!-- - concat geojson -->
+<!-- - add links to photo credits -->
 <!-- - talk about long hours and worker situations? (after long routes) -->
 <!-- - recycling? -->
 
