@@ -25,40 +25,22 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
   };
 
   //Load in GeoJSON data
-  // d3.json(journeyConfigs.mapDataPath, function(geojson) {
-  //   var nycdBcd = geojson.nycd_bcd;
-  //   var nyNjCt = geojson.ny_nj_ct_refined;
-  //   var odLinesData = geojson.od_lines_refuse;
-  //   var NSExportData = geojson.north_shore_export;
-  //   var NSExportPointData = geojson.north_shore_export_point;
-  //   var destPointsRefuseData = geojson.dest_points_refuse;
-  //   // initCommCollMap(nycdBcd, odLinesData, destPointsRefuseData, nyNjCt, NSExportData, NSExportPointData);
-  // });
-  d3.json('data/temp/nycd_bcd.geojson', function(nycdBcdData) {
-  d3.json('data/temp/ny_nj_ct_refined.geojson', function(nyNjCt) {
-  d3.json('data/temp/od_lines_refuse.geojson', function(odLinesData) {
-  d3.json('data/temp/comm_truck_routes_lines.geojson', function(truckRoutesLinesData) {
-  d3.json('data/temp/comm_truck_routes_points.geojson', function(truckRoutesPointsData) {
-  d3.json('data/temp/route_roads.geojson', function(routeRoadsData) {
-  d3.json('data/temp/all_transfer_stations.geojson', function(allTSData) {
-  d3.json('data/temp/dest_lines.geojson', function(destLines) {
-  d3.json('data/temp/export_points.geojson', function(exportPoints) {
-  d3.json('data/temp/states_east.geojson', function(statesEast) {
+  d3.json(journeyConfigs.mapDataPath, function(geojson) {
+    var nycdBcdData = geojson.nycd_bcd;
+    var nyNjCt = geojson.ny_nj_ct_refined;
+    var odLinesData = geojson.od_lines_refuse;
+    var truckRoutesLinesData = geojson.comm_truck_routes_lines;
+    var truckRoutesPointsData = geojson.comm_truck_routes_points;
+    var allTSData = geojson.all_transfer_stations;
+    var destLines = geojson.dest_lines;
+    var exportPoints = geojson.export_points;
+    var statesEast = geojson.states_east;
     initCommTSMap(nycdBcdData, nyNjCt, allTSData);
-    initCommCollMap(nycdBcdData, nyNjCt, routeRoadsData, truckRoutesLinesData, truckRoutesPointsData);
+    initCommCollMap(nycdBcdData, nyNjCt, truckRoutesLinesData, truckRoutesPointsData);
     initExportMap(destLines, exportPoints, statesEast);
   });
-  });
-  });
-  });
-  });
-  });
-  });
-  });
-  });
-  });
 
-  function initCommCollMap(nycdBcdData, states, routeRoadsData, truckRoutesLinesData, truckRoutesPointsData) {
+  function initCommCollMap(nycdBcdData, states, truckRoutesLinesData, truckRoutesPointsData) {
     //Width and height
     var width = $('.map-comm-coll').width() * 0.99;
     var height = viewportHeight;
