@@ -11,7 +11,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
     complementary: '#1485CC',
     complementaryOpacity: '#8bb8d5',
     scale: ['#8bb8d5', '#1485CC', '#f15a29'],
-    scaleTS: ['#8bb8d5', '#f15a29'],
+    scaleTS: ['#8bb8d5', '#fff', '#f15a29'],
     scaleExport: ['#e3a793', '#f15a29'],
     scaleDropOff: ['#f15a29', '#1485CC']
   };
@@ -185,7 +185,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         })
         .attr('class', 'truckPoints');
 
-      var routeLegendTitleText = ['A sample commecial pickup route'];
+      var routeLegendTitleText = ['A sample commecial'];
+      var routeLegendTitleBelowText = ['pickup route'];
       var routeLegendLabels = ['Garage', 'Transfer Station', 'Customer'];
       // var legendWidth = 20;
       var legendWidth = 10;
@@ -201,8 +202,19 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
           .attr('class', 'map-legend legend-route')
           .attr('id', 'legend-route-title')
           .attr('x', legendStartingX)
-          .attr('y', legendStartingY - legendSpacing)
+          .attr('y', legendStartingY - (legendSpacing * 2.5))
           .text(function(d, i){ return routeLegendTitleText[i]; })
+          .attr('opacity', 1);
+
+      var routeLegendTitleBelow = svg.selectAll('routeLegendTitleBelow')
+          .data(routeLegendTitleBelowText)
+          .enter()
+          .append('text')
+          .attr('class', 'map-legend legend-route')
+          .attr('id', 'legend-route-title')
+          .attr('x', legendStartingX)
+          .attr('y', legendStartingY - (legendSpacing * 1))
+          .text(function(d, i){ return routeLegendTitleBelowText[i]; })
           .attr('opacity', 1);
 
       var routeLegend = svg.selectAll('routeLegend')
@@ -563,8 +575,9 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('opacity', 0.7)
       .attr('class', 'tsPrivate');
 
-    var tsLegendTitleText = ['Transfer station by waste received'];
-    var tsLegendLabels = ['Residential and instituional (DSNY)', 'Commercial'];
+    var tsLegendTitleText = ['Transfer station'];
+    var tsLegendTitleTextBelow = ['by waste received'];
+    var tsLegendLabels = ['Residential and' , ' instituional (DSNY)', 'Commercial'];
     // var legendWidth = 20;
     var legendWidth = 10;
     var legendHeight = 10;
@@ -579,8 +592,19 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         .attr('class', 'map-legend legend-route')
         .attr('id', 'legend-route-title')
         .attr('x', legendStartingX)
-        .attr('y', legendStartingY - legendSpacing)
+        .attr('y', legendStartingY - (legendSpacing * 2.5) - 5)
         .text(function(d, i){ return tsLegendTitleText[i]; })
+        .attr('opacity', 1);
+
+    var routeLegendTitleBelow = svg.selectAll('routeLegendTitle')
+        .data(tsLegendTitleTextBelow)
+        .enter()
+        .append('text')
+        .attr('class', 'map-legend legend-route')
+        .attr('id', 'legend-route-title')
+        .attr('x', legendStartingX)
+        .attr('y', legendStartingY - legendSpacing - 5)
+        .text(function(d, i){ return tsLegendTitleTextBelow[i]; })
         .attr('opacity', 1);
 
     var tsLegend = svg.selectAll('tsLegend')
@@ -601,14 +625,30 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       })
       .attr('r', legendWidth/2)
       .style('stroke', '#fff')
-      .style('stroke-width', 1)
-      .style('fill', function(d, i) { return d; });
+      .style('stroke-width', function (d, i) {
+        if (i === 1) {
+          return 0;
+        } else {
+          return 1;
+        }
+      })
+      .style('fill', function(d, i) {
+        if (i === 1) {
+          return 'transparent';
+        } else {
+          return d;
+        }
+       });
 
     tsLegend.append('text')
       .attr('class', 'legend-ts')
       .attr('x', legendStartingX + legendWidth + legendSpacing)
       .attr('y', function(d, i) {
-        return legendStartingY + (i*legendHeight) + 10 + (i*legendSpacing);
+        if (i === 1) {
+          return legendStartingY + (i*legendHeight) + 10 + (i*legendSpacing) - (legendHeight/2);
+        } else {
+          return legendStartingY + (i*legendHeight) + 10 + (i*legendSpacing);
+        }
       })
       .text(function(d, i){ return tsLegendLabels[i]; });
 
