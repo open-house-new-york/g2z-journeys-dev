@@ -203,7 +203,7 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
         })
         .attr('class', 'truckPoints');
 
-      var routeLegendTitleText = ['A commecial pickup route'];
+      var routeLegendTitleText = ['A sample commecial pickup route'];
       var routeLegendLabels = ['Garage', 'Transfer Station', 'Customer'];
       // var legendWidth = 20;
       var legendWidth = 10;
