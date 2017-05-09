@@ -107,7 +107,7 @@ $(window).on('resize', _.debounce(function() {
       var panelsGroupEl = $('.panels-group', visEl);
 
       // delete panels according to screen size
-      if (viewportHeight < 540) {
+      if (viewportHeight < 670) {
         $('.not-mobile', panelsGroupEl).remove();
       } else {
         $('.mobile', panelsGroupEl).remove();
