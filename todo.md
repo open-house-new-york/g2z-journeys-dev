@@ -1,8 +1,18 @@
+# cndTS
+
+- GA
+- meta
+- links to credits
+- final text
+- add images that show fill and larger containers
+- recycling of gypsum? recycling rates are hard to estimate
+- sources
+
 # commercial
 
 <!-- - GA -->
 <!-- - meta -->
-<!-- - concat geojson --> 
+<!-- - concat geojson -->
 <!-- - add links to photo credits -->
 <!-- - talk about long hours and worker situations? (after long routes) -->
 <!-- - recycling? -->

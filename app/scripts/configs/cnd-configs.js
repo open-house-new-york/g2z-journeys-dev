@@ -7,11 +7,11 @@ journeyConfigs.meta = {
 };
 journeyConfigs.firstPanelId = 'panel-0-1';
 journeyConfigs.mapEl = {
-  cndTs: {
-    id: '3-2'
+  cndTS: {
+    id: '0-8'
   },
   cndExport: {
-    id: '4-2'
+    id: '2-1'
   }
 };
 journeyConfigs.mapDataPath = 'data/cnd.geojson';
