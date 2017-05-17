@@ -7,6 +7,7 @@
 - add images that show fill and larger containers
 - recycling of gypsum? recycling rates are hard to estimate
 - sources
+- add truck to image inside TS
 
 # commercial
 
