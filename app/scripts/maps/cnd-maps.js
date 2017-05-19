@@ -169,8 +169,8 @@ function initMaps(viewportWidth, viewportHeight, horizontalViewport, isMobile, p
       .attr('opacity', 0.7)
       .attr('class', 'tsCnd');
 
-    var tsLegendTitleText = ['Waste facilities in NYC'];
-    var tsLegendTitleTextBelow = ['by tons received'];
+    var tsLegendTitleText = ['Facilities in NYC, scaled'];
+    var tsLegendTitleTextBelow = ['by tons of waste received'];
     var tsLegendLabels = ['Transfer station', 'C&D debris processing'];
     // var legendWidth = 20;
     var legendWidth = 10;
