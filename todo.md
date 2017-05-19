@@ -1,11 +1,11 @@
 # cndTS
 
 - GA
-- meta
+<!-- - meta -->
 <!-- - 600px -->
 <!-- - links to credits -->
 <!-- - final text -->
-- add images that show fill and larger containers
+<!-- - add images that show fill and larger containers -->
 <!-- - recycling of gypsum? recycling rates are hard to estimate -->
 <!-- - sources -->
 <!-- - add truck to image inside TS -->
